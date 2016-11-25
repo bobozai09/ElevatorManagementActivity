@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle"> <!-- 绿色边框圆角矩形 -->
+    <gradient
+        android:endColor="#ffffff"
+        android:startColor="#ffffff" />
+    <solid android:color="#ffffff" />
+    <stroke
+        android:color="#95d5b2"
+        android:width="2dp" />
+    <corners
+        android:bottomLeftRadius="@dimen/activity_15dp"
+        android:bottomRightRadius="@dimen/activity_15dp"
+        android:topLeftRadius="@dimen/activity_15dp"
+        android:topRightRadius="@dimen/activity_15dp" />
+</shape>

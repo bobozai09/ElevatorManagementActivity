@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--知识中心 item-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_margin="@dimen/activity_20dp"
+    android:layout_height="match_parent">
+<LinearLayout
+
+
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textSize="25dp"
+        android:textColor="@color/black_text_color"
+        android:lineSpacingExtra="8dp"
+        android:maxLines="2"
+        android:text="如何看待百度无人车，3千多个场景，一万多个if？"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="120dp" />
+    <TextView
+        android:textSize="@dimen/activity_20dp"
+        android:textColor="@color/black_text_color"
+        android:lineSpacingExtra="8dp"
+        android:maxLines="2"
+        android:text="如何看待百度无人车，3千多个场景，一万多个if？"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textColor="@color/item_text_color"
+        android:textSize="17dp"
+        android:text="来源：中国科技网 2016-11-23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+<TextView
+    android:id="@+id/txt_watch"
+    android:layout_alignParentRight="true"
+    android:text="42"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+    <ImageView
+        android:layout_marginRight="@dimen/activity_8dp"
+        android:id="@+id/img_watch"
+        android:layout_toLeftOf="@+id/txt_watch"
+        android:src="@mipmap/img_watch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/txt_coll"
+        android:layout_marginRight="@dimen/activity_8dp"
+     android:layout_toLeftOf="@id/img_watch"
+        android:text="42"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:layout_marginRight="@dimen/activity_8dp"
+        android:id="@+id/img_coll"
+        android:layout_toLeftOf="@+id/txt_coll"
+        android:src="@mipmap/img_collecation_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>
+</LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:background="@color/color_login_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:id="@+id/img_scan"
+            android:layout_marginLeft="8dp"
+            android:src="@mipmap/scan_item"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/img_message_center"
+            android:layout_marginRight="@dimen/activity_8dp"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/pop_bubble"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <EditText
+            android:id="@+id/search_box"
+            android:drawableLeft="@drawable/img_search"
+            android:hint="搜索"
+            android:layout_marginRight="@dimen/activity_8dp"
+            android:layout_marginLeft="@dimen/activity_8dp"
+            android:layout_toLeftOf="@+id/img_message_center"
+            android:layout_toRightOf="@+id/img_scan"
+            android:layout_width="match_parent"
+            android:background="@drawable/main_searchbox_shape"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+</RelativeLayout>

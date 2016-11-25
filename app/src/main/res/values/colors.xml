@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorWindowBackground">#f0f0f0</color>
+    <color name="colorTabNormal">#666666</color>
+    <color name="colorTabSelected">@color/colorPrimary</color>
+    <color name="color_tab_text">#FF27593D</color>
+    <color name="color_login_btn">#FF50A0DC</color>
+    <color name="login_text_color">#171717</color>
+    <color name="main_bottom_color">#FF50A0DC</color>
+    <color name="main_search_box_color">#FF374A8E</color>
+    <color name="black_text_color">#FF292A2B</color>
+    <color name="btn_order_urgent">#fe0103</color>
+    <color name="btn_orfer_secondary">#51a1dd</color>
+    <color name="btn_order_import">#ff9900</color>
+    <color name="btn_order_warming">#fdacbb</color>
+    <color name="detail_bg">#FFFDACBB</color>
+    <color name="title_bg">#FF51A1DC</color>
+    <color name="item_text_color">#FF999999</color>
+</resources>
