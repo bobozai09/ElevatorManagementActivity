@@ -70,7 +70,7 @@ public void seOnItemClickListener(onRecycleViewItemClickListener listener){
             titleText= ButterKnife.findById(itemView,R.id.title_text);
             imageView=ButterKnife.findById(itemView,R.id.image_view);
         }
-    }
+}
 
 
 

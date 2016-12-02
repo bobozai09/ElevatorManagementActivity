@@ -1,5 +1,6 @@
 package management.elevator.com.elevatormanagementactivity.fragment;
 
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -14,10 +15,11 @@ import java.util.Arrays;
 import management.elevator.com.elevatormanagementactivity.R;
 
 /**
- * Created by Administrator on 2016/11/16 0016.
+ * Created by janiszhang on 2016/6/10.
  */
 
-public class MainFragment extends Fragment {
+public class TestFragment1 extends Fragment {
+
     private View viewContent;
     private TabLayout tab_essence;
     private ViewPager vp_essence;
@@ -25,16 +27,18 @@ public class MainFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-      viewContent=inflater.inflate(R.layout.fragment_test,container,false);
+        viewContent = inflater.inflate(R.layout.fragment_test,container,false);
+        initConentView(viewContent);
+        initData();
 
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return viewContent;
     }
-    public void  initConnentView(View viewContent){
+
+    public void initConentView(View viewContent) {
         this.tab_essence = (TabLayout) viewContent.findViewById(R.id.tab_essence);
         this.vp_essence = (ViewPager) viewContent.findViewById(R.id.vp_essence);
-
-
     }
+
     public void initData() {
         //获取标签数据
         String[] titles = getResources().getStringArray(R.array.home_video_tab);

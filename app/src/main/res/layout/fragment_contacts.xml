@@ -1,19 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    tools:context=".fragment.ContactsFragment"
-    android:layout_height="match_parent">
-<management.elevator.com.elevatormanagementactivity.widget.TabLayout
-    android:id="@+id/tabLayout"
-    android:layout_width="match_parent"
-    android:elevation="2dp"
-    android:background="@android:color/white"
-    android:layout_height="48dp"/>
-    <FrameLayout
-        android:id="@+id/childContainer"
+    >
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:layout_height="0dp"></FrameLayout>
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/activity_45dp">
+
+        <com.tigerliang.tablayout.TabLayout
+            android:id="@+id/tab_layout"
+            style="@style/tab_style"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/activity_45dp"
+            />
+
+
+    </android.support.v4.view.ViewPager>
+
+    <!--<management.elevator.com.elevatormanagementactivity.widget.TabLayout-->
+    <!--android:id="@+id/tabLayout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:elevation="2dp"-->
+    <!--android:background="@android:color/white"-->
+    <!--android:layout_height="48dp"/>-->
+    <!--<FrameLayout-->
+    <!--android:id="@+id/childContainer"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_weight="1"-->
+    <!--android:layout_height="0dp"></FrameLayout>-->
+    <!--<TextView-->
+    <!--android:layout_gravity="center"-->
+    <!--android:id="@+id/showtext"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent" />-->
+</RelativeLayout>

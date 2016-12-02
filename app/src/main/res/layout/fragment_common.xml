@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    >
+    <include layout="@layout/item_scan_and_search" />
+    <include layout="@layout/main_banner"/>
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginLeft="@dimen/activity_8dp"
+        android:layout_marginRight="@dimen/activity_8dp"
+        android:layout_weight="9"
+        android:id="@+id/recycleview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
+    <!--<FrameLayout-->
+        <!--android:id="@+id/container"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="1" />-->
+
+    <!--<management.elevator.com.elevatormanagementactivity.widget.BottomNavigatorView-->
+        <!--android:id="@+id/bottomNavigatorView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="56dp"-->
+        <!--android:clipToPadding="false"-->
+        <!--android:background="@android:color/white"-->
+        <!--android:elevation="8dp" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/textView"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="30sp"-->
+        <!--android:textColor="#333333"-->
+        <!--android:textStyle="bold"-->
+        <!--android:text="TEXT"-->
+       <!--/>-->
+</LinearLayout>

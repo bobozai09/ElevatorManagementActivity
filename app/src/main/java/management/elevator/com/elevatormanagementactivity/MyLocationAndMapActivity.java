@@ -21,7 +21,7 @@ import android.widget.TextView;
 import management.elevator.com.elevatormanagementactivity.utils.LocationUtils;
 
 /**
- * Created by Administrator on 2016/11/24 0024.
+ * 获取当前位置
  */
 
 public class MyLocationAndMapActivity extends CheckPermissionActivity

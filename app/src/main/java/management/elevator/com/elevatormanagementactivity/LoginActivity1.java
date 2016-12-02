@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.logging.LogRecord;
 
 import management.elevator.com.elevatormanagementactivity.broadcast.BroadcastManager;
+import management.elevator.com.elevatormanagementactivity.fragment.*;
 import management.elevator.com.elevatormanagementactivity.utils.GetMD5;
 import management.elevator.com.elevatormanagementactivity.utils.GetSession;
 import management.elevator.com.elevatormanagementactivity.utils.SharedPrefUtils;
@@ -216,7 +217,7 @@ public class LoginActivity1 extends AppCompatActivity implements View.OnClickLis
         if (person == 1) {
             intent.setClass(LoginActivity1.this, FoundPasswordActivity.class);
         } else if (person == 2) {
-            intent.setClass(LoginActivity1.this, MainActivity.class);
+            intent.setClass(LoginActivity1.this, management.elevator.com.elevatormanagementactivity.fragment.MainActivity.class);
         }
         startActivity(intent);
     }

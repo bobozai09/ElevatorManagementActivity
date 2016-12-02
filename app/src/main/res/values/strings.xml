@@ -37,8 +37,8 @@
     <!---->
     <string name="order_message_conten">故障内容：</string>
     <string name="order_message_time">派单时间：</string>
-    <string name="order_message_who">派 单 人</string>
-    <string name="order_message_address">地    址</string>
+    <string name="order_message_who">派 单 人:</string>
+    <string name="order_message_address">地        址</string>
 
 
     <string name="notifyTitle">提示</string>
@@ -62,5 +62,24 @@
     <string name="useSensor">使用传感器</string>
     <string name="defaultInteval">2000</string>
     <string name="defaultHttpTimeout">30000</string>
+    <array name="home_video_tab">
+        <item>未完成工单@dream@0</item>
+        <item>历史工单@dream@1</item>
+        <item>单位工单@dream@2</item>
 
+    </array>
+    <array name="newpost_video_tab">
+        <item>美女@dream@0</item>
+        <item>搞笑@dream@1</item>
+        <item>视频@dream@2</item>
+        <item>段子@dream@3</item>
+        <item>城市@dream@4</item>
+        <item>农村@dream@5</item>
+        <item>青春@dream@6</item>
+    </array>
+
+    <array name="attention_video_tab">
+        <item>订阅@dream@0</item>
+        <item>关注@dream@1</item>
+    </array>
 </resources>

@@ -1,4 +1,4 @@
-package management.elevator.com.elevatormanagementactivity;
+package management.elevator.com.elevatormanagementactivity.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,19 +13,16 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import management.elevator.com.elevatormanagementactivity.fragment.MainFragment;
-
-/**
- * Created by Administrator on 2016/11/16 0016.
- */
+import management.elevator.com.elevatormanagementactivity.R;
 
 public class MainActivity extends AppCompatActivity {
+
     private List<TabItem> mTableItemList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_three);
         initTabData();
         initTabHost();
     }
@@ -35,18 +32,17 @@ public class MainActivity extends AppCompatActivity {
     private void initTabData() {
         mTableItemList = new ArrayList<>();
         //添加tab
-//        mTableItemList.add(new TabItem(R.drawable.main_gray,R.drawable.main_blue,R.string.main, MainFragment.class));
-//        mTableItemList.add(new TabItem(R.drawable.order_gray,R.drawable.order_blue,R.string.order, TestFragment2.class));
-//        mTableItemList.add(new TabItem(R.drawable.equipment_gray,R.drawable.equipment_blue,R.string.equipment, TestFragment3.class));
-//        mTableItemList.add(new TabItem(R.drawable.myself_gray,R.drawable.myself_blue,R.string.myself, TestFragment3.class));
-
+        mTableItemList.add(new TabItem(R.drawable.main_gray,R.drawable.main_blue,R.string.main, FragmentCommon.class));
+        mTableItemList.add(new TabItem(R.drawable.order_gray,R.drawable.order_blue,R.string.order, TestFragment1.class));
+        mTableItemList.add(new TabItem(R.drawable.equipment_gray,R.drawable.equipment_blue,R.string.equipment, TestFragment3.class));
+        mTableItemList.add(new TabItem(R.drawable.myself_gray,R.drawable.myself_blue,R.string.myself, TestFragment3.class));
     }
 
     //初始化选项卡视图
     private void initTabHost() {
         //实例化FragmentTabHost对象
         FragmentTabHost fragmentTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
-        fragmentTabHost.setup(this,getSupportFragmentManager(),android.R.id.tabcontent);
+        fragmentTabHost.setup(getApplicationContext(),getSupportFragmentManager(),android.R.id.tabcontent);
 
         //去掉分割线
         fragmentTabHost.getTabWidget().setDividerDrawable(null);
@@ -106,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
             this.fragmentClass =fragmentClass;
         }
 
-        public Class<? extends  Fragment> getFragmentClass() {
+        public Class<? extends Fragment> getFragmentClass() {
             return fragmentClass;
         }
         public int getImageNormal() {
@@ -165,5 +161,4 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
 }

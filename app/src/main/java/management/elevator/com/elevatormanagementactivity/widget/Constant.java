@@ -19,6 +19,12 @@ public class Constant {
     public  static String HttpSessionId=null;
     public static List<String> HttpSetCookies	= null;
     public static String AUTH="auth";
+    //当前工单
+    public  static String TICK_SELF="tick-self";
+    //历史工单
+    public  static String TICK_HIST="tick-hist";
+    //单位工单
+    public  static String TICK_CORP="tick-corp";
     /**
      * 接口地址
      */
@@ -32,6 +38,7 @@ public class Constant {
      */
 
     public static String INFO="/api/info.json";
+    public static  String TICKER="/api/ticket.json";
     public static String LOCATION_IME="357748051865320";
 
 

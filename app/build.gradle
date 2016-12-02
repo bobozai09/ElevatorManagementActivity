@@ -38,6 +38,8 @@ dependencies {
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     compile 'cn.yipianfengye.android:zxing-library:2.0'
     compile 'com.jakewharton:butterknife:8.4.0'
+    compile'com.ycl.tabview.library:tabviewlibrary:1.0'
+    compile'com.github.xiangtailiang.tablayout:library:1.0.0'
 //    compile 'com.amap.api:location:2.6.0+'
     compile files('libs/AMap_Location_V3.1.0_20161027.jar')
 }

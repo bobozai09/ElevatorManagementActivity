@@ -14,7 +14,7 @@
     <dimen name="normal_margin">10dp</dimen>
     <dimen name="font_58">29dp</dimen>
     <dimen name="font_170">85dp</dimen>
-
+<dimen name="activity_10dp">10dp</dimen>
     <dimen name="offline_down_title_hight">25dp</dimen>
     <dimen name="font_22">11sp</dimen>
     <dimen name="font_24">12sp</dimen>

@@ -14,7 +14,7 @@
             android:layout_marginLeft="8dp"
             android:src="@mipmap/scan_item"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
 
         <ImageView
             android:id="@+id/img_message_center"
@@ -22,7 +22,7 @@
             android:layout_alignParentRight="true"
             android:src="@mipmap/pop_bubble"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
 
         <EditText
             android:id="@+id/search_box"
