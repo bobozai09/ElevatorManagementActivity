@@ -3,6 +3,7 @@ package management.elevator.com.elevatormanagementactivity;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -36,7 +37,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 import java.util.logging.LogRecord;
-
+import android.content.SharedPreferences.Editor;
 import management.elevator.com.elevatormanagementactivity.broadcast.BroadcastManager;
 import management.elevator.com.elevatormanagementactivity.fragment.*;
 import management.elevator.com.elevatormanagementactivity.utils.GetMD5;
@@ -57,7 +58,7 @@ public class LoginActivity1 extends AppCompatActivity implements View.OnClickLis
 
     private static Context context;
 
-
+    private SharedPreferences sp;
     private static final int RETRIVE = 1;
     private static final int LOADSUCCESS = 2;
     private Handler handler = new Handler() {
@@ -70,9 +71,12 @@ public class LoginActivity1 extends AppCompatActivity implements View.OnClickLis
                     break;
                 case LOADSUCCESS:
                     String success = (String) msg.obj;
-                    Toast.makeText(getApplicationContext(), "恭喜您登录成功", Toast.LENGTH_LONG).show();
-                    IntentFoundPassword(2);
 
+                    Toast.makeText(getApplicationContext(), "恭喜您登录成功", Toast.LENGTH_LONG).show();
+                   Editor editor=sp.edit();
+                    editor.putString(Constant.LOGIN_TOKEN,success);
+                    editor.commit();
+                    IntentFoundPassword(2);
                     break;
             }
             super.handleMessage(msg);
@@ -94,7 +98,8 @@ public class LoginActivity1 extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login1);
-        SystemBarTintManager tintManager=new SystemBarTintManager(this);
+        SystemBarTintManager tintManager = new SystemBarTintManager(this);
+        sp=getSharedPreferences("userinfo",context.MODE_PRIVATE);
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setNavigationBarTintEnabled(true);
         tintManager.setTintColor(Color.parseColor("#9900FF"));
@@ -165,7 +170,7 @@ public class LoginActivity1 extends AppCompatActivity implements View.OnClickLis
                         String result = jsonObject.getString("result");
                         String reason = jsonObject.getString("reason");
                         String token = jsonObject.getString("token");
-                        Log.i("---token",token+"");
+                        Log.i("---token", token + "");
                         Message message = handler.obtainMessage();
                         if (result.equals("fail")) {
                             message.obj = reason;
@@ -188,15 +193,16 @@ public class LoginActivity1 extends AppCompatActivity implements View.OnClickLis
             }
         }).start();
     }
-    private void  getauth(final  String token){
+
+    private void getauth(final String token) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String domain=Constant.BASE_URL+Constant.INFO;
-                String params="oper=" +
-                        Constant.AUTH + "&" +Constant.LOGIN_TOKEN+token;
+                String domain = Constant.BASE_URL + Constant.INFO;
+                String params = "oper=" +
+                        Constant.AUTH + "&" + Constant.LOGIN_TOKEN + token;
                 String json = GetSession.post(domain, params);
-                if (!json.equals("+ER+")){
+                if (!json.equals("+ER+")) {
                     try {
                         JSONObject jsonObject = new JSONObject(json);
 //                        String
@@ -224,7 +230,6 @@ public class LoginActivity1 extends AppCompatActivity implements View.OnClickLis
 
     @TargetApi(19)
     private void setTranslucentstatus(boolean on) {
-
         Window win = getWindow();
         WindowManager.LayoutParams winparams = win.getAttributes();
         final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;

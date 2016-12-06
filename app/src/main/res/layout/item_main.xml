@@ -18,7 +18,10 @@
     <!--card:cardElevation="2dp"-->
     <!--card:cardMaxElevation="5dp"-->
     <LinearLayout
+
+        android:layout_marginTop="@dimen/activity_20dp"
         android:gravity="center"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -34,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="@dimen/activity_10dp"
             android:text="我的工单" />
 
     </LinearLayout>

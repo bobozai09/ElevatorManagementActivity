@@ -61,7 +61,9 @@
             <!--android:configChanges="keyboard"-->
 
             <!--android:windowSoftInputMode="stateHidden|adjustPan" />-->
-        <activity android:name=".fragment.MainActivity"/>
+        <activity android:name=".fragment.MainActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            />
         <activity android:name=".BaseActivity"/>
         <activity android:name=".HorizontalActivity"/>
         <activity android:name=".FoundPasswordActivity"></activity>
