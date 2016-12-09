@@ -19,12 +19,18 @@ public class Constant {
     public  static String HttpSessionId=null;
     public static List<String> HttpSetCookies	= null;
     public static String AUTH="auth";
+    public static String TID="tid";
+    public  static  String TOKEN=null;
     //当前工单
     public  static String TICK_SELF="tick-self";
     //历史工单
     public  static String TICK_HIST="tick-hist";
     //单位工单
     public  static String TICK_CORP="tick-corp";
+    /***
+     * 单位工单拦接
+     */
+    public  static String TICK_HOLD="tick-hold";
     /**
      * 接口地址
      */
@@ -41,6 +47,9 @@ public class Constant {
     public static  String TICKER="/api/ticket.json";
     public static String LOCATION_IME="357748051865320";
 
-
+/**
+ * svn address
+ *   125.62.26.12/svn/esims-UI
+ */
 
 }

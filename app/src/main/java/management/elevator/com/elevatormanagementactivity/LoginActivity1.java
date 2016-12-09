@@ -71,11 +71,11 @@ public class LoginActivity1 extends AppCompatActivity implements View.OnClickLis
                     break;
                 case LOADSUCCESS:
                     String success = (String) msg.obj;
-
                     Toast.makeText(getApplicationContext(), "恭喜您登录成功", Toast.LENGTH_LONG).show();
                    Editor editor=sp.edit();
                     editor.putString(Constant.LOGIN_TOKEN,success);
                     editor.commit();
+                    Constant.TOKEN=success;
                     IntentFoundPassword(2);
                     break;
             }

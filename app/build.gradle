@@ -42,4 +42,5 @@ dependencies {
     compile'com.github.xiangtailiang.tablayout:library:1.0.0'
 //    compile 'com.amap.api:location:2.6.0+'
     compile files('libs/AMap_Location_V3.1.0_20161027.jar')
+
 }

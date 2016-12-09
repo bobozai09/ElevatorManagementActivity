@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,8 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
       viewContent=inflater.inflate(R.layout.fragment_test,container,false);
-
+        initConnentView(viewContent);
+        initData();
         return super.onCreateView(inflater, container, savedInstanceState);
     }
     public void  initConnentView(View viewContent){
@@ -42,6 +44,12 @@ public class MainFragment extends Fragment {
         //创建一个viewpager的adapter
         TestFragmentAdapter adapter = new TestFragmentAdapter(getFragmentManager(), Arrays.asList(titles));
         this.vp_essence.setAdapter(adapter);
+        this.vp_essence.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v("=------","====");
+            }
+        });
 
         //将TabLayout和ViewPager关联起来
         this.tab_essence.setupWithViewPager(this.vp_essence);
