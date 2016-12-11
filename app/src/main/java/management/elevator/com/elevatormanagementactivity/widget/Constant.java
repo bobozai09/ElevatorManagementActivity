@@ -49,7 +49,10 @@ public class Constant {
 
 /**
  * svn address
- *   125.62.26.12/svn/esims-UI
+ *  https://125.62.26.12/svn/esims-UI
+ *   管理后台
+ *   http://www.sptesyun.com/main.jsp
+ *
  */
 
 }

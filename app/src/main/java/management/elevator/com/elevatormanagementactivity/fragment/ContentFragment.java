@@ -58,9 +58,10 @@ public class ContentFragment extends Fragment {
     TickSelfBean bean;
     TickSelfBean.Data Data;
     private static final int LOADDATA = 1;
-    private static final int TICKHOLDFAIL=100;
-    private static final  int TICKHOLDSUCC=101;
-    private  static  final  int TICKHOLDOTHERS=102;
+    private static final int TICKHOLDFAIL = 100;
+    private static final int TICKHOLDSUCC = 101;
+    private static final int TICKHOLDOTHERS = 102;
+
     public void setType(int mType) {
         this.mType = mType;
     }
@@ -80,43 +81,45 @@ public class ContentFragment extends Fragment {
         sp = getActivity().getSharedPreferences("userinfo", Context.MODE_PRIVATE);
         token = sp.getString(Constant.LOGIN_TOKEN, "");
         init(viewContent);
-        inithold();
+//        inithold();
         initData();
 
         return viewContent;
     }
-private void inithold(){
-    new Thread(new Runnable() {
-        @Override
-        public void run() {
-            String domain = Constant.BASE_URL + Constant.TICKER;
-            String params = Constant.OPER + "=" +
-                    Constant.TICK_HOLD + "&" + Constant.LOGIN_TOKEN + "=" + token + "&" + Constant.TID + "=" + "2016120217541";
-            String json = GetSession.post(domain, params);
-            Log.i("---inithold---", json);
-            if (!json.equals("+ER+")){
-                try {
-                    JSONObject jsonObject = new JSONObject(json);
-                    String result = jsonObject.getString("result");
-                    Message message = handler.obtainMessage();
-                    message.obj = result;
-                    if (result.equals("fail")){
-                        message.what=TICKHOLDFAIL;
-                    }else if(result.equals("succ")){
-                        message.what=TICKHOLDSUCC;
-                    }else {
-                        message.what=TICKHOLDOTHERS;
 
+    private void inithold(final String tid) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String domain = Constant.BASE_URL + Constant.TICKER;
+                String params = Constant.OPER + "=" +
+                        Constant.TICK_HOLD + "&" + Constant.LOGIN_TOKEN + "=" + token + "&" + Constant.TID + "=" + tid;
+                String json = GetSession.post(domain, params);
+                Log.i("---inithold---", json);
+                if (!json.equals("+ER+")) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(json);
+                        String result = jsonObject.getString("result");
+                        Message message = handler.obtainMessage();
+                        message.obj = result;
+                        if (result.equals("fail")) {
+                            message.what = TICKHOLDFAIL;
+                        } else if (result.equals("succ")) {
+                            message.what = TICKHOLDSUCC;
+                        } else {
+                            message.what = TICKHOLDOTHERS;
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
+
             }
+        }).start();
 
-        }
-    }).start();
+    }
 
-}
     private void initData() {
         new Thread(new Runnable() {
             @Override
@@ -141,7 +144,7 @@ private void inithold(){
                             String name = jsonObject.getString("NAME");
                             String tick = jsonObject.getString("TICK");
                             int i_status = jsonObject.getInt("I_STATUS");
-                            String s_status=jsonObject.getString("S_STATUS");
+                            String s_status = jsonObject.getString("S_STATUS");
                             String dis_dtm = jsonObject.getString("DIS_DTM");
                             String die_man = jsonObject.getString("DIS_MAN");
                             int i_rank = jsonObject.getInt("I_RANK");
@@ -170,7 +173,7 @@ private void inithold(){
                         bean.setDatas(mlist);
                         Message message = new Message();
                         message.obj = bean;
-                        message.what=LOADDATA;
+                        message.what = LOADDATA;
                         handler.sendMessage(message);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -193,29 +196,45 @@ private void inithold(){
         orderReceiver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+Intent intent=new Intent();
 
-    }
-});
+
+            }
+        });
 
     }
 
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case LOADDATA:
-                    TickSelfBean obj = (TickSelfBean) msg.obj;
-                    adapter = new OrderUndoneAdapter(getContext(), obj);
+                    final TickSelfBean obj = (TickSelfBean) msg.obj;
+
+                    adapter = new OrderUndoneAdapter(getContext(), obj){
+                        @Override
+                        public void onBindViewHolder(final OrderUndoneTextViewHolder holder, int position) {
+                            Log.i("----handler onclick","123444444"+holder.order_numer.getTag());
+                            holder.btn_accept.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+//                                    inithold();
+                                    Log.i("----handler onclick","123444444"+holder.order_numer.getTag());
+                                }
+                            });
+                            super.onBindViewHolder(holder, position);
+                        }
+                    };
                     orderReceiver.setAdapter(adapter);
-break;
+                    break;
                 case TICKHOLDFAIL:
                     Toast.makeText(getActivity(), "很遗憾 接单失败", Toast.LENGTH_LONG).show();
                     break;
                 case TICKHOLDSUCC:
-                    Toast.makeText(getActivity(),"恭喜您登录成功",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "恭喜您登录成功", Toast.LENGTH_LONG).show();
                     break;
-                case  TICKHOLDOTHERS:
-                    Toast.makeText(getActivity(),"很遗憾 出错了",Toast.LENGTH_LONG).show();
+                case TICKHOLDOTHERS:
+                    Toast.makeText(getActivity(), "很遗憾 出错了", Toast.LENGTH_LONG).show();
                     break;
             }
             super.handleMessage(msg);

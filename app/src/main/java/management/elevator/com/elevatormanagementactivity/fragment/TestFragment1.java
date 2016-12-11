@@ -48,8 +48,8 @@ public class TestFragment1 extends Fragment implements TabLayout.OnTabSelectedLi
         }
         tab_essence.setOnTabSelectedListener(this);
         fragments.add(new ContentFragment());
-        fragments.add(new TestFragment2());
-        fragments.add(new TestFragment2());
+        fragments.add(new TickHistoryFragment());
+        fragments.add(new TickCorpFragment());
         viewPagerApapter = new MyViewPagerApapter(getActivity().getSupportFragmentManager(), titles, fragments);
         vp_essence.setAdapter(viewPagerApapter);
         tab_essence.setupWithViewPager(vp_essence);

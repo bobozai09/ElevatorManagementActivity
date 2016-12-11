@@ -26,7 +26,7 @@ import management.elevator.com.elevatormanagementactivity.widget.Constant;
  * Created by Administrator on 2016/11/30 0030.
  */
 
-public class OrderUndoneAdapter extends RecyclerView.Adapter<OrderUndoneAdapter.OrderUndoneTextViewHolder> {
+public class OrderUndoneAdapter extends RecyclerView.Adapter<OrderUndoneAdapter.OrderUndoneTextViewHolder>{
     TickSelfBean.Data data;
 
     private LayoutInflater mlayoutInflater;
@@ -53,7 +53,7 @@ return  new OrderUndoneTextViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(OrderUndoneTextViewHolder holder, int position) {
+    public void onBindViewHolder(final OrderUndoneTextViewHolder holder, int position) {
         data = mlist.get(position);
         final String token=Constant.TOKEN;
         for (int i=0;i<mlist.size();i++){
@@ -78,19 +78,6 @@ return  new OrderUndoneTextViewHolder(view);
                 public void onClick(View v) {
                     Log.i("orderundoneadapter",tid);
                     Log.i("orderundoneadaptertoken",token);
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            String domain = Constant.BASE_URL + Constant.TICKER;
-//                            String params = Constant.OPER + "=" +
-//                                    Constant.TICK_HOLD + "&" + Constant.LOGIN_TOKEN + "=" + token + "&" + Constant.TID+"="+tid;
-//                            String json = GetSession.post(domain, params);
-//                            if (!json.equals("+ER+")){
-//
-//
-//                            }
-//                        }
-//                    }).start();
                 }
             });
         }
@@ -104,7 +91,7 @@ return  new OrderUndoneTextViewHolder(view);
         return mlist.size();
     }
 
-    public static class OrderUndoneTextViewHolder extends RecyclerView.ViewHolder {
+    public static class OrderUndoneTextViewHolder extends RecyclerView.ViewHolder{
         public TextView order_numer, status, is_receiver, order_message, sendtime, sendpersomeone, sendaddress;
         public TextView order_type;
         public Button btn_accept, btn_refrush;
@@ -135,13 +122,8 @@ return  new OrderUndoneTextViewHolder(view);
 //            });
 
         }
-//        @Override
-//        public void onClick(View v) {
-//            switch (v.getId()){
-//
-//
-//            }
-//        }
+
+
     }
     private  void  TickHole(final  String token,final String tid){
         Log.i("---tickhole","");
@@ -160,4 +142,5 @@ return  new OrderUndoneTextViewHolder(view);
         }).start();
 
     }
+
 }
