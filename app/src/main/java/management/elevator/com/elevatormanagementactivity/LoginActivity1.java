@@ -105,6 +105,8 @@ public class LoginActivity1 extends AppCompatActivity implements View.OnClickLis
         tintManager.setTintColor(Color.parseColor("#9900FF"));
         etEmail = (EditText) findViewById(R.id.et_email);
         etPassword = (EditText) findViewById(R.id.et_password);
+        etEmail.setText("18382086980");
+        etPassword.setText("123456");
         Button button = (Button) findViewById(R.id.login_in_button);
         button.setOnClickListener(this);
         mForgetPass = (TextView) findViewById(R.id.tx_forget_password);

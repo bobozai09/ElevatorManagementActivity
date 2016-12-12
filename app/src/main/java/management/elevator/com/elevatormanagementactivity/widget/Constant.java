@@ -20,6 +20,7 @@ public class Constant {
     public static List<String> HttpSetCookies	= null;
     public static String AUTH="auth";
     public static String TID="tid";
+    public static String REASON="reason";
     public  static  String TOKEN=null;
     //当前工单
     public  static String TICK_SELF="tick-self";
@@ -31,6 +32,14 @@ public class Constant {
      * 单位工单拦接
      */
     public  static String TICK_HOLD="tick-hold";
+    /**
+     * 当前工单拒接
+     */
+    public  static String TICK_REJECT="tick-reject";
+    /**
+     * 当前工单接单
+     */
+    public  static  String TICK_RECEIVE="tick-receive";
     /**
      * 接口地址
      */
