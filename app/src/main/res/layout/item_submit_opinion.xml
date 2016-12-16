@@ -1,40 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<LinearLayout
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <TextView
-        android:layout_width="wrap_content"
-        android:text="提交意见："
-        android:layout_height="wrap_content" />
-    <EditText
-        android:layout_marginRight="@dimen/activity_20dp"
-        android:gravity="left|top"
-        android:hint="请提出您的宝贵"
-        android:layout_width="300dp"
-        android:layout_height="150dp" />
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-</LinearLayout>
     <LinearLayout
-        android:layout_marginTop="@dimen/activity_15dp"
-        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/activity_horizontal_margin">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="提交意见：" />
+
+        <EditText
+android:id="@+id/txt_yijian"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginRight="@dimen/activity_20dp"
+            android:gravity="left|top"
+            android:hint="请输入意见内容"
+            android:maxLines="3" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_8dp"
+        android:background="@drawable/dotted_line_gray">
+
+        <ImageView
+            android:id="@+id/img_takephoto"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/ic_launcher" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_15dp"
+        android:gravity="center">
         <Button
-            android:text="接单"
+            android:id="@+id/btn_wanjiguidang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
             android:background="@drawable/order_status_shape"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:text="完结归档" />
+
         <Button
-            android:text="拒绝"
-            android:layout_marginLeft="5dp"
-            android:background="@drawable/order_status_shape"
+            android:id="@+id/btn_tick_new"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/order_status_shape"
+            android:text="拍照" />
+        <ImageView
+            android:id="@+id/img_show"
+
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
     </LinearLayout>
+
 </LinearLayout>

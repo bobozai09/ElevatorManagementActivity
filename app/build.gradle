@@ -42,5 +42,8 @@ dependencies {
     compile'com.github.xiangtailiang.tablayout:library:1.0.0'
 //    compile 'com.amap.api:location:2.6.0+'
     compile files('libs/AMap_Location_V3.1.0_20161027.jar')
+    compile 'wang.raye.preioc:preioccore:1.0.6'
+//    compile 'com.jph.takephoto:takephoto_library:4.0.2'
+    compile 'com.jph.takephoto:takephoto_library:2.0.4'
 
 }

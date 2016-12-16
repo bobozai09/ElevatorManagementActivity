@@ -30,4 +30,6 @@
     <dimen name="margin_left">15dp</dimen>
     <dimen name="margin_right">15dp</dimen>
     <dimen name="margin_middle">2dp</dimen>
+    <dimen name="margin_1dp">1dp</dimen>
+    <dimen name="margin_3dp">3dp</dimen>
 </resources>

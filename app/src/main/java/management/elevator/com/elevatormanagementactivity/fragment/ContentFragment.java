@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SyncStatusObserver;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,28 +16,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.BreakIterator;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 import butterknife.ButterKnife;
 import management.elevator.com.elevatormanagementactivity.R;
 import management.elevator.com.elevatormanagementactivity.activity.Order_SpecificMessageActivity;
 import management.elevator.com.elevatormanagementactivity.adapter.OrderUndoneAdapter;
 import management.elevator.com.elevatormanagementactivity.bean.TickSelfBean;
-import management.elevator.com.elevatormanagementactivity.utils.GetMD5;
 import management.elevator.com.elevatormanagementactivity.utils.GetSession;
 import management.elevator.com.elevatormanagementactivity.widget.Constant;
 import management.elevator.com.elevatormanagementactivity.widget.SpaceItemDecoration;
@@ -207,7 +199,6 @@ public class ContentFragment extends Fragment {
         });
 
     }
-
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -235,9 +226,9 @@ public class ContentFragment extends Fragment {
                                                     JSONObject jsonObject = new JSONObject(json);
                                                     String result = jsonObject.getString("result");
                                                     Message message = handler.obtainMessage();
+                                                    message.obj = result;
                                                     if (result.equals("succ")) {
                                                         message.what = TICKHOLDSUCC;
-                                                        notifyItemChanged(position);
                                                     } else {
                                                         message.what = TICKHOLDFAIL;
                                                     }
@@ -250,69 +241,31 @@ public class ContentFragment extends Fragment {
                                     }).start();
                                 }
                             });
-                            if(holder.btn_refrush.getText().equals("拒绝")){
-                                holder.btn_refrush.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                             final EditText dialogview;
-                                             AlertDialog.Builder dialog=new AlertDialog.Builder(getActivity());
-                                             LayoutInflater inflater= (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                                             LinearLayout layout= (LinearLayout) inflater.inflate(R.layout.dialogview,null);
-                                             dialog.setView(layout);
-                                             dialogview= (EditText) layout.findViewById(R.id.et_dialog_message);
-                                             dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                                 @Override
-                                                 public void onClick(DialogInterface dialog, int which) {
-                                                     final String message=dialogview.getText().toString();
-                                                     if (message.length()<4){
-                                                         Toast.makeText(getActivity(),"拒接理由不得少于4字",Toast.LENGTH_SHORT).show();
-                                                     }else{
-                                                       new Thread(new Runnable() {
-                                                           @Override
-                                                           public void run() {
-                                                               String tid = holder.order_numer.getText().toString();
-                                                               String domain = Constant.BASE_URL + Constant.TICKER;
-                                                               String params = Constant.OPER + "=" +
-                                                                       Constant.TICK_REJECT+ "&" + Constant.LOGIN_TOKEN + "=" + token + "&" + Constant.TID + "=" + tid+"&"+Constant.REASON+"="+message;
-                                                               String json=GetSession.post(domain,params);
-                                                               if (!json.equals("+ER+")){
-                                                                   try {
-                                                                       JSONObject jsonObject=new JSONObject(json);
-                                                                   } catch (JSONException e) {
-                                                                       e.printStackTrace();
-                                                                   }
-                                                               }
-                                                           }
-                                                       }).start();
-                                                     }
-                                                 }
-                                             });
-                                             dialog.setNegativeButton("", new DialogInterface.OnClickListener() {
-                                                 @Override
-                                                 public void onClick(DialogInterface dialog, int which) {
-                                                     dialog.dismiss();
-                                                 }
-                                             });
-                                        dialog.show();
-                                         }
-
-
+                            holder.btn_refrush.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (holder.btn_refrush.getText().toString().equals("查看")) {
+                                        String tid = holder.order_numer.getText().toString();
+                                        Intent intent = new Intent();
+                                        intent.putExtra("TID", tid);
+                                        intent.setClass(getActivity(), Order_SpecificMessageActivity.class);
+                                        startActivity(intent);
+                                    }
                                 }
-                                    );
-                            }else if(holder.btn_refrush.getText().equals("处理")) {
-
-                            }
-
+                            });
                             super.onBindViewHolder(holder, position);
                         }
                     };
                     orderReceiver.setAdapter(adapter);
                     break;
                 case TICKHOLDFAIL:
+                    String error = (String) msg.obj;
+                    Log.i("handler", "" + error);
                     Toast.makeText(getActivity(), "很遗憾 接单失败", Toast.LENGTH_LONG).show();
                     break;
                 case TICKHOLDSUCC:
-
+                    String succ = (String) msg.obj;
+                    Log.i("handler", "" + succ);
                     Toast.makeText(getActivity(), "恭喜您接单成功", Toast.LENGTH_LONG).show();
                     break;
                 case TICKHOLDOTHERS:
@@ -324,30 +277,31 @@ public class ContentFragment extends Fragment {
 
         }
     };
-public  void showDialog(final String text){
-    final EditText dialogview;
-    AlertDialog.Builder dialog=new AlertDialog.Builder(getActivity());
-    LayoutInflater inflater= (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    LinearLayout layout= (LinearLayout) inflater.inflate(R.layout.dialogview,null);
-    dialog.setView(layout);
-    dialogview= (EditText) layout.findViewById(R.id.et_dialog_message);
-    dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            String message=dialogview.getText().toString();
-            if (message.length()<4){
-                Toast.makeText(getActivity(),"拒接理由不得少于4字",Toast.LENGTH_SHORT).show();
-            }else{
-message=text;
-            }
-        }
-    });
-    dialog.setNegativeButton("", new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            dialog.dismiss();
-        }
-    });
 
-}
+    public void showDialog(final String text) {
+        final EditText dialogview;
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialogview, null);
+        dialog.setView(layout);
+        dialogview = (EditText) layout.findViewById(R.id.et_dialog_message);
+        dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String message = dialogview.getText().toString();
+                if (message.length() < 4) {
+                    Toast.makeText(getActivity(), "拒接理由不得少于4字", Toast.LENGTH_SHORT).show();
+                } else {
+                    message = text;
+                }
+            }
+        });
+        dialog.setNegativeButton("", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+    }
 }

@@ -21,6 +21,8 @@ public class Constant {
     public static String AUTH="auth";
     public static String TID="tid";
     public static String REASON="reason";
+    public static String INF="inf";
+    public static String PHOTO="photo";
     public  static  String TOKEN=null;
     //当前工单
     public  static String TICK_SELF="tick-self";
@@ -63,5 +65,16 @@ public class Constant {
  *   http://www.sptesyun.com/main.jsp
  *
  */
-
+/**
+ * 当前工单详情
+ */
+    public static String TICK_VIEW="tick-view";
+    /***
+     * 当前工单流程列表
+     */
+    public static String TICK_FLOW="tick-flow";
+    /**
+     * 工单流程提交
+     */
+    public static String TICK_NEW_FLOW="tick-new-flow";
 }

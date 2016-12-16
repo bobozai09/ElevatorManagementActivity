@@ -85,6 +85,7 @@ public class OrderUndoneAdapter extends RecyclerView.Adapter<OrderUndoneAdapter.
             holder.sendtime.setText("派单时间：" + data.getDIS_DTM());
             holder.order_type.setText("故障类型： " + data.getTYPE());
             holder.sendpersomeone.setText("派 单 人：" + data.getDIS_MAN());
+
         }
 
 //// TODO: 2016/12/7 0007
