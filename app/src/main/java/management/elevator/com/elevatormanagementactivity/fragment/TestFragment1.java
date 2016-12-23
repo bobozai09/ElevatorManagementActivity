@@ -1,73 +1,99 @@
 package management.elevator.com.elevatormanagementactivity.fragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.flyco.tablayout.SlidingTabLayout;
+import com.flyco.tablayout.listener.OnTabSelectListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
 
 import management.elevator.com.elevatormanagementactivity.R;
-import management.elevator.com.elevatormanagementactivity.adapter.MyViewPagerApapter;
+import management.elevator.com.elevatormanagementactivity.utils.ViewFindUtils;
 
 /**
  * Created by janiszhang on 2016/6/10.
  */
 
-public class TestFragment1 extends Fragment implements TabLayout.OnTabSelectedListener {
-
-    private View viewContent;
-    private TabLayout tab_essence;
-    private ViewPager vp_essence;
-    private MyViewPagerApapter viewPagerApapter;
-    private String[] titles = new String[]{"未完成工单", "历史工单", "单位工单"};
-    private List<Fragment> fragments = new ArrayList<>();
+public class TestFragment1 extends Fragment {
+    TabLayout tabLayout;
+    ViewPager viewPager;
+    private final String[] mTitles = new String[]{"未完成工单", "历史工单", "单位工单"};
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_test, container, false);
-        init(view);
+viewPager= (ViewPager) view.findViewById(R.id.viewPager_1);
+        tabLayout= (TabLayout) view.findViewById(R.id.tabLayout_1);
+        viewPager.setAdapter(new CustomAdapter(getActivity().getSupportFragmentManager(),getActivity().getApplicationContext()));
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+        });
+//        viewPager.setOffscreenPageLimit(2);
         return view;
     }
 
-    private void init(View viewContent) {
-        tab_essence = (TabLayout) viewContent.findViewById(R.id.tab_essence);
-        vp_essence = (ViewPager) viewContent.findViewById(R.id.vp_essence);
-        tab_essence.setTabMode(TabLayout.MODE_FIXED);
-        for (String tab : titles) {
-            tab_essence.addTab(tab_essence.newTab().setText(tab));
+
+
+
+
+    private class CustomAdapter extends FragmentPagerAdapter {
+
+        private String fragments [] = {"未完成工单", "历史工单", "单位工单"};
+
+        public CustomAdapter(FragmentManager supportFragmentManager, Context applicationContext) {
+            super(supportFragmentManager);
         }
-        tab_essence.setOnTabSelectedListener(this);
-        fragments.add(new ContentFragment());
-        fragments.add(new TickHistoryFragment());
-        fragments.add(new TickCorpFragment());
-        viewPagerApapter = new MyViewPagerApapter(getActivity().getSupportFragmentManager(), titles, fragments);
-        vp_essence.setAdapter(viewPagerApapter);
-        tab_essence.setupWithViewPager(vp_essence);
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position){
+                case 0:
+                    return new ContentFragment();
+                case 1:
+                    return new TickHistoryFragment();
+                case 2:
+                    return  new TickCorpFragment();
+                default:
+                    return null;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return fragments.length;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return fragments[position];
+        }
     }
-
-    @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-        vp_essence.setCurrentItem(tab.getPosition());
-    }
-
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-
-    }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
-
-    }
-
 }

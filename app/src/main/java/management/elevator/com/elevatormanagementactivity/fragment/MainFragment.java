@@ -32,8 +32,8 @@ public class MainFragment extends Fragment {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
     public void  initConnentView(View viewContent){
-        this.tab_essence = (TabLayout) viewContent.findViewById(R.id.tab_essence);
-        this.vp_essence = (ViewPager) viewContent.findViewById(R.id.vp_essence);
+//        this.tab_essence = (TabLayout) viewContent.findViewById(R.id.tab_essence);
+//        this.vp_essence = (ViewPager) viewContent.findViewById(R.id.vp_essence);
 
 
     }

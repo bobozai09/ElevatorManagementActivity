@@ -40,10 +40,8 @@ import management.elevator.com.elevatormanagementactivity.widget.SpaceItemDecora
  */
 
 public class ContentFragment extends Fragment {
-
+    private String mTitle1;
     private OrderUndoneAdapter adapter;
-    //    String[] number = {"工单编号：0122334455555", "工单编号：0122334455555"};
-//    String[] status = {"紧急", "重要"};
     private View viewContent;
     private int mType = 0;
     private String mTitle;
@@ -57,9 +55,7 @@ public class ContentFragment extends Fragment {
     private static final int TICKHOLDFAIL = 100;
     private static final int TICKHOLDSUCC = 101;
     private static final int TICKHOLDOTHERS = 102;
-
-    //    private static final int TICKRECEIVERSCCESS = 103;
-//    private static final int TICKRECEIVERFAIL = 103;
+    private static String refushreason = null;
     public void setType(int mType) {
         this.mType = mType;
     }
@@ -67,8 +63,6 @@ public class ContentFragment extends Fragment {
     public void setTitle(String mTitle) {
         this.mTitle = mTitle;
     }
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -83,7 +77,13 @@ public class ContentFragment extends Fragment {
 
         return viewContent;
     }
+public static ContentFragment getInstance(String title){
 
+    ContentFragment cf=new ContentFragment();
+    cf.mTitle1=title;
+    return cf;
+
+}
     private void inithold(final String tid) {
         new Thread(new Runnable() {
             @Override
@@ -194,10 +194,8 @@ public class ContentFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent();
 
-
             }
         });
-
     }
     private Handler handler = new Handler() {
         @Override
@@ -250,7 +248,32 @@ public class ContentFragment extends Fragment {
                                         intent.putExtra("TID", tid);
                                         intent.setClass(getActivity(), Order_SpecificMessageActivity.class);
                                         startActivity(intent);
+                                    }else if(holder.btn_refrush.getText().toString().equals("拒绝")){
+                                        final EditText dialogview;
+                                        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+                                        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialogview, null);
+                                        dialog.setView(layout);
+                                        dialogview = (EditText) layout.findViewById(R.id.et_dialog_message);
+                                        dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                String message = dialogview.getText().toString();
+                                                if (message.length() < 4) {
+                                                    Toast.makeText(getActivity(), "拒接理由不得少于4字", Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    message = refushreason;
+                                                }
+                                            }
+                                        });
+                                        dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
                                     }
+
                                 }
                             });
                             super.onBindViewHolder(holder, position);

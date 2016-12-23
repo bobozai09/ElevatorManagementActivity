@@ -36,8 +36,23 @@ android:id="@+id/txt_yijian"
         android:background="@drawable/dotted_line_gray">
 
         <ImageView
+            android:layout_weight="1"
             android:id="@+id/img_takephoto"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/ic_launcher" />
+        <ImageView
+            android:layout_marginRight="@dimen/activity_10dp"
+            android:layout_weight="1"
+            android:id="@+id/img_takephoto2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/ic_launcher" />
+        <ImageView
+            android:layout_marginRight="@dimen/activity_10dp"
+            android:layout_weight="1"
+            android:id="@+id/img_takephoto3"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@mipmap/ic_launcher" />
 

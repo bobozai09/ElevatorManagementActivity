@@ -26,10 +26,13 @@ public class Constant {
     public  static  String TOKEN=null;
     //当前工单
     public  static String TICK_SELF="tick-self";
+    //工单结单提交
+    public  static String TICK_DONE="tick-done";
     //历史工单
     public  static String TICK_HIST="tick-hist";
     //单位工单
     public  static String TICK_CORP="tick-corp";
+
     /***
      * 单位工单拦接
      */
@@ -57,6 +60,7 @@ public class Constant {
     public static String INFO="/api/info.json";
     public static  String TICKER="/api/ticket.json";
     public static String LOCATION_IME="357748051865320";
+    public static String DEVLIFT="/api/devlift.json";
 
 /**
  * svn address
@@ -77,4 +81,11 @@ public class Constant {
      * 工单流程提交
      */
     public static String TICK_NEW_FLOW="tick-new-flow";
+    public  static String URL=BASE_URL + TICKER;
+    public static String DEVLIFTURL=BASE_URL+DEVLIFT;
+    /**
+     * 设备
+     */
+    public static String LIFT_NUM="lift-num";
+    public static String LIFT_LIST="lift-list";
 }

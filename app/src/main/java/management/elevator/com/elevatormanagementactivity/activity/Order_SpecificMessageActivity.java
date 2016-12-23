@@ -41,6 +41,7 @@ import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
+import java.security.PublicKey;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -98,19 +99,24 @@ public class Order_SpecificMessageActivity extends TakePhotoActivity implements 
     TextView txtLmtTime;
     @BindById(R.id.btn_tick_new)
     Button btn_takephoto;
+    @BindById(R.id.img_takephoto2)
+    ImageView img_takephoto2;
+    @BindById(R.id.img_takephoto3)
+    ImageView img_takephoto3;
     @BindById(R.id.img_takephoto)
     ImageView img_takephoto;
+
     @BindById(R.id.btn_wanjiguidang)
     Button wanjieguidang;
     //    @BindById(R.id.img_show)
 //    ImageView show;
-   private  String imgString;
+    private String imgString;
     @BindById(R.id.txt_yijian)
     EditText yijian;
     private UnderLineLinearLayout mUnderLinelayout;
     int i = 0;
     ImageView backImageview;
-    Button add_btn;
+
     LinearLayout line_order_status;
     private File file;
     public static final int REQUEST_CODE_CAMERA = 10;
@@ -119,7 +125,7 @@ public class Order_SpecificMessageActivity extends TakePhotoActivity implements 
     TickFlowBean bean_of_flow;
     private static final int LOADDATA = 101;
     private static final int LOADTICKHIST = 102;
-    private static final int TICKHISTVIEW=103;
+    private static final int TICKHISTVIEW = 103;
     private static final String FILE_PATH = "/sdcard/syscamera.jpg";
     ImageView show;
     private static String encodeString = null;
@@ -135,6 +141,7 @@ public class Order_SpecificMessageActivity extends TakePhotoActivity implements 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_specimessage);
         PreIOC.binder(this);
+
         init();
         initData();
         initTickFlow();
@@ -143,8 +150,6 @@ public class Order_SpecificMessageActivity extends TakePhotoActivity implements 
     private void init() {
         backImageview = (ImageView) findViewById(R.id.img_back);
         backImageview.setOnClickListener(this);
-        add_btn = (Button) findViewById(R.id.additem);
-        add_btn.setOnClickListener(this);
         mUnderLinelayout = (UnderLineLinearLayout) findViewById(R.id.underline_order_message);
         line_order_status = (LinearLayout) findViewById(R.id.line_order_status);
         line_order_status.setVisibility(View.GONE);
@@ -152,6 +157,8 @@ public class Order_SpecificMessageActivity extends TakePhotoActivity implements 
         btn_takephoto.setOnClickListener(this);
         wanjieguidang.setOnClickListener(this);
         show = (ImageView) findViewById(R.id.img_show);
+        img_takephoto2.setOnClickListener(this);
+        img_takephoto3.setOnClickListener(this);
     }
 
     private void initTickFlow() {
@@ -159,7 +166,7 @@ public class Order_SpecificMessageActivity extends TakePhotoActivity implements 
             @Override
             public void run() {
                 String domain = Constant.BASE_URL + Constant.TICKER;
-                final String tid = intent.getStringExtra("TID");
+                final  String tid = intent.getStringExtra("TID");
                 final String token = Constant.TOKEN;
                 String params = Constant.OPER + "=" +
                         Constant.TICK_FLOW + "&" + Constant.LOGIN_TOKEN + "=" + token + "&" + Constant.TID + "=" + tid;
@@ -286,11 +293,13 @@ public class Order_SpecificMessageActivity extends TakePhotoActivity implements 
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case TICKHISTVIEW:
-                    String result= (String) msg.obj;
-                    if (result.equals("succ")){
-//                        Toast.makeText(getApplicationContext(),"",Toast.makeText())
+                    String result = (String) msg.obj;
+                    if (result.equals("succ")) {
+                      Toast.makeText(getApplicationContext(),"工单提交成功！",Toast.LENGTH_LONG).show();
+                        yijian.setText("");
 
-
+                    }else {
+                        Toast.makeText(getApplicationContext(),"",Toast.LENGTH_LONG).show();
                     }
                     break;
                 case LOADDATA:
@@ -309,6 +318,7 @@ public class Order_SpecificMessageActivity extends TakePhotoActivity implements 
                     break;
                 case LOADTICKHIST:
                     final TickFlowBean obj_hist = (TickFlowBean) msg.obj;
+                    Log.i("data",obj_hist.toString());
                     for (int i = 0; i < obj_hist.getDatas().size(); i++) {
                         View v = LayoutInflater.from(getApplicationContext()).inflate(R.layout.item_vertical, mUnderLinelayout, false);
                         ((TextView) v.findViewById(R.id.tx_action)).setText("" + obj_hist.getDatas().get(i).getINF());
@@ -323,23 +333,11 @@ public class Order_SpecificMessageActivity extends TakePhotoActivity implements 
         }
     };
 
-    private void addItem() {
-//        View v = LayoutInflater.from(this).inflate(R.layout.item_vertical, mUnderLinelayout, false);
-//        ((TextView) v.findViewById(R.id.tx_action)).setText("" + i);
-//        ((TextView) v.findViewById(R.id.tx_action_time)).setText("2016-12-01");
-//        ((TextView) v.findViewById(R.id.tx_action_status)).setText("finish");
-//        mUnderLinelayout.addView(v);
-//        i++;
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.img_back:
                 finish();
-                break;
-            case R.id.additem:
-                addItem();
                 break;
             case R.id.btn_tick_new:
                 takepic();
@@ -356,6 +354,12 @@ public class Order_SpecificMessageActivity extends TakePhotoActivity implements 
                 }
                 submitArchive(text);
                 break;
+//            case R.id.img_takephoto2:
+//                takepic();
+//                break;
+//            case  R.id.img_takephoto3:
+//                takepic();
+//                break;
             default:
                 break;
 
@@ -366,9 +370,9 @@ public class Order_SpecificMessageActivity extends TakePhotoActivity implements 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String p="data:image/jpg;base64,"+imgString;
+                String p = "data:image/jpg;base64," + encodeString;
                 try {
-                    p = URLEncoder.encode(p,"UTF-8");
+                    p = URLEncoder.encode(p, "UTF-8");
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
@@ -376,27 +380,22 @@ public class Order_SpecificMessageActivity extends TakePhotoActivity implements 
                 final String tid = intent.getStringExtra("TID");
                 final String token = Constant.TOKEN;
                 String params = Constant.OPER + "=" +
-                        Constant.TICK_NEW_FLOW + "&" + Constant.LOGIN_TOKEN + "=" + token + "&" + Constant.TID + "=" + tid + "&" + Constant.INF + "=" + word +"&"+ Constant.PHOTO + "=" + p;
-
+                        Constant.TICK_NEW_FLOW + "&" + Constant.LOGIN_TOKEN + "=" + token + "&" + Constant.TID + "=" + tid + "&" + Constant.INF + "=" + word + "&" + Constant.PHOTO + "=" + p;
                 String json = GetSession.post(domain, params);
                 if (!json.equals("+ER+")) {
                     try {
                         JSONObject jsonObject = new JSONObject(json);
                         String result = jsonObject.getString("result");
-Message message=new Message();
-                        message.obj=result;
-                        message.what=TICKHISTVIEW;
+                        Message message = new Message();
+                        message.obj = result;
+                        message.what = TICKHISTVIEW;
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
             }
         }).start();
-
-
     }
-
     public void takepic() {
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
         Date date = new Date(System.currentTimeMillis());
@@ -411,7 +410,6 @@ Message message=new Message();
             outputImage.createNewFile();
             mImagePath = path + "/" + mfilename + ".jpg";
             Log.d("data", "mImagePath=" + mImagePath);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -419,82 +417,24 @@ Message message=new Message();
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
         startActivityForResult(intent, 0);
-//        Intent intent = null;
-//        intent = new Intent();
-//        intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-//        intent.addCategory(Intent.CATEGORY_DEFAULT);
-//        File file = new File(FILE_PATH);
-//        if (file.exists()) {
-//            file.delete();
-//        }
-//        Uri uri = Uri.fromFile(file);
-//        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-//        startActivityForResult(intent, 0);
-
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK) {
-
             return;
         }
         if (requestCode == 0) {
-//            File file = new File(FILE_PATH);
-//            Uri uri = Uri.fromFile(file);
-//            img_takephoto.setImageURI(uri);
-//            try {
-//                String[] projection = {MediaStore.Images.Media.DATA};
-//                CursorLoader cursorloader = new CursorLoader(this, uri, projection, null, null, null);
-//                Cursor curson = cursorloader.loadInBackground();
-//                int column_inde = curson.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-//                curson.moveToFirst();
-//                String path = curson.getString(column_inde);
-//                encode(path);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
             try {
                 mBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(mImageUri));
                 img_takephoto.setImageBitmap(mBitmap);
                 encodeString = ImageUtils.bitmapToString(mImagePath);
-//             URLEncoder.encode(encodeString,"UTF-8");
-//                imgString = Base64.encodeToString(encodeString.getBytes(),Base64.NO_WRAP);
-
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-// else if (requestCode == 1) {
-//            Log.i("order", "默认content地址：" + data.getData());
-//            Bundle bundle = data.getExtras();
-//            Bitmap bitmap = (Bitmap) bundle.get("data");
-//            img_takephoto.setImageBitmap(bitmap);
-//            show.setImageURI(data.getData());
-//        }
-
-
-    }
-
-    private void encode666(String path) throws UnsupportedEncodingException {
-        Bitmap bitmap = BitmapFactory.decodeFile(path);
-        Log.d("main", "bitmap width: " + bitmap.getWidth() + " height: " + bitmap.getHeight());
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] bytes = baos.toByteArray();
-
-        //base64 encode
-        byte[] encode = Base64.encode(bytes, Base64.DEFAULT);
-
-       encodeString = new String(encode);
-
-        java.net.URLEncoder.encode(encodeString,"UTF-8");
-        Log.i("base64", "" + encodeString);
-
-
     }
 }

@@ -5,11 +5,13 @@
     android:layout_height="wrap_content">
 
     <RelativeLayout
+
         android:background="@color/color_login_btn"
         android:layout_width="match_parent"
         android:layout_height="50dp">
 
         <ImageView
+          android:padding="@dimen/activity_8dp"
             android:id="@+id/img_scan"
             android:layout_marginLeft="8dp"
             android:src="@mipmap/scan_item"
@@ -17,6 +19,7 @@
             android:layout_height="wrap_content" />
 
         <ImageView
+            android:padding="@dimen/activity_8dp"
             android:id="@+id/img_message_center"
             android:layout_marginRight="@dimen/activity_8dp"
             android:layout_alignParentRight="true"
