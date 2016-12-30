@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,16 +29,19 @@ import java.util.List;
 import butterknife.ButterKnife;
 
 import management.elevator.com.elevatormanagementactivity.R;
+import management.elevator.com.elevatormanagementactivity.activity.TickHistViewActivity;
+import management.elevator.com.elevatormanagementactivity.activity.TransctionActivity;
 import management.elevator.com.elevatormanagementactivity.adapter.RecycleAdapter;
 import management.elevator.com.elevatormanagementactivity.widget.RecycleViewDivider;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
+import wang.raye.preioc.annotation.BindById;
 
 /**
  *
  */
-public class FragmentCommon extends Fragment implements  EasyPermissions.PermissionCallbacks {
+public class FragmentCommon extends Fragment implements EasyPermissions.PermissionCallbacks {
 
     private RecycleAdapter recycleAdapter;
     private RecyclerView recyclerView;
@@ -52,64 +56,90 @@ public class FragmentCommon extends Fragment implements  EasyPermissions.Permiss
             R.mipmap.fault_total, R.mipmap.message_center, R.mipmap.knowlege_center,
             R.mipmap.my_contas, R.mipmap.news_center, R.mipmap.my_report};
     RecycleAdapter adapter;
-    public static FragmentCommon newInstance(String text){
-        FragmentCommon fragmentCommon=new FragmentCommon();
-        Bundle bundle=new Bundle();
-        bundle.putString("text",text);
+
+    public static FragmentCommon newInstance(String text) {
+        FragmentCommon fragmentCommon = new FragmentCommon();
+        Bundle bundle = new Bundle();
+        bundle.putString("text", text);
         fragmentCommon.setArguments(bundle);
         return fragmentCommon;
     }
-    @Nullable @Override
+
+    @Nullable
+    @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_common,container,false);
+        View view = inflater.inflate(R.layout.fragment_common, container, false);
         ButterKnife.bind(getActivity());
         ZXingLibrary.initDisplayOpinion(getActivity());
-        recyclerView= (RecyclerView) view.findViewById(R.id.recycleview);
-        img_MessageCenter= (ImageView) view.findViewById(R.id.img_message_center);
-        img_Scan= (ImageView) view.findViewById(R.id.img_scan);
-        searchInbox= (EditText) view.findViewById(R.id.search_box);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
+        img_MessageCenter = (ImageView) view.findViewById(R.id.img_message_center);
+        img_Scan = (ImageView) view.findViewById(R.id.img_scan);
+        searchInbox = (EditText) view.findViewById(R.id.search_box);
 
 
-      initTitle();
-     initView();
-     initData();
+        initTitle();
+        initView();
+        initData();
         return view;
     }
+
     private void initView() {
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         recyclerView.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayout.HORIZONTAL));
-       recyclerView.addItemDecoration(new RecycleViewDivider(getActivity(),LinearLayout.VERTICAL));
+        recyclerView.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayout.VERTICAL));
 
-        recycleAdapter = new RecycleAdapter(bean,image);
+        recycleAdapter = new RecycleAdapter(bean, image);
         recyclerView.setAdapter(recycleAdapter);
         recycleAdapter.seOnItemClickListener(new RecycleAdapter.onRecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, String data) {
 
-                int position=recyclerView.getChildAdapterPosition(view);
+                int position = recyclerView.getChildAdapterPosition(view);
+                switch (position) {
+                    case 0:
+                        toInient(0);
+                        break;
+                    default:
+                        break;
 
-                Toast.makeText(getActivity(),position+"122121",Toast.LENGTH_SHORT).show();
+
+                }
+
             }
         });
 
     }
+
+    private void toInient(int number) {
+        switch (number) {
+            case 0:
+                Intent intent = new Intent();
+                intent.setClass(getContext(), TransctionActivity.class);
+                startActivity(intent);
+                break;
+        }
+    }
+
     private void initTitle() {
         setSearchIcon();
         img_Scan.setOnClickListener(new FragmentCommon.ButtonOnclickListener(img_Scan.getId()));
     }
+
     private void initData() {
         for (int i = 0; i < bean.length; i++) {
-            data.add(""+i);
+            data.add("" + i);
 
 
         }
     }
+
     private void setSearchIcon() {
         Drawable drawable = getResources().getDrawable(R.drawable.img_search);
         drawable.setBounds(10, 10, 1 * (drawable.getMinimumWidth()) / 2, 1 * (drawable.getMinimumHeight()) / 2);
         searchInbox.setCompoundDrawables(drawable, null, null, null);
     }
+
     @Override
     public void onPermissionsGranted(int requestCode, List<String> perms) {
         Toast.makeText(getActivity(), "执行onPermissionsGranted()...", Toast.LENGTH_SHORT).show();
@@ -124,6 +154,7 @@ public class FragmentCommon extends Fragment implements  EasyPermissions.Permiss
 
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -159,6 +190,7 @@ public class FragmentCommon extends Fragment implements  EasyPermissions.Permiss
             }
         }
     }
+
     private void onClick(int buttonId) {
         switch (buttonId) {
             case R.id.img_scan:
@@ -171,6 +203,7 @@ public class FragmentCommon extends Fragment implements  EasyPermissions.Permiss
 
 
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         /**

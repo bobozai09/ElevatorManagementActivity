@@ -24,9 +24,9 @@ import static android.support.v7.widget.RecyclerView.*;
  * Created by Administrator on 2016/12/21 0021.
  */
 
-public class TickHistoryAdapter extends RecyclerView.Adapter<TickHistoryAdapter.TickHistoryTextViewHolder> {
+public class TickHistoryAdapter extends RecyclerView.Adapter<TickHistoryAdapter.TickHistoryTextViewHolder> implements View.OnClickListener {
     TickHistoryBean.Data data;
-
+    private RecycleAdapter.onRecycleViewItemClickListener myOnItemClickListener=null;
     private LayoutInflater mlayoutInflater;
     private Context mContext;
     SharedPreferences sp;
@@ -41,10 +41,14 @@ public class TickHistoryAdapter extends RecyclerView.Adapter<TickHistoryAdapter.
         this(context);
         mlist.addAll(obj.getDatas());
     }
+    public static interface onRecycleViewItemClickListener{
+        void onItemClick(View view,String data);
 
+    }
     @Override
     public TickHistoryAdapter.TickHistoryTextViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mlayoutInflater.inflate(R.layout.item_order_message, parent, false);
+        view.setOnClickListener(this);
         return new TickHistoryAdapter.TickHistoryTextViewHolder(view);
     }
 
@@ -70,6 +74,17 @@ public class TickHistoryAdapter extends RecyclerView.Adapter<TickHistoryAdapter.
         return mlist.size();
     }
 
+    @Override
+    public void onClick(View v) {
+        if (myOnItemClickListener!=null){
+            myOnItemClickListener.onItemClick(v,(String) v.getTag());
+        }
+    }
+    public void seOnItemClickListener(RecycleAdapter.onRecycleViewItemClickListener listener){
+        this.myOnItemClickListener=listener;
+
+
+    }
     public static class TickHistoryTextViewHolder extends RecyclerView.ViewHolder {
         public TextView order_numer, status, is_receiver, order_message, sendtime, sendpersomeone, sendaddress, order_sendaddress;
         public TextView order_type;

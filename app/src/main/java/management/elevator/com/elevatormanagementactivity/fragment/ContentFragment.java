@@ -16,9 +16,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.flyco.tablayout.widget.MsgView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,12 +37,18 @@ import management.elevator.com.elevatormanagementactivity.bean.TickSelfBean;
 import management.elevator.com.elevatormanagementactivity.utils.GetSession;
 import management.elevator.com.elevatormanagementactivity.widget.Constant;
 import management.elevator.com.elevatormanagementactivity.widget.SpaceItemDecoration;
+import wang.raye.preioc.PreIOC;
+import wang.raye.preioc.annotation.BindById;
 
 /**
  * Created by janiszhang on 2016/6/6.
  */
 
 public class ContentFragment extends Fragment {
+    @BindById(R.id.viewstub_one)
+    ViewStub viewstubOne;
+    @BindById(R.id.rec_order)
+    RecyclerView recOrder;
     private String mTitle1;
     private OrderUndoneAdapter adapter;
     private View viewContent;
@@ -55,7 +64,10 @@ public class ContentFragment extends Fragment {
     private static final int TICKHOLDFAIL = 100;
     private static final int TICKHOLDSUCC = 101;
     private static final int TICKHOLDOTHERS = 102;
+    private static final int NODATASHOW = 110;
     private static String refushreason = null;
+
+
     public void setType(int mType) {
         this.mType = mType;
     }
@@ -63,6 +75,7 @@ public class ContentFragment extends Fragment {
     public void setTitle(String mTitle) {
         this.mTitle = mTitle;
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -74,16 +87,18 @@ public class ContentFragment extends Fragment {
         token = sp.getString(Constant.LOGIN_TOKEN, "");
         init(viewContent);
         initData();
-
+        PreIOC.binder(this, viewContent);
         return viewContent;
     }
-public static ContentFragment getInstance(String title){
 
-    ContentFragment cf=new ContentFragment();
-    cf.mTitle1=title;
-    return cf;
+    public static ContentFragment getInstance(String title) {
 
-}
+        ContentFragment cf = new ContentFragment();
+        cf.mTitle1 = title;
+        return cf;
+
+    }
+
     private void inithold(final String tid) {
         new Thread(new Runnable() {
             @Override
@@ -127,6 +142,11 @@ public static ContentFragment getInstance(String title){
                 String json = GetSession.post(domain, params);
                 Log.i("---contentfragment---", json);
                 if (!json.equals("+ER+")) {
+                    if (json.equals("[]")) {
+                        Message message = new Message();
+                        message.what = NODATASHOW;
+                        handler.sendMessage(message);
+                    }
                     try {
                         ArrayList<TickSelfBean.Data> mlist = new ArrayList<TickSelfBean.Data>();
                         TickSelfBean.Data data;
@@ -175,6 +195,7 @@ public static ContentFragment getInstance(String title){
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
                 }
             }
         }).start();
@@ -197,6 +218,7 @@ public static ContentFragment getInstance(String title){
             }
         });
     }
+
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -248,7 +270,7 @@ public static ContentFragment getInstance(String title){
                                         intent.putExtra("TID", tid);
                                         intent.setClass(getActivity(), Order_SpecificMessageActivity.class);
                                         startActivity(intent);
-                                    }else if(holder.btn_refrush.getText().toString().equals("拒绝")){
+                                    } else if (holder.btn_refrush.getText().toString().equals("拒绝")) {
                                         final EditText dialogview;
                                         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                                         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -294,6 +316,15 @@ public static ContentFragment getInstance(String title){
                 case TICKHOLDOTHERS:
                     Toast.makeText(getActivity(), "很遗憾 出错了", Toast.LENGTH_LONG).show();
                     break;
+                case NODATASHOW:
+                    try {
+                        viewstubOne.inflate();
+                    } catch (Exception e) {
+
+                        viewstubOne.setVisibility(View.VISIBLE);
+                    }
+
+                    break;
             }
             super.handleMessage(msg);
 
@@ -326,5 +357,11 @@ public static ContentFragment getInstance(String title){
             }
         });
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        PreIOC.unBinder(this);
     }
 }

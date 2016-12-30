@@ -67,6 +67,10 @@
         <activity android:name=".BaseActivity"/>
         <activity android:name=".HorizontalActivity"/>
         <activity android:name=".FoundPasswordActivity"></activity>
+        <activity android:name=".activity.maintenance.CellMessageActivity"/>
+        <activity android:name=".activity.TickHistViewActivity"/>
+        <activity android:name=".activity.TransctionActivity"/>
+        <activity android:name=".activity.maintenance.ElevatorMaintenanceActivity"/>
         <!--<activity android:name=".MyLocationAndMapActivity"/>-->
         <activity android:name=".CheckPermissionActivity"/>
 <activity android:name=".activity.Order_SpecificMessageActivity"/>

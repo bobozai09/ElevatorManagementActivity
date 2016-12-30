@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="tranction_title">
+        <item>值班签到</item>
+        <item>我的工作</item>
+        <item>电梯维保</item>
+        <item>终端维护</item>
+        <item>小区巡查</item>
+        <item>维保确认</item>
+    </string-array>
+    <string-array name="tranction_introdu">
+        <item>个人签到足迹，提高团队执行力</item>
+        <item>便捷安排记录个人工作，定时提醒</item>
+        <item>请保养人员按时保养电梯</item>
+        <item>请维护人员按时维护电梯终端</item>
+        <item>午夜单位人员小区巡查记录查询</item>
+        <item>物业单位确认电梯保养单</item>
+    </string-array>
+
+
+</resources>

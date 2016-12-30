@@ -2,15 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<!--<TextView-->
-    <!--android:id="@+id/tv_context"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:textSize="30sp"-->
-    <!--android:gravity="center"-->
-    <!--android:textColor="@color/essence_tab_text_color_press"-->
-
-    <!--/>-->
+<include layout="@layout/activity_default_inflated_start"/>
 
    <android.support.v7.widget.RecyclerView
 
@@ -19,17 +11,5 @@
        android:layout_height="match_parent">
 
    </android.support.v7.widget.RecyclerView>
-   <LinearLayout
-       android:id="@+id/line_no_data_show"
-       android:visibility="gone"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
-      <TextView
-      android:gravity="center"
-          android:text="暂无历史工单"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent" />
 
-
-   </LinearLayout>
 </FrameLayout>

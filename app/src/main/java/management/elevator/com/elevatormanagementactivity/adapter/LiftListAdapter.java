@@ -3,6 +3,7 @@ package management.elevator.com.elevatormanagementactivity.adapter;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,9 +51,15 @@ public class LiftListAdapter extends RecyclerView.Adapter<LiftListAdapter.LiftLi
     @Override
     public void onBindViewHolder(final LiftListViewHolder holder, int position) {
         data = mlist.get(position);
+        Log.i("data====>", "" + data);
         for (int i = 0; i < mlist.size(); i++) {
+
             holder.text_sn.setText("" + data.getSN());
             holder.text_dev_status.setText("" + data.getSTATUS());
+//            if (holder.text_dev_status.getText().equals("")){
+//            }else  {
+//
+//            }
             holder.text_l_area.setText("" + data.getL_AREA());
             holder.text_l_park.setText("" + data.getL_PARK());
             holder.text_mc_info.setText("" + data.getMC_INFO());
@@ -66,7 +73,7 @@ public class LiftListAdapter extends RecyclerView.Adapter<LiftListAdapter.LiftLi
 
     public static class LiftListViewHolder extends RecyclerView.ViewHolder {
         public TextView text_mc_info, text_l_park, text_l_area, text_dev_status, text_sn;
-
+        public LinearLayout line_left_status;
         public LiftListViewHolder(View itemView) {
             super(itemView);
             text_sn = ButterKnife.findById(itemView, R.id.text_sn);
@@ -74,7 +81,7 @@ public class LiftListAdapter extends RecyclerView.Adapter<LiftListAdapter.LiftLi
             text_l_area = ButterKnife.findById(itemView, R.id.text_l_area);
             text_l_park = ButterKnife.findById(itemView, R.id.text_l_park);
             text_mc_info = ButterKnife.findById(itemView, R.id.text_mc_info);
-
+            line_left_status = ButterKnife.findById(itemView, R.id.line_left_status);
         }
     }
 }

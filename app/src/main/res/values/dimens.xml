@@ -9,6 +9,7 @@
     <dimen name="activity_15dp">15dp</dimen>
     <dimen name="title_text_size">15sp</dimen>
     <dimen name="city_name_size">20sp</dimen>
+    <dimen name="activity_23dp">23dp</dimen>
     <dimen name="city_size_size">12sp</dimen>
     <dimen name="city_progress_size">11sp</dimen>
     <dimen name="normal_margin">10dp</dimen>
@@ -32,4 +33,5 @@
     <dimen name="margin_middle">2dp</dimen>
     <dimen name="margin_1dp">1dp</dimen>
     <dimen name="margin_3dp">3dp</dimen>
+    <dimen name="activity_38dp">38dp</dimen>
 </resources>

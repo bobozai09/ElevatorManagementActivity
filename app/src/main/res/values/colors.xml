@@ -32,5 +32,7 @@
     <color name="main_bottom_text_normal">#ff847d7b</color>
     <color name="main_botton_text_select">#ff333333</color>
     <color name="item_color">#FFF7F7F7</color>
-
+    <color name="color_gray">#EEEEEE</color>
+    <color name="color_white">#FFFFFFFF</color>
+<color name="color_text_color_teansaction">#FF111111</color>
 </resources>

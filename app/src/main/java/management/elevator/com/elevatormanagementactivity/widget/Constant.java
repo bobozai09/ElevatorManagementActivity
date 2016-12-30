@@ -45,10 +45,21 @@ public class Constant {
      * 当前工单接单
      */
     public  static  String TICK_RECEIVE="tick-receive";
-    /**
+
+
+     /**
+     *
      * 接口地址
      */
     public  static String BASE_URL="http://m.sptesyun.com:9002";
+    /**
+     * 历史工单详情
+     **/
+    public static String TICK_HIST_VIEW="tick-hist-view";
+    /***
+     * 历史工单流程列表
+     */
+    public static String TICK_HIST_FLOW="tick-hist-flow";
     /**
      * 账号登录
      */
@@ -83,9 +94,37 @@ public class Constant {
     public static String TICK_NEW_FLOW="tick-new-flow";
     public  static String URL=BASE_URL + TICKER;
     public static String DEVLIFTURL=BASE_URL+DEVLIFT;
+
     /**
      * 设备
      */
     public static String LIFT_NUM="lift-num";
     public static String LIFT_LIST="lift-list";
+
+/***
+ * 我的事务
+ */
+   public  static String DEVMCJSON="/api/devmc.json";
+/***
+ * 设备维护 电梯或中断待保养数量
+ */
+    public  static String MC_BADGE_NUM="mc-badge-num";
+
+
+    public  static String URL_TRANSCTION=BASE_URL+DEVMCJSON;
+/**
+ * 获取小区列表
+ */
+    public static String PARK_LIST="park-list";
+    /**
+     * 获取小区所属设备列表
+     */
+    public  static String PARK_DEV_LIST="park-dev-list";
+    public static String SPE="spe";
+    public static String ID="id";
+    /***
+     * 一般常量
+     */
+    public  static int LIFT_MC_NUM;
+    public static int ICCM_MC_NUM;
 }

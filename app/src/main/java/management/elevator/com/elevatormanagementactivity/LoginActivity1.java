@@ -38,6 +38,8 @@ import java.util.List;
 
 import java.util.logging.LogRecord;
 import android.content.SharedPreferences.Editor;
+
+import management.elevator.com.elevatormanagementactivity.activity.TransctionActivity;
 import management.elevator.com.elevatormanagementactivity.broadcast.BroadcastManager;
 import management.elevator.com.elevatormanagementactivity.fragment.*;
 import management.elevator.com.elevatormanagementactivity.utils.GetMD5;
@@ -61,6 +63,7 @@ public class LoginActivity1 extends AppCompatActivity implements View.OnClickLis
     private SharedPreferences sp;
     private static final int RETRIVE = 1;
     private static final int LOADSUCCESS = 2;
+    private static final  int NONETWORK=110;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -77,6 +80,11 @@ public class LoginActivity1 extends AppCompatActivity implements View.OnClickLis
                     editor.commit();
                     Constant.TOKEN=success;
                     IntentFoundPassword(2);
+                    break;
+                case NONETWORK:
+                    Toast.makeText(getApplicationContext(),"请检查网络并尝试再次连接",Toast.LENGTH_LONG).show();
+                    break;
+                default:
                     break;
             }
             super.handleMessage(msg);
@@ -118,9 +126,7 @@ public class LoginActivity1 extends AppCompatActivity implements View.OnClickLis
         if (v.getId() == R.id.login_in_button) {
             tryLogin();
         } else if (v.getId() == R.id.tx_forget_password) {
-
             IntentFoundPassword(1);
-
         }
     }
 
@@ -166,8 +172,16 @@ public class LoginActivity1 extends AppCompatActivity implements View.OnClickLis
                 Log.i("", domain);
                 Log.i("", params);
                 Log.i("---login---", json);
+                if (json.equals("+ER+")){
+                    Message message=new Message();
+                    message.what=NONETWORK;
+                    handler.sendMessage(message);
+                }
                 if (!json.equals("+ER+")) {
+
                     try {
+
+
                         JSONObject jsonObject = new JSONObject(json);
                         String result = jsonObject.getString("result");
                         String reason = jsonObject.getString("reason");

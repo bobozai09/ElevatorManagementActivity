@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?><!--电梯详情title-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="@dimen/activity_15dp"
-    android:layout_marginRight="@dimen/activity_15dp"
-    android:layout_marginTop="@dimen/activity_15dp"
+    android:layout_height="wrap_content"
+
     android:orientation="vertical">
 
     <LinearLayout
+
+        android:layout_marginLeft="@dimen/activity_15dp"
+        android:layout_marginRight="@dimen/activity_15dp"
+        android:layout_marginTop="@dimen/activity_15dp"
+        android:background="@drawable/dotted_layout_gray"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/line_left_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/detail_bg"
@@ -37,7 +45,7 @@
                 android:layout_height="match_parent"
 
                 android:gravity="center"
-                android:text="zhengchagn" />
+                android:text="" />
         </LinearLayout>
     </LinearLayout>
 
@@ -48,21 +56,19 @@
         android:layout_marginRight="@dimen/activity_45dp"
         android:layout_marginTop="@dimen/activity_15dp"
         android:orientation="horizontal">
-
         <TextView
+            android:id="@+id/text_l_area"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-android:id="@+id/text_l_area"
             android:text="重庆市江北区星光路3号11号" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
-
             android:gravity="center|right">
 
             <ImageView
+                android:visibility="gone"
                 android:layout_width="20dp"
                 android:layout_height="25dp"
                 android:layout_marginRight="@dimen/activity_30dp"
@@ -106,11 +112,11 @@ android:id="@+id/text_l_area"
         android:background="@color/grgray" />
 
     <LinearLayout
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_15dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -131,6 +137,7 @@ android:id="@+id/text_l_area"
         </LinearLayout>
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -147,5 +154,5 @@ android:id="@+id/text_l_area"
             android:text="海王星科技大厦一栋2单元3号楼" />
 
     </LinearLayout>
-
+    </LinearLayout>
 </LinearLayout>

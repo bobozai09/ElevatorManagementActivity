@@ -1,18 +1,19 @@
 package management.elevator.com.elevatormanagementactivity.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,17 +23,21 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import management.elevator.com.elevatormanagementactivity.R;
+import management.elevator.com.elevatormanagementactivity.activity.TickHistViewActivity;
+import management.elevator.com.elevatormanagementactivity.adapter.RecycleAdapter;
 import management.elevator.com.elevatormanagementactivity.adapter.TickHistoryAdapter;
 import management.elevator.com.elevatormanagementactivity.bean.TickHistoryBean;
 import management.elevator.com.elevatormanagementactivity.utils.GetSession;
 import management.elevator.com.elevatormanagementactivity.widget.Constant;
-import management.elevator.com.elevatormanagementactivity.widget.SpaceItemDecoration;
+import wang.raye.preioc.PreIOC;
+import wang.raye.preioc.annotation.BindById;
 
 /**
  * Created by Administrator on 2016/12/8 0008.
  */
 
 public class TickHistoryFragment extends Fragment {
+    private static final int NODATASHOW = 110;
     private static final int TICKHISTDATA = 100;
     RecyclerView recyclerView;
     SharedPreferences sp;
@@ -40,6 +45,10 @@ public class TickHistoryFragment extends Fragment {
     TickHistoryBean bean;
     TickHistoryBean.Data Data;
     TickHistoryAdapter adapter;
+    @BindById(R.id.viewstub_one)
+    ViewStub viewstubOne;
+    @BindById(R.id.rec_order)
+    RecyclerView recOrder;
     private int mType = 1;
     private String mTitle;
     private View viewContent;
@@ -52,11 +61,30 @@ public class TickHistoryFragment extends Fragment {
                     final TickHistoryBean obj = (TickHistoryBean) msg.obj;
                     adapter = new TickHistoryAdapter(getContext(), obj) {
                         @Override
-                        public void onBindViewHolder(TickHistoryTextViewHolder holder, int position) {
+                        public void onBindViewHolder(final TickHistoryTextViewHolder holder, int position) {
+
                             super.onBindViewHolder(holder, position);
+                            adapter.seOnItemClickListener(new RecycleAdapter.onRecycleViewItemClickListener() {
+                                @Override
+                                public void onItemClick(View view, String data) {
+                                    String tid = holder.order_numer.getText().toString();
+                                    Intent intent = new Intent();
+                                    intent.putExtra("ID", tid);
+                                    intent.setClass(getActivity(), TickHistViewActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
                         }
                     };
                     recyclerView.setAdapter(adapter);
+                    break;
+                case NODATASHOW:
+                    try {
+                        viewstubOne.inflate();
+                    } catch (Exception e) {
+                        viewstubOne.setVisibility(View.VISIBLE);
+                    }
+
                     break;
                 default:
                     break;
@@ -85,6 +113,7 @@ public class TickHistoryFragment extends Fragment {
 //        init();
         initView(viewContent);
         initData();
+        PreIOC.binder(this, viewContent);
         return viewContent;
     }
 
@@ -93,7 +122,7 @@ public class TickHistoryFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
-    private void  init(){
+    private void init() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -101,9 +130,9 @@ public class TickHistoryFragment extends Fragment {
 //                String params = Constant.OPER + "=" +
 //                        "lift-num" + "&" + Constant.LOGIN_TOKEN + "=" + token ;
                 String params = Constant.OPER + "=" +
-                        "lift-list" + "&" + Constant.LOGIN_TOKEN + "=" + token +"&p=1";
+                        "lift-list" + "&" + Constant.LOGIN_TOKEN + "=" + token + "&p=1";
                 String json = GetSession.post(domain, params);
-                if (!json.equals("+ER+")){
+                if (!json.equals("+ER+")) {
 
 
                 }
@@ -112,6 +141,7 @@ public class TickHistoryFragment extends Fragment {
 
 
     }
+
     private void initData() {
         new Thread(new Runnable() {
             @Override
@@ -119,11 +149,14 @@ public class TickHistoryFragment extends Fragment {
                 String domain = Constant.URL;
                 String params = Constant.OPER + "=" +
                         Constant.TICK_HIST + "&" + Constant.LOGIN_TOKEN + "=" + token + "&" + "p=1" + "&m=12";
-//                        Constant.TICK_DONE + "&" + Constant.LOGIN_TOKEN + "=" + token + "&" + "p=1"+"&"+"m=12";
-//                        Constant.TICK_DONE + "&" + Constant.LOGIN_TOKEN + "=" + token + "&" + Constant.TID+"="+"2016120217541";
                 String json = GetSession.post(domain, params);
                 if (!json.equals("+ER+")) {
                     try {
+                        if (json.equals("[]")) {
+                            Message message = new Message();
+                            message.what = NODATASHOW;
+                            handler.sendMessage(message);
+                        }
                         ArrayList<TickHistoryBean.Data> mlist = new ArrayList<TickHistoryBean.Data>();
                         TickHistoryBean.Data data;
                         bean = new TickHistoryBean();
@@ -175,5 +208,11 @@ public class TickHistoryFragment extends Fragment {
             }
         }).start();
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        PreIOC.unBinder(this);
     }
 }

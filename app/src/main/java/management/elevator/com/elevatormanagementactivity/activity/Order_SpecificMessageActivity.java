@@ -116,7 +116,6 @@ public class Order_SpecificMessageActivity extends TakePhotoActivity implements 
     private UnderLineLinearLayout mUnderLinelayout;
     int i = 0;
     ImageView backImageview;
-
     LinearLayout line_order_status;
     private File file;
     public static final int REQUEST_CODE_CAMERA = 10;
@@ -354,12 +353,6 @@ public class Order_SpecificMessageActivity extends TakePhotoActivity implements 
                 }
                 submitArchive(text);
                 break;
-//            case R.id.img_takephoto2:
-//                takepic();
-//                break;
-//            case  R.id.img_takephoto3:
-//                takepic();
-//                break;
             default:
                 break;
 
