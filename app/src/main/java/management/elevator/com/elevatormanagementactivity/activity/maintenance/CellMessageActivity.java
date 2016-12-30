@@ -9,7 +9,15 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 import management.elevator.com.elevatormanagementactivity.R;
+import management.elevator.com.elevatormanagementactivity.bean.CellListBean;
+import management.elevator.com.elevatormanagementactivity.bean.RetParkBean;
 import management.elevator.com.elevatormanagementactivity.utils.GetSession;
 import management.elevator.com.elevatormanagementactivity.widget.Constant;
 import wang.raye.preioc.PreIOC;
@@ -27,8 +35,11 @@ public class CellMessageActivity extends AppCompatActivity {
     TextView texTitle;
     @BindById(R.id.rec_ele_main)
     RecyclerView recEleMain;
-String token;
+    String token;
+    CellListBean bean;
+    CellListBean.Data data;
     Intent intent;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,26 +49,41 @@ String token;
         recEleMain.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         initData(0);
     }
-    private void initData(final int number){
+
+    private void initData(final int number) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                intent=getIntent();
-                String id=intent.getStringExtra("ID");
+                intent = getIntent();
+                String id = intent.getStringExtra("ID");
                 token = Constant.TOKEN;
                 String domain = Constant.URL_TRANSCTION;
                 String params = Constant.OPER + "=" +
-                        Constant.PARK_DEV_LIST + "&" + Constant.LOGIN_TOKEN + "=" + token + "&" + Constant.SPE + "=" + number+"&"+Constant.ID+"="+id;
+                        Constant.PARK_DEV_LIST + "&" + Constant.LOGIN_TOKEN + "=" + token + "&" + Constant.SPE + "=" + number + "&" + Constant.ID + "=" + id;
                 String json = GetSession.post(domain, params);
-                if (!json.equals("+ER+")){
+                if (!json.equals("+ER+")) {
+                    ArrayList<CellListBean.Data> mlist = new ArrayList<CellListBean.Data>();
+                    data = new CellListBean.Data();
+                    try {
+                        bean = new CellListBean();
+                        JSONArray jsonArray = new JSONArray(json);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            data.setID(jsonObject.getInt("ID"));
+                            data.setDESC(jsonObject.getString("DESC"));
+                            data.setLOCAL(jsonObject.getString("LOCAL"));
+                            mlist.add(data);
+                        }
+                        bean.setDatas(mlist);
 
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
 
                 }
             }
         }).start();
-
-
 
 
     }
