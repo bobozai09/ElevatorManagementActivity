@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mingle.widget.ShapeLoadingDialog;
 import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.listeners.ActionClickListener;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
@@ -37,6 +38,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 import java.util.logging.LogRecord;
+
 import android.content.SharedPreferences.Editor;
 
 import management.elevator.com.elevatormanagementactivity.activity.TransctionActivity;
@@ -53,17 +55,17 @@ import okhttp3.Cookie;
  * Created by Administrator on 2016/11/17 0017.
  */
 
-public class LoginActivity1 extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity1 extends BaseActivity implements View.OnClickListener {
     private EditText etEmail;
     private EditText etPassword;
     TextView mForgetPass;
-
+    Button button;
     private static Context context;
-
+    private ShapeLoadingDialog shapeLoadingDialog;
     private SharedPreferences sp;
     private static final int RETRIVE = 1;
     private static final int LOADSUCCESS = 2;
-    private static final  int NONETWORK=110;
+    private static final int NONETWORK = 110;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -75,14 +77,17 @@ public class LoginActivity1 extends AppCompatActivity implements View.OnClickLis
                 case LOADSUCCESS:
                     String success = (String) msg.obj;
                     Toast.makeText(getApplicationContext(), "恭喜您登录成功", Toast.LENGTH_LONG).show();
-                   Editor editor=sp.edit();
-                    editor.putString(Constant.LOGIN_TOKEN,success);
-                    editor.commit();
-                    Constant.TOKEN=success;
                     IntentFoundPassword(2);
+                    Editor editor = sp.edit();
+                    editor.putString(Constant.LOGIN_TOKEN, success);
+                    editor.commit();
+                    Constant.TOKEN = success;
+                    getMemessage(success);
+                    button.setEnabled(true);
                     break;
                 case NONETWORK:
-                    Toast.makeText(getApplicationContext(),"请检查网络并尝试再次连接",Toast.LENGTH_LONG).show();
+                    button.setEnabled(true);
+                    Toast.makeText(getApplicationContext(), "请检查网络并尝试再次连接", Toast.LENGTH_LONG).show();
                     break;
                 default:
                     break;
@@ -91,23 +96,14 @@ public class LoginActivity1 extends AppCompatActivity implements View.OnClickLis
         }
     };
 
-    private void showSnackbar(String showText) {
-        SnackbarManager.show(com.nispok.snackbar.Snackbar.with(getApplicationContext()).text(showText).textColor(Color.GREEN).color(Color.BLUE).actionLabel("action").actionListener(new ActionClickListener() {
-            @Override
-            public void onActionClicked(com.nispok.snackbar.Snackbar snackbar) {
-
-            }
-        }), this);
-
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login1);
+        shapeLoadingDialog = new ShapeLoadingDialog(this);
         SystemBarTintManager tintManager = new SystemBarTintManager(this);
-        sp=getSharedPreferences("userinfo",context.MODE_PRIVATE);
+        sp = getSharedPreferences("userinfo", context.MODE_PRIVATE);
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setNavigationBarTintEnabled(true);
         tintManager.setTintColor(Color.parseColor("#9900FF"));
@@ -115,7 +111,7 @@ public class LoginActivity1 extends AppCompatActivity implements View.OnClickLis
         etPassword = (EditText) findViewById(R.id.et_password);
         etEmail.setText("18382086980");
         etPassword.setText("123456");
-        Button button = (Button) findViewById(R.id.login_in_button);
+        button = (Button) findViewById(R.id.login_in_button);
         button.setOnClickListener(this);
         mForgetPass = (TextView) findViewById(R.id.tx_forget_password);
         mForgetPass.setOnClickListener(this);
@@ -123,10 +119,15 @@ public class LoginActivity1 extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.login_in_button) {
-            tryLogin();
-        } else if (v.getId() == R.id.tx_forget_password) {
-            IntentFoundPassword(1);
+        switch (v.getId()) {
+            case R.id.login_in_button:
+                button.setEnabled(false);
+                tryLogin();
+
+                break;
+            case R.id.tx_forget_password:
+                IntentFoundPassword(1);
+                break;
         }
     }
 
@@ -134,31 +135,64 @@ public class LoginActivity1 extends AppCompatActivity implements View.OnClickLis
         String email = String.valueOf(etEmail.getText()).trim();
         String password = String.valueOf(etPassword.getText()).trim();
         login(email, password);
-//        if(check(email, password)){
-//            markUserLogin();
-//            notifyUserLogin();
-//            finish();
+    }
+
+//    boolean check(String email, String password) {
+//        if (TextUtils.isEmpty(email)) {
+//            etEmail.setError(getString(R.string.error_invalid_email));
+//            return false;
 //        }
-    }
+//        if (TextUtils.isEmpty(password)) {
+//            etPassword.setError(getString(R.string.error_invalid_password));
+//            return false;
+//        }
+//        return true;
+//    }
+//
+//    private void markUserLogin() {
+//        SharedPrefUtils.login(this);
+//    }
+//
+//    private void notifyUserLogin() {
+//        BroadcastManager.sendLoginBroadcast(this, 1);
+//    }
 
-    boolean check(String email, String password) {
-        if (TextUtils.isEmpty(email)) {
-            etEmail.setError(getString(R.string.error_invalid_email));
-            return false;
-        }
-        if (TextUtils.isEmpty(password)) {
-            etPassword.setError(getString(R.string.error_invalid_password));
-            return false;
-        }
-        return true;
-    }
+    private void getMemessage(final String gettoken) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String domain = Constant.BASE_URL + Constant.INFO;
+                String params = "oper=" +
+                        Constant.AUTH + "&" + Constant.LOGIN_TOKEN + "=" + gettoken;
+                String json = GetSession.post(domain, params);
+                if (!json.equals("json")) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(json);
+                        int id = jsonObject.getInt("ID");
+                        String username = jsonObject.getString("USERNAME");
+                        String NAME = jsonObject.getString("NAME");
+                        String HEAD = jsonObject.getString("HEAD");
+                        String CORP_NAME = jsonObject.getString("CORP_NAME");
+                        String DEPT_NAME = jsonObject.getString("DEPT_NAME");
+                        String DUTY_NAME = jsonObject.getString("DUTY_NAME");
+                        String ROLE_NAME = jsonObject.getString("ROLE_NAME");
+                        Constant.LOGIN_USERID = id;
+                        Constant.LOGIN_USERNAME = username;
+                        Constant.LOGINNAME = NAME;
+                        Constant.HEAD = HEAD;
+                        Constant.CORP_NAME = CORP_NAME;
+                        Constant.DEPT_NAME = DEPT_NAME;
+                        Constant.DUTY_NAME = DUTY_NAME;
+                        Constant.ROLE_NAME = ROLE_NAME;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
-    private void markUserLogin() {
-        SharedPrefUtils.login(this);
-    }
 
-    private void notifyUserLogin() {
-        BroadcastManager.sendLoginBroadcast(this, 1);
+                }
+            }
+        }).start();
+
     }
 
     private void login(final String uname, final String password) {
@@ -169,19 +203,15 @@ public class LoginActivity1 extends AppCompatActivity implements View.OnClickLis
                 String params = "oper=" +
                         Constant.LOGIN_INFO + "&" + Constant.USERNAME + "=" + uname + "&" + Constant.PASSWORD + "=" + GetMD5.string2MD5(uname + password) + "&" + Constant.DEVICESID + "=" + Constant.LOCATION_IME;
                 String json = GetSession.post(domain, params);
-                Log.i("", domain);
-                Log.i("", params);
+//                Log.i("", domain);
+//                Log.i("", params);
                 Log.i("---login---", json);
-                if (json.equals("+ER+")){
-                    Message message=new Message();
-                    message.what=NONETWORK;
+                if (json.equals("+ER+")) {
+                    Message message = new Message();
+                    message.what = NONETWORK;
                     handler.sendMessage(message);
-                }
-                if (!json.equals("+ER+")) {
-
+                } else if (!json.equals("+ER+")) {
                     try {
-
-
                         JSONObject jsonObject = new JSONObject(json);
                         String result = jsonObject.getString("result");
                         String reason = jsonObject.getString("reason");
@@ -199,64 +229,26 @@ public class LoginActivity1 extends AppCompatActivity implements View.OnClickLis
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                } else {
-                    try {
-                        JSONObject jsonObject = new JSONObject(json);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
         }).start();
     }
 
-    private void getauth(final String token) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String domain = Constant.BASE_URL + Constant.INFO;
-                String params = "oper=" +
-                        Constant.AUTH + "&" + Constant.LOGIN_TOKEN + token;
-                String json = GetSession.post(domain, params);
-                if (!json.equals("+ER+")) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(json);
-//                        String
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            }
-        }).start();
-
-
-    }
 
     private void IntentFoundPassword(int person) {
-
         Intent intent = new Intent();
         if (person == 1) {
             intent.setClass(LoginActivity1.this, FoundPasswordActivity.class);
+            startActivity(intent);
         } else if (person == 2) {
+            shapeLoadingDialog.setLoadingText("加载中....");
+            shapeLoadingDialog.show();
             intent.setClass(LoginActivity1.this, management.elevator.com.elevatormanagementactivity.fragment.MainActivity.class);
+            startActivity(intent);
+            finish();
         }
-        startActivity(intent);
+
     }
 
-    @TargetApi(19)
-    private void setTranslucentstatus(boolean on) {
-        Window win = getWindow();
-        WindowManager.LayoutParams winparams = win.getAttributes();
-        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-        if (on) {
-            winparams.flags |= bits;
 
-        } else {
-            winparams.flags &= ~bits;
-
-
-        }
-        win.setAttributes(winparams);
-    }
 }

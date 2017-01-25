@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         mTableItemList.add(new TabItem(R.drawable.main_gray,R.drawable.main_blue,R.string.main, FragmentCommon.class));
         mTableItemList.add(new TabItem(R.drawable.order_gray,R.drawable.order_blue,R.string.order, TestFragment1.class));
         mTableItemList.add(new TabItem(R.drawable.equipment_gray,R.drawable.equipment_blue,R.string.equipment, TestFragment3.class));
-        mTableItemList.add(new TabItem(R.drawable.myself_gray,R.drawable.myself_blue,R.string.myself, TestFragment3.class));
+        mTableItemList.add(new TabItem(R.drawable.myself_gray,R.drawable.myself_blue,R.string.myself, SettingFragment.class));
     }
 
     //初始化选项卡视图

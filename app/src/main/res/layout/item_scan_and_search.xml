@@ -28,14 +28,18 @@
             android:layout_height="wrap_content" />
 
         <EditText
+            android:gravity="start|center_vertical"
+            android:layout_weight="1"
             android:id="@+id/search_box"
             android:drawableLeft="@drawable/img_search"
             android:hint="搜索"
+            android:singleLine="true"
+            android:imeOptions="actionSearch"
             android:layout_marginRight="@dimen/activity_8dp"
             android:layout_marginLeft="@dimen/activity_8dp"
             android:layout_toLeftOf="@+id/img_message_center"
             android:layout_toRightOf="@+id/img_scan"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:background="@drawable/main_searchbox_shape"
             android:layout_height="match_parent" />
 

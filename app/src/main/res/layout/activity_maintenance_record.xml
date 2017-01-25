@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/item_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rec_main_record"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+
+            </android.support.v7.widget.RecyclerView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/activity_100dp">
+
+                <EditText
+                    android:id="@+id/edittext_messge"
+                  android:hint="请输入你的意见建议："
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+         android:layout_height="@dimen/activity_100dp">
+                <ImageView
+                    android:layout_weight="1"
+                    android:id="@+id/img_takephoto2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/activity_100dp"
+                    android:src="@mipmap/ic_launcher" />
+
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/activity_50dp">
+                <Button
+                    android:text="提交"
+                    android:layout_weight="1"
+                    android:id="@+id/btn_upload"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@mipmap/ic_launcher" />
+
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

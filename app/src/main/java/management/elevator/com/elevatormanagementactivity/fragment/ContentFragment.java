@@ -10,6 +10,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -45,28 +46,147 @@ import wang.raye.preioc.annotation.BindById;
  */
 
 public class ContentFragment extends Fragment {
-    @BindById(R.id.viewstub_one)
-    ViewStub viewstubOne;
-    @BindById(R.id.rec_order)
-    RecyclerView recOrder;
-    private String mTitle1;
-    private OrderUndoneAdapter adapter;
-    private View viewContent;
-    private int mType = 0;
-    private String mTitle;
-    RecyclerView orderReceiver;
-    String token;
-
-    SharedPreferences sp;
-    TickSelfBean bean;
-    TickSelfBean.Data Data;
     private static final int LOADDATA = 1;
     private static final int TICKHOLDFAIL = 100;
     private static final int TICKHOLDSUCC = 101;
     private static final int TICKHOLDOTHERS = 102;
     private static final int NODATASHOW = 110;
     private static String refushreason = null;
+    @BindById(R.id.viewstub_one)
+    ViewStub viewstubOne;
+    @BindById(R.id.rec_order)
+    RecyclerView recOrder;
+    RecyclerView orderReceiver;
+    String token;
+    SharedPreferences sp;
+    TickSelfBean bean;
+    TickSelfBean.Data Data;
+    private String mTitle1;
+    private OrderUndoneAdapter adapter;
+    private View viewContent;
+    private int mType = 0;
+    private String mTitle;
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case LOADDATA:
+                    final TickSelfBean obj = (TickSelfBean) msg.obj;
+                    adapter = new OrderUndoneAdapter(getContext(), obj) {
+                        @Override
+                        public void onBindViewHolder(final OrderUndoneTextViewHolder holder, final int position) {
 
+                            holder.btn_accept.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            String tid = holder.order_numer.getText().toString();
+                                            String domain = Constant.BASE_URL + Constant.TICKER;
+                                            String params = Constant.OPER + "=" +
+                                                    Constant.TICK_RECEIVE + "&" + Constant.LOGIN_TOKEN + "=" + token + "&" + Constant.TID + "=" + tid;
+                                            String json = GetSession.post(domain, params);
+                                            Log.i("---inithold---", json);
+                                            if (!json.equals("+ER+")) {
+                                                try {
+                                                    JSONObject jsonObject = new JSONObject(json);
+                                                    String result = jsonObject.getString("result");
+                                                    Message message = handler.obtainMessage();
+                                                    message.obj = result;
+                                                    if (result.equals("succ")) {
+                                                        message.what = TICKHOLDSUCC;
+                                                    } else {
+                                                        message.what = TICKHOLDFAIL;
+                                                    }
+                                                    handler.sendMessage(message);
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        }
+                                    }).start();
+                                }
+                            });
+                            holder.btn_refrush.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (holder.btn_refrush.getText().toString().equals("查看")) {
+                                        String tid = holder.order_numer.getText().toString();
+                                        Intent intent = new Intent();
+                                        intent.putExtra("TID", tid);
+                                        intent.setClass(getActivity(), Order_SpecificMessageActivity.class);
+                                        startActivity(intent);
+                                    } else if (holder.btn_refrush.getText().toString().equals("拒绝")) {
+                                        final EditText dialogview;
+                                        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+                                        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialogview, null);
+                                        dialog.setView(layout);
+                                        dialogview = (EditText) layout.findViewById(R.id.et_dialog_message);
+                                        dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                String message = dialogview.getText().toString();
+                                                if (message.length() < 4) {
+                                                    Toast.makeText(getActivity(), "拒接理由不得少于4字", Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    message = refushreason;
+                                                }
+                                            }
+                                        });
+                                        dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                    }
+
+                                }
+                            });
+                            super.onBindViewHolder(holder, position);
+                        }
+                    };
+                    orderReceiver.setAdapter(adapter);
+                    break;
+                case TICKHOLDFAIL:
+                    String error = (String) msg.obj;
+                    Log.i("handler", "" + error);
+                    Toast.makeText(getActivity(), "很遗憾 接单失败", Toast.LENGTH_LONG).show();
+                    break;
+                case TICKHOLDSUCC:
+                    String succ = (String) msg.obj;
+                    Log.i("handler", "" + succ);
+//orderReceiver.notifyAll();
+                    Toast.makeText(getActivity(), "恭喜您接单成功", Toast.LENGTH_LONG).show();
+                    break;
+                case TICKHOLDOTHERS:
+                    Toast.makeText(getActivity(), "很遗憾 出错了", Toast.LENGTH_LONG).show();
+                    break;
+                case NODATASHOW:
+                    try {
+                        viewstubOne.inflate();
+                    } catch (Exception e) {
+
+                        viewstubOne.setVisibility(View.VISIBLE);
+                    }
+
+                    break;
+            }
+            super.handleMessage(msg);
+
+
+        }
+    };
+
+    public static ContentFragment getInstance(String title) {
+
+        ContentFragment cf = new ContentFragment();
+        cf.mTitle1 = title;
+        return cf;
+
+    }
 
     public void setType(int mType) {
         this.mType = mType;
@@ -89,14 +209,6 @@ public class ContentFragment extends Fragment {
         initData();
         PreIOC.binder(this, viewContent);
         return viewContent;
-    }
-
-    public static ContentFragment getInstance(String title) {
-
-        ContentFragment cf = new ContentFragment();
-        cf.mTitle1 = title;
-        return cf;
-
     }
 
     private void inithold(final String tid) {
@@ -203,13 +315,12 @@ public class ContentFragment extends Fragment {
 
     }
 
-
     private void init(View view) {
         int spaceInPixes = getResources().getDimensionPixelSize(R.dimen.activity_8dp);
         orderReceiver = (RecyclerView) view.findViewById(R.id.rec_order);
         orderReceiver.setLayoutManager(new LinearLayoutManager(getActivity()));
         orderReceiver.addItemDecoration(new SpaceItemDecoration(spaceInPixes));
-
+orderReceiver.setItemAnimator(new DefaultItemAnimator());
         orderReceiver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -218,119 +329,6 @@ public class ContentFragment extends Fragment {
             }
         });
     }
-
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case LOADDATA:
-                    final TickSelfBean obj = (TickSelfBean) msg.obj;
-                    adapter = new OrderUndoneAdapter(getContext(), obj) {
-                        @Override
-                        public void onBindViewHolder(final OrderUndoneTextViewHolder holder, final int position) {
-
-                            holder.btn_accept.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    new Thread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            String tid = holder.order_numer.getText().toString();
-                                            String domain = Constant.BASE_URL + Constant.TICKER;
-                                            String params = Constant.OPER + "=" +
-                                                    Constant.TICK_RECEIVE + "&" + Constant.LOGIN_TOKEN + "=" + token + "&" + Constant.TID + "=" + tid;
-                                            String json = GetSession.post(domain, params);
-                                            Log.i("---inithold---", json);
-                                            if (!json.equals("+ER+")) {
-                                                try {
-                                                    JSONObject jsonObject = new JSONObject(json);
-                                                    String result = jsonObject.getString("result");
-                                                    Message message = handler.obtainMessage();
-                                                    message.obj = result;
-                                                    if (result.equals("succ")) {
-                                                        message.what = TICKHOLDSUCC;
-                                                    } else {
-                                                        message.what = TICKHOLDFAIL;
-                                                    }
-                                                    handler.sendMessage(message);
-                                                } catch (JSONException e) {
-                                                    e.printStackTrace();
-                                                }
-                                            }
-                                        }
-                                    }).start();
-                                }
-                            });
-                            holder.btn_refrush.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if (holder.btn_refrush.getText().toString().equals("查看")) {
-                                        String tid = holder.order_numer.getText().toString();
-                                        Intent intent = new Intent();
-                                        intent.putExtra("TID", tid);
-                                        intent.setClass(getActivity(), Order_SpecificMessageActivity.class);
-                                        startActivity(intent);
-                                    } else if (holder.btn_refrush.getText().toString().equals("拒绝")) {
-                                        final EditText dialogview;
-                                        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-                                        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                                        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialogview, null);
-                                        dialog.setView(layout);
-                                        dialogview = (EditText) layout.findViewById(R.id.et_dialog_message);
-                                        dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                String message = dialogview.getText().toString();
-                                                if (message.length() < 4) {
-                                                    Toast.makeText(getActivity(), "拒接理由不得少于4字", Toast.LENGTH_SHORT).show();
-                                                } else {
-                                                    message = refushreason;
-                                                }
-                                            }
-                                        });
-                                        dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.dismiss();
-                                            }
-                                        });
-                                    }
-
-                                }
-                            });
-                            super.onBindViewHolder(holder, position);
-                        }
-                    };
-                    orderReceiver.setAdapter(adapter);
-                    break;
-                case TICKHOLDFAIL:
-                    String error = (String) msg.obj;
-                    Log.i("handler", "" + error);
-                    Toast.makeText(getActivity(), "很遗憾 接单失败", Toast.LENGTH_LONG).show();
-                    break;
-                case TICKHOLDSUCC:
-                    String succ = (String) msg.obj;
-                    Log.i("handler", "" + succ);
-                    Toast.makeText(getActivity(), "恭喜您接单成功", Toast.LENGTH_LONG).show();
-                    break;
-                case TICKHOLDOTHERS:
-                    Toast.makeText(getActivity(), "很遗憾 出错了", Toast.LENGTH_LONG).show();
-                    break;
-                case NODATASHOW:
-                    try {
-                        viewstubOne.inflate();
-                    } catch (Exception e) {
-
-                        viewstubOne.setVisibility(View.VISIBLE);
-                    }
-
-                    break;
-            }
-            super.handleMessage(msg);
-
-
-        }
-    };
 
     public void showDialog(final String text) {
         final EditText dialogview;

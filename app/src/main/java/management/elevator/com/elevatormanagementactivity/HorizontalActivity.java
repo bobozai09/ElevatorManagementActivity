@@ -12,7 +12,7 @@ import management.elevator.com.elevatormanagementactivity.widget.UIHelper;
 import management.elevator.com.elevatormanagementactivity.widget.UnderLineLinearLayout;
 
 
-public class HorizontalActivity extends AppCompatActivity implements OnClickListener {
+public class HorizontalActivity extends BaseActivity implements OnClickListener {
     private Button addButton;
     private Button subButton;
     private Button mVerticalButton;

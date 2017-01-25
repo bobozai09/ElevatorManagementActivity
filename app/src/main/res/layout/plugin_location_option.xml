@@ -51,6 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_middle"
             android:ems="10"
+            android:text="5000"
             android:hint="@string/defaultInteval"
             android:inputType="number" >
 

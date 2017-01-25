@@ -34,4 +34,11 @@
     <dimen name="margin_1dp">1dp</dimen>
     <dimen name="margin_3dp">3dp</dimen>
     <dimen name="activity_38dp">38dp</dimen>
+    <dimen name="activity_25dp">25dp</dimen>
+    <dimen name="activity_17dp">17dp</dimen>
+    <dimen name="activity_50dp">50dp</dimen>
+    <dimen name="activity_70dp">70dp</dimen>
+    <dimen name="activity_5dp">5dp</dimen>
+    <dimen name="activity_4dp">4dp</dimen>
+    <dimen name="activity_100dp">100dp</dimen>
 </resources>

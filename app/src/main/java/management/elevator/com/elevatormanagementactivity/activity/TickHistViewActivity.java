@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import management.elevator.com.elevatormanagementactivity.BaseActivity;
 import management.elevator.com.elevatormanagementactivity.R;
 import management.elevator.com.elevatormanagementactivity.bean.TickFlowBean;
 import management.elevator.com.elevatormanagementactivity.bean.TickHistViewBean;
@@ -33,7 +34,7 @@ import wang.raye.preioc.annotation.BindById;
  * Created by Administrator on 2016/12/26 0026.
  */
 
-public class TickHistViewActivity extends AppCompatActivity {
+public class TickHistViewActivity extends BaseActivity {
     @BindById(R.id.img_back)
     ImageView imgBack;
     @BindById(R.id.tex_title)

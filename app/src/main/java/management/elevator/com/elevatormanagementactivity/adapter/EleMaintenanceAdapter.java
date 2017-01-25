@@ -41,12 +41,6 @@ public class EleMaintenanceAdapter extends RecyclerView.Adapter<EleMaintenanceAd
        this.mContext=context;
         mlist.addAll(obj.getDatas());
     }
-//public EleMaintenanceAdapter(Context context,String []str1,String []str2){
-//    this.mContext=context;
-//    this.str1=str1;
-//    this.str2=str2;
-//    this.mlayoutInflater = LayoutInflater.from(context);
-//}
     public static interface onRecycleViewItemClickListener {
         void onItemClick(View view, String data);
 

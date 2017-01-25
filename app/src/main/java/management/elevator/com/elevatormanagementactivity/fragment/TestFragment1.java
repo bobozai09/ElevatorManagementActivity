@@ -36,9 +36,11 @@ public class TestFragment1 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_test, container, false);
-viewPager= (ViewPager) view.findViewById(R.id.viewPager_1);
-        tabLayout= (TabLayout) view.findViewById(R.id.tabLayout_1);
-        viewPager.setAdapter(new CustomAdapter(getActivity().getSupportFragmentManager(),getActivity().getApplicationContext()));
+        viewPager = (ViewPager) view.findViewById(R.id.viewPager_1);
+        tabLayout = (TabLayout) view.findViewById(R.id.tabLayout_1);
+        viewPager.setAdapter(new CustomAdapter(getChildFragmentManager(), getActivity().getApplicationContext()));
+
+
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -61,26 +63,24 @@ viewPager= (ViewPager) view.findViewById(R.id.viewPager_1);
     }
 
 
-
-
-
     private class CustomAdapter extends FragmentPagerAdapter {
 
-        private String fragments [] = {"未完成工单", "历史工单", "单位工单"};
+        private String fragments[] = {"未完成工单", "历史工单", "单位工单"};
+//FragmentManager childFragment=getChildFragmentManager();
+        public CustomAdapter(FragmentManager supportFragmentManager , Context applicationContext) {
 
-        public CustomAdapter(FragmentManager supportFragmentManager, Context applicationContext) {
             super(supportFragmentManager);
         }
 
         @Override
         public Fragment getItem(int position) {
-            switch (position){
+            switch (position) {
                 case 0:
                     return new ContentFragment();
                 case 1:
                     return new TickHistoryFragment();
                 case 2:
-                    return  new TickCorpFragment();
+                    return new TickCorpFragment();
                 default:
                     return null;
             }

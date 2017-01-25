@@ -108,8 +108,6 @@ public class Order_SpecificMessageActivity extends TakePhotoActivity implements 
 
     @BindById(R.id.btn_wanjiguidang)
     Button wanjieguidang;
-    //    @BindById(R.id.img_show)
-//    ImageView show;
     private String imgString;
     @BindById(R.id.txt_yijian)
     EditText yijian;
@@ -133,14 +131,11 @@ public class Order_SpecificMessageActivity extends TakePhotoActivity implements 
     private String mImagePath;
     private Bitmap mBitmap;
     private static String iamgeutil = null;
-
-    //    private PhotoViewAttacher mAttacher;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_specimessage);
         PreIOC.binder(this);
-
         init();
         initData();
         initTickFlow();
@@ -190,7 +185,6 @@ public class Order_SpecificMessageActivity extends TakePhotoActivity implements 
                             mlist_flow.add(data);
                         }
                         bean_of_flow.setDatas(mlist_flow);
-
                         Message message = new Message();
                         message.obj = bean_of_flow;
                         message.what = LOADTICKHIST;
@@ -338,7 +332,7 @@ public class Order_SpecificMessageActivity extends TakePhotoActivity implements 
             case R.id.img_back:
                 finish();
                 break;
-            case R.id.btn_tick_new:
+            case R.id.img_phototake:
                 takepic();
                 break;
             case R.id.btn_wanjiguidang:

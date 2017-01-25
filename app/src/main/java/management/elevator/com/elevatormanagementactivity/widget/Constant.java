@@ -24,6 +24,7 @@ public class Constant {
     public static String INF="inf";
     public static String PHOTO="photo";
     public  static  String TOKEN=null;
+
     //当前工单
     public  static String TICK_SELF="tick-self";
     //工单结单提交
@@ -120,11 +121,102 @@ public class Constant {
      * 获取小区所属设备列表
      */
     public  static String PARK_DEV_LIST="park-dev-list";
+    /**
+     * 获取设备维修记录列表
+     */
+    public static String DEV_MC_LIST="dev-mc-list";
+    /**
+     * h获取是被维保项目列表
+     */
+    public static String DEV_MC_TMPL="dev-mc-tmpl";
+    /**
+     * 提交设备维保记录
+     */
+    public static String DEV_MC_SUBMIT="dev-mc-submit";
+    /***
+     * 查看维保结果明细
+     */
+    public static String DEV_MC_RESULT="dev-mc-result";
     public static String SPE="spe";
     public static String ID="id";
+    public static String TMPL="tmpl";
     /***
      * 一般常量
      */
     public  static int LIFT_MC_NUM;
     public static int ICCM_MC_NUM;
+    public  static int LENGTH=0;
+    /**
+     * 参数常量
+     */
+    public static String C="c=0";
+    /**
+     * 知识中心
+     */
+    public static String KNOWLEAGE="/view/know.json";
+    /**
+     * 新闻中心
+     */
+    public static String NEWS="/view/news.json";
+    /**
+     * 故障统计
+     */
+    public  static String STATALM="/view/statalm.json";
+    /**
+     * 报表统计
+     */
+    public static String REPORT="/view/report.json";
+    /***
+     * 我的地图
+     */
+    public static String MAP="/view/maps.json";
+    /**
+     * 我的通讯录
+     */
+    public  static String PHONEBOOK="/view/phonebook.json";
+    /**
+     * 我的首页baner
+     */
+    public  static String HOME_URL="/api/home.json";
+    public static String UPDATA_BANNER="update-banner";
+    /**
+     * 扫描 电梯二维码
+     */
+    public static String SCAN_LIFT="scan-lift";
+    /**
+     * way
+     */
+    public static String WAY="way";
+    public static String SN="sn";
+    public  static int  WAYS;
+    public static String SNS="";
+    public  static String IMG_BASEURL="http://www.sptesyun.com/disk/app/homead/";
+    public static String SCANLIFTDETAIL= "/view/scanliftdetail.json";
+    //个人信息
+    public static int LOGIN_USERID;
+    public static String LOGIN_USERNAME="";
+    public static String	LOGINNAME= "";	// 真实姓名
+    public static String	HEAD= "";	// 头像
+    public static String	CORP_NAME	= "";	// 公司名称
+    public static String	DEPT_NAME	= "";	// 部门名称
+    public static String	DUTY_NAME	= "";	// 职位名称
+    public  static String	ROLE_NAME	= "";	// 角色名称
+
+    /**
+     * 我的事务
+     */
+    public static String WORKSIGN="/view/worksign.json";
+    public static String WORKSELF="/view/workself.json";
+    public static String PARKRUN="/view/parkrun.json";
+    public static String DEVMCCHECK="/view/devmccheck.json";
+    public static String LONGITUDE;
+    public static String LATITUDE;
+    /**
+     * 获取告警列表
+     */
+    public static String ALMSUB="/api/almsub.json";
+public static String GET_ALMNAME="get-almname";
+    public static String SUB_ALARM="sub-alarm";
+    public static String NOTICE="/view/notice.json";
+    public static String UPDATE_NOTIC="update-notice";
 }

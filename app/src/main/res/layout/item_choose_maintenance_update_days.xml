@@ -1,0 +1,77 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/pop_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:gravity="center"
+            android:text="立即维护时间选择"
+            android:textColor="#8a8a8a"
+            android:textSize="15sp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="#00c7c0" />
+
+        <Button
+            android:id="@+id/btn_main_choose_a_half_month"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="电梯半月维保"
+            android:textColor="#0e61aa"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btn_main_choose_three_month"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="电梯季度维保"
+            android:textColor="#0e61aa"
+            android:textSize="18sp" />
+        <Button
+
+            android:id="@+id/btn_main_choose_half_year"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="电梯半年维保"
+            android:textColor="#0e61aa"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btn_main_choose_all_year"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="电梯全年维保"
+            android:textColor="#0e61aa"
+            android:textSize="18sp" />
+
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dip"
+            android:layout_marginTop="15dip"
+            android:text="取消"
+            android:textColor="#0e61aa"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</RelativeLayout>

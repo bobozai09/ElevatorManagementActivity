@@ -71,6 +71,17 @@
         <activity android:name=".activity.TickHistViewActivity"/>
         <activity android:name=".activity.TransctionActivity"/>
         <activity android:name=".activity.maintenance.ElevatorMaintenanceActivity"/>
+        <activity android:name=".activity.maintenance.CellItemActivity"/>
+        <activity android:name=".activity.maintenance.MaintenanceRecordActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity android:name=".activity.maintenance.MaintenanceItemActivity"/>
+        <activity android:name=".activity.RetScanLiftItActivity"/>
+        <activity android:name=".activity.WebViewActivity" android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity android:name=".activity.AlmsubActivity" />
+        <activity android:name=".MyLocationAndMapActivity"    android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity android:name=".activity.maintenance.ScanLliftdDetailActivity"/>
+        <activity android:name=".activity.FeedBackActivity"/>
+        <activity android:name=".activity.UpdateMessageActivity"/>
         <!--<activity android:name=".MyLocationAndMapActivity"/>-->
         <activity android:name=".CheckPermissionActivity"/>
 <activity android:name=".activity.Order_SpecificMessageActivity"/>

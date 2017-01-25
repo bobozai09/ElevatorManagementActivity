@@ -36,7 +36,7 @@ import okhttp3.OkHttpClient;
  * Created by Administrator on 2016/11/17 0017.
  */
 
-public class FoundPasswordActivity extends AppCompatActivity implements View.OnClickListener {
+public class FoundPasswordActivity extends BaseActivity implements View.OnClickListener {
     private EditText mCode, mPassword2, mPassword1, mPhone;
     Button getCode, mOk;
     private static final int GETCODEERROR = 1;

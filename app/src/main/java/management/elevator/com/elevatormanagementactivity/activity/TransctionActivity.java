@@ -17,6 +17,8 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import management.elevator.com.elevatormanagementactivity.BaseActivity;
+import management.elevator.com.elevatormanagementactivity.MyLocationAndMapActivity;
 import management.elevator.com.elevatormanagementactivity.R;
 import management.elevator.com.elevatormanagementactivity.activity.maintenance.ElevatorMaintenanceActivity;
 import management.elevator.com.elevatormanagementactivity.adapter.RecycleAdapter;
@@ -29,11 +31,11 @@ import wang.raye.preioc.annotation.BindById;
 
 /**
  * 我的事务 列表页
- *
+ * <p>
  * Created by Administrator on 2016/12/28 0028.
  */
 
-public class TransctionActivity extends AppCompatActivity {
+public class TransctionActivity extends BaseActivity implements View.OnClickListener {
     @BindById(R.id.img_back)
     ImageView imgBack;
     @BindById(R.id.tex_title)
@@ -46,7 +48,7 @@ public class TransctionActivity extends AppCompatActivity {
             R.mipmap.icon_weibao, R.mipmap.icon_zhongduanweihu,
             R.mipmap.icon_xiaoquxuncha,
             R.mipmap.icon_weibao_queren};
-    private final  static int LOADNUM = 101;
+    private final static int LOADNUM = 101;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,53 +59,86 @@ public class TransctionActivity extends AppCompatActivity {
         initData();
         initView();
     }
-Handler handler=new Handler(){
 
-    @Override
-    public void handleMessage(Message msg) {
-        super.handleMessage(msg);
-        switch (msg.what){
-            case LOADNUM:
-                adapter=new TransactionAdapter(getApplicationContext());
-                String getstr= (String) msg.obj;
-                break;
+    Handler handler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case LOADNUM:
+                    adapter = new TransactionAdapter(getApplicationContext());
+                    String getstr = (String) msg.obj;
+                    break;
+            }
         }
-    }
-};
+    };
+
     private void initView() {
+        imgBack.setOnClickListener(this);
         recTrans.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         int spaceInPixes = getResources().getDimensionPixelSize(R.dimen.activity_8dp);
         recTrans.addItemDecoration(new SpaceItemDecoration(spaceInPixes));
         Resources res = getResources();
         String[] title = res.getStringArray(R.array.tranction_title);
         String[] indrucation = res.getStringArray(R.array.tranction_introdu);
-        adapter = new TransactionAdapter(getApplicationContext(),title, img, indrucation);
+        adapter = new TransactionAdapter(getApplicationContext(), title, img, indrucation);
         recTrans.setAdapter(adapter);
         adapter.seOnItemClickListener(new RecycleAdapter.onRecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, String data) {
                 int position = recTrans.getChildAdapterPosition(view);
-                switch (position){
+                switch (position) {
                     case 2:
-                        toIntent(2);
+                    case 0:
+                    case 3:
+                        toIntent(position);
+                        break;
+                    case 1:
+                    case 4:
+                    case 5:
+                        toIntent(200 + position);
+                        break;
+                    default:
                         break;
                 }
-
             }
         });
+    }
+    private void toIntent(int number) {
+        Intent intent;
+        switch (number) {
+            case 2:
+            case 3:
+                intent = new Intent();
+                intent.setClass(getApplicationContext(), ElevatorMaintenanceActivity.class);
+                intent.putExtra("NUMBER", number);
+                startActivity(intent);
+                break;
+            case 0:
+                intent = new Intent();
+//            Bundle bundle1 = new Bundle();
+//            bundle1.putInt("ID", 0);
+//            intent.putExtras(bundle1);
+                intent.setClass(getApplicationContext(), MyLocationAndMapActivity.class);
+                startActivity(intent);
+                break;
 
+            case 201:
+            case 204:
+            case 205:
+                intent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putInt("ID", number);
+                intent.putExtras(bundle);
+                intent.setClass(getApplicationContext(), WebViewActivity.class);
+                startActivity(intent);
+                break;
+
+
+        }
     }
-private void toIntent(int number){
-    Intent intent;
-    switch (number){
-        case 2:
-            intent=new Intent();
-            intent.setClass(getApplicationContext(), ElevatorMaintenanceActivity.class);
-            intent.putExtra("NUMBER",number);
-            startActivity(intent);
-            break;
-    }
-}
+
     private void initData() {
         new Thread(new Runnable() {
             @Override
@@ -119,8 +154,8 @@ private void toIntent(int number){
                         JSONObject jsonObject = new JSONObject(json);
                         int lift_mc_num = jsonObject.getInt("LIFT_MC_NUM");
                         int ICCM_MC_NUM = jsonObject.getInt("ICCM_MC_NUM");
-                        Constant.LIFT_MC_NUM=lift_mc_num;
-                        Constant.ICCM_MC_NUM=ICCM_MC_NUM;
+                        Constant.LIFT_MC_NUM = lift_mc_num;
+                        Constant.ICCM_MC_NUM = ICCM_MC_NUM;
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -133,5 +168,15 @@ private void toIntent(int number){
         }).start();
 
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.img_back:
+                finish();
+                break;
+
+        }
     }
 }

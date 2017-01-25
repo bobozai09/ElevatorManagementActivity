@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <RelativeLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/activity_70dp"
+        android:layout_marginRight="@dimen/activity_70dp"
+        android:orientation="horizontal">
+
+        <RadioGroup
+
+            android:id="@+id/rg_choose_status"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <RadioButton
+
+                android:id="@+id/rb_status_one"
+                android:layout_width="57dp"
+                android:layout_height="match_parent"
+
+                android:background="@drawable/dotted_status_choose_one"
+
+                android:button="@null" />
+
+            <RadioButton
+                android:id="@+id/rb_status_two"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/dotted_status_choose_two"
+                android:button="@null" />
+
+            <RadioButton
+
+                android:id="@+id/rb_status_three"
+                android:layout_width="36dp"
+                android:layout_height="wrap_content"
+
+                android:background="@drawable/dotted_status_choose_three"
+
+                android:button="@null" />
+
+            <RadioButton
+
+                android:id="@+id/rb_status_four"
+                android:layout_width="36dp"
+                android:layout_height="wrap_content"
+
+                android:background="@drawable/dotted_status_choose_four"
+
+                android:button="@null" />
+        </RadioGroup>
+
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -18,7 +18,7 @@ import android.view.KeyEvent;
  * Created by Administrator on 2016/11/24 0024.
  */
 
-public class CheckPermissionActivity extends Activity
+public class CheckPermissionActivity extends BaseActivity
         implements
         ActivityCompat.OnRequestPermissionsResultCallback {
     /**

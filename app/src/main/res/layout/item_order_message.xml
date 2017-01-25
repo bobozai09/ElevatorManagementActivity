@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:background="@drawable/dotted_line_gray"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_15dp"
@@ -49,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/activity_8dp"
                 android:gravity="right|center_vertical"
-                android:lines="1"
+              android:maxLines="1"
                 android:text="" />
 
         </LinearLayout>

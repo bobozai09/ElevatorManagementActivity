@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+<include layout="@layout/item_title"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:background="@null"
+                android:id="@+id/edit_update_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="修改姓名" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_10dp"
+            android:orientation="horizontal">
+            <EditText
+                android:background="@null"
+                android:id="@+id/edit_update_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="修改地址" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_10dp"
+            android:orientation="horizontal">
+            <EditText
+                android:background="@null"
+                android:id="@+id/edit_idcard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="身份证号码" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_10dp"
+            android:orientation="horizontal">
+            <EditText
+                android:background="@null"
+                android:id="@+id/edit_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="电子邮箱" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_update"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_20dp"
+            android:layout_marginRight="@dimen/activity_20dp"
+            android:layout_marginTop="@dimen/activity_20dp"
+            android:background="@drawable/login_btn_shape"
+            android:text="确定修改"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>

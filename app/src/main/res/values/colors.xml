@@ -35,4 +35,8 @@
     <color name="color_gray">#EEEEEE</color>
     <color name="color_white">#FFFFFFFF</color>
 <color name="color_text_color_teansaction">#FF111111</color>
+    <color name="color_main_status_unchecked">#FF8CE09C</color>
+<color name="color_main_right_color">#FF00AA50</color>
+<color name="color_main_status_checked">#FF74C283</color>
+    <color name="color_head_bg">#FF51A1DC</color>
 </resources>
