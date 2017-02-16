@@ -1,10 +1,13 @@
 package management.elevator.com.elevatormanagementactivity.activity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -12,6 +15,7 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -94,6 +98,9 @@ public class AlmsubActivity extends BaseActivity implements View.OnClickListener
     private Bitmap mBitmap;
     String errormessge;
     String name;
+    private File mOutputFile;
+    private SharedPreferences sp;
+    private SharedPreferences.Editor edit;
     private static final String[] ANDROID_VERSIONS = {
             "测试", "照明灯不亮", "轿厢地板损坏", "门不能正常关闭"
     };
@@ -104,6 +111,11 @@ public class AlmsubActivity extends BaseActivity implements View.OnClickListener
         setContentView(R.layout.activity_almsub);
         PreIOC.binder(this);
         spinner.setItems(ANDROID_VERSIONS);
+        sp = getSharedPreferences("config", Context.MODE_PRIVATE);
+        String str = sp.getString("path", null);
+        if (str != null) {
+            mOutputFile = new File(str);
+        }
         initView();
     }
 
@@ -144,33 +156,7 @@ public class AlmsubActivity extends BaseActivity implements View.OnClickListener
         imgBack.setOnClickListener(this);
     }
 
-//    private void getalmsub() {
-//        new Thread(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                token = Constant.TOKEN;
-//                String domain = Constant.BASE_URL + Constant.ALMSUB;
-//                String params = Constant.OPER + "=" + Constant.GET_ALMNAME + "&" + Constant.LOGIN_TOKEN + "=" + token;
-//                String json = GetSession.post(domain, params);
-//                if (!json.equals("+ER+")) {
-//                    try {
-//                        JSONArray jsonobject = new JSONArray(json);
-//                        for (int i = 0; i < jsonobject.length(); i++) {
-//                            JSONObject js = jsonobject.getJSONObject(i);
-////                        list = Arrays.asList(js);
-//                        }
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//
-//                }
-//            }
-//        }).start();
-//
-//
-//    }
+
 
     @Override
     public void onClick(View v) {
@@ -226,8 +212,6 @@ public class AlmsubActivity extends BaseActivity implements View.OnClickListener
                 Intent intent = new Intent(getApplication(), CaptureActivity.class);
                 startActivityForResult(intent, REQUEST_CODD);
                 break;
-
-
             default:
                 break;
         }
@@ -278,17 +262,26 @@ public class AlmsubActivity extends BaseActivity implements View.OnClickListener
                     .show();
         } else if (requestCode == TAKEPHOTRESULT) {
             try {
-                mBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(mImageUri));
+//                mBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(mImageUri));
+             Bitmap mBitmap = BitmapFactory.decodeFile(mOutputFile.getAbsolutePath());
+//                imgshow.setImageBitmap(bm);
                 imgPhototake.setImageBitmap(mBitmap);
                 encodeString = ImageUtils.bitmapToString(mImagePath);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
 
         }
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+//        Log.d(TAG, "onPause: ");
+        edit = sp.edit();
+        edit.putString("path", mOutputFile.getAbsolutePath());
+        edit.apply();
     }
 private void getlocation(final String scansn){
     new Thread(new Runnable() {
@@ -316,26 +309,38 @@ private void getlocation(final String scansn){
 
 }
     public void takepic() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
-        Date date = new Date(System.currentTimeMillis());
-        mfilename = format.format(date);
-        Log.i("data", "" + mfilename);
-        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-        File outputImage = new File(path, mfilename + ".jpg");
-        try {
-            if (outputImage.exists()) {
-                outputImage.delete();
-            }
-            outputImage.createNewFile();
-            mImagePath = path + "/" + mfilename + ".jpg";
-            Log.d("data", "mImagePath=" + mImagePath);
-        } catch (IOException e) {
-            e.printStackTrace();
+//        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+//        Date date = new Date(System.currentTimeMillis());
+//        mfilename = format.format(date);
+//        Log.i("data", "" + mfilename);
+//        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+//        File outputImage = new File(path, mfilename + ".jpg");
+//        try {
+//            if (outputImage.exists()) {
+//                outputImage.delete();
+//            }
+//            outputImage.createNewFile();
+//            mImagePath = path + "/" + mfilename + ".jpg";
+//            Log.d("data", "mImagePath=" + mImagePath);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        mImageUri = Uri.fromFile(outputImage);
+//        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+//        intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
+        String sdPath = Environment.getExternalStorageDirectory()
+                .getAbsolutePath();
+        mOutputFile = new File(sdPath, System.currentTimeMillis() + ".jpg");
+        Intent newIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Uri uri;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            uri = FileProvider.getUriForFile(this, "management.elevator.com.elevatormanagementactivity", mOutputFile);
+            newIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        } else {
+            uri = Uri.fromFile(mOutputFile);
         }
-        mImageUri = Uri.fromFile(outputImage);
-        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
-        startActivityForResult(intent, TAKEPHOTRESULT);
+        newIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        startActivityForResult(newIntent, TAKEPHOTRESULT);
     }
 
     private void getLoad() {

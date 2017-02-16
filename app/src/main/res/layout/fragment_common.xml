@@ -8,14 +8,16 @@
     <include layout="@layout/item_scan_and_search" />
 
     <include layout="@layout/main_banner" />
-<include  layout="@layout/item_update_notice"/>
+
+    <include  layout="@layout/item_update_notice"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycleview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/activity_8dp"
         android:layout_marginRight="@dimen/activity_8dp"
-        android:layout_weight="9"></android.support.v7.widget.RecyclerView>
+       ></android.support.v7.widget.RecyclerView>
 
     <!--<FrameLayout-->
     <!--android:id="@+id/container"-->

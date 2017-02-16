@@ -6,9 +6,10 @@
         android:layout_gravity="center"
         android:gravity="right"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="30dp"
         android:layout_marginBottom="@dimen/activity_10dp"
-        android:layout_marginTop="@dimen/activity_10dp">
+        android:layout_marginTop="@dimen/activity_10dp"
+       >
 
         <Button
             android:id="@+id/order_btn_accept"
@@ -16,16 +17,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/order_message_address"
-            android:textSize="@dimen/activity_20dp" />
+            android:textSize="@dimen/activity_15dp" />
 
         <Button
             android:id="@+id/order_btn_refrush"
             android:background="@drawable/order_status_shape"
             android:layout_marginLeft="@dimen/activity_10dp"
-            android:layout_width="wrap_content"
+            android:layout_marginRight="@dimen/activity_8dp"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:text="@string/order_message_address"
-            android:textSize="@dimen/activity_20dp" />
+            android:textSize="@dimen/activity_15dp" />
 
     </LinearLayout>
     <View

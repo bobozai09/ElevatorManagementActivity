@@ -11,11 +11,11 @@
     </string-array>
     <string-array name="tranction_introdu">
         <item>个人签到足迹，提高团队执行力</item>
-        <item>便捷安排记录个人工作，定时提醒</item>
-        <item>请保养人员按时保养电梯</item>
-        <item>请维护人员按时维护电梯终端</item>
-        <item>午夜单位人员小区巡查记录查询</item>
-        <item>物业单位确认电梯保养单</item>
+        <item>便捷安排记录个人工作，定时提醒      </item>
+        <item>请保养人员按时保养电梯       </item>
+        <item>请维护人员按时维护电梯终端       </item>
+        <item>午夜单位人员小区巡查记录查询     </item>
+        <item>物业单位确认电梯保养单         </item>
     </string-array>
 
     <array name="url4">
@@ -29,7 +29,5 @@
         <item>照明灯不亮</item>
         <item>轿厢地板损坏</item>
         <item>门不能正常关闭</item>
-
-
     </array>
 </resources>

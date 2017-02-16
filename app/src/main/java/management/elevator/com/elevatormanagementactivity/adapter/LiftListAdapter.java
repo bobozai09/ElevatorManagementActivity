@@ -53,13 +53,8 @@ public class LiftListAdapter extends RecyclerView.Adapter<LiftListAdapter.LiftLi
         data = mlist.get(position);
         Log.i("data====>", "" + data);
         for (int i = 0; i < mlist.size(); i++) {
-
-            holder.text_sn.setText("" + data.getSN());
+            holder.text_sn.setText("SN NO:" + data.getSN());
             holder.text_dev_status.setText("" + data.getSTATUS());
-//            if (holder.text_dev_status.getText().equals("")){
-//            }else  {
-//
-//            }
             holder.text_l_area.setText("" + data.getL_AREA());
             holder.text_l_park.setText("" + data.getL_PARK());
             holder.text_mc_info.setText("" + data.getMC_INFO());

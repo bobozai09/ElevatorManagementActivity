@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -30,6 +32,7 @@ import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
 import com.youth.banner.loader.ImageLoader;
 
 import org.json.JSONArray;
@@ -53,12 +56,13 @@ import management.elevator.com.elevatormanagementactivity.bean.UpadateBanner;
 import management.elevator.com.elevatormanagementactivity.utils.GetSession;
 import management.elevator.com.elevatormanagementactivity.widget.Constant;
 import management.elevator.com.elevatormanagementactivity.widget.RecycleViewDivider;
+import management.elevator.com.elevatormanagementactivity.widget.SearchEditText;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 import wang.raye.preioc.PreIOC;
 import wang.raye.preioc.annotation.BindById;
-
+import android.view.inputmethod.InputMethodManager;
 /**
  *
  */
@@ -80,7 +84,7 @@ public class FragmentCommon extends Fragment implements EasyPermissions.Permissi
     ImageView img_Scan, img_MessageCenter;
     TextView noticeTextView, notice_no_see;
     int showTime = 2000;
-    EditText searchInbox;
+   EditText searchInbox;
     Intent intent;
     UpadateBanner upadateBanner;
     RelativeLayout relNotice;
@@ -88,6 +92,7 @@ public class FragmentCommon extends Fragment implements EasyPermissions.Permissi
     String token;
     String tempname;
     List testlist;
+//    private SearchEditText searchEditText;
     UpadateBanner.Data updatebeandata;
     private static List<String> banners = new ArrayList<>();
     String[] bean = {"我的事务", "故障申告", "地理位置", "故障统计", "通知中心", "知识中心", "联系人", "新闻中心", "报表统计"};
@@ -96,6 +101,7 @@ public class FragmentCommon extends Fragment implements EasyPermissions.Permissi
             R.mipmap.my_contas, R.mipmap.news_center, R.mipmap.my_report};
     RecycleAdapter adapter;
     Message message;
+    private View view;
 
     public static FragmentCommon newInstance(String text) {
         FragmentCommon fragmentCommon = new FragmentCommon();
@@ -109,17 +115,27 @@ public class FragmentCommon extends Fragment implements EasyPermissions.Permissi
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_common, container, false);
+        if (view==null){
+          view= inflater.inflate(R.layout.fragment_common, container, false);
+        }
+        ViewGroup parent= (ViewGroup) view.getParent();
+        if (parent!=null){
+            parent.removeView(view);
+        }
+
+//      View view = inflater.inflate(R.layout.fragment_common, container, false);
         ButterKnife.bind(getActivity());
         PreIOC.binder(this, view);
         ZXingLibrary.initDisplayOpinion(getActivity());
-        String[] testurl = view.getResources().getStringArray(R.array.url4);
         token = Constant.TOKEN;
-        testlist = Arrays.asList(testurl);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycleview);
         img_MessageCenter = (ImageView) view.findViewById(R.id.img_message_center);
         img_Scan = (ImageView) view.findViewById(R.id.img_scan);
-        searchInbox = (EditText) view.findViewById(R.id.search_box);
+      searchInbox = (EditText) view.findViewById(R.id.search_box);
+//        searchEditText= (SearchEditText) view.findViewById(R.id.search_box);
+//        Drawable drawable=getResources().getDrawable(R.drawable.img_search);
+//        drawable.setBounds(5,5,10,10);
+//        searchBox.setCompoundDrawables(drawable,null,drawable,null);
         banner = (Banner) view.findViewById(R.id.banner);
         img_MessageCenter = (ImageView) view.findViewById(R.id.img_message_center);
         noticeTextView = (TextView) view.findViewById(R.id.text_notice);
@@ -132,10 +148,10 @@ public class FragmentCommon extends Fragment implements EasyPermissions.Permissi
         initData();
         InitHideNoitce();
         return view;
+
     }
 
     private void InitHideNoitce() {
-
         notice_no_see.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,6 +161,7 @@ public class FragmentCommon extends Fragment implements EasyPermissions.Permissi
 
     }
 
+
     private void initmessagecenter() {
         img_MessageCenter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,8 +170,8 @@ public class FragmentCommon extends Fragment implements EasyPermissions.Permissi
             }
         });
 
-    }
 
+    }
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -164,13 +181,15 @@ public class FragmentCommon extends Fragment implements EasyPermissions.Permissi
                     final UpadateBanner obj = (UpadateBanner) msg.obj;
                     banner.setImageLoader(new GlideImageload());
                     banner.setDelayTime(showTime);
-                    for (int i = 0; i < obj.getDatas().size(); i++) {
-                        banners.add(Constant.IMG_BASEURL + obj.getDatas().get(i).getIMG());
+                    if (banners.size()==0) {
+                        for (int i = 0; i < obj.getDatas().size(); i++) {
+                            banners.add(Constant.IMG_BASEURL + obj.getDatas().get(i).getIMG());
+                        }
                     }
                     banner.setImages(banners);
+                    Log.d("banner size", "handleMessage: "+banners.size());
                     banner.start();
                     break;
-
                 case HAVERESULT:
                     Toast.makeText(getActivity(), "扫描成功，正在加载数据 请稍后。。。。", Toast.LENGTH_LONG).show();
                     toInient(100);
@@ -226,13 +245,13 @@ public class FragmentCommon extends Fragment implements EasyPermissions.Permissi
     }
 
     private void initView() {
+
 //        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE);
         banner.setImageLoader(new GlideImageload());
         banner.setDelayTime(1500);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        recyclerView.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayout.HORIZONTAL));
-        recyclerView.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayout.VERTICAL));
-
+        recyclerView.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayout.HORIZONTAL,2,getResources().getColor(R.color.bg_color)));
+        recyclerView.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayout.VERTICAL,2,getResources().getColor(R.color.bg_color)));
         recycleAdapter = new RecycleAdapter(bean, image);
         recyclerView.setAdapter(recycleAdapter);
         recycleAdapter.seOnItemClickListener(new RecycleAdapter.onRecycleViewItemClickListener() {
@@ -368,9 +387,9 @@ public class FragmentCommon extends Fragment implements EasyPermissions.Permissi
     }
 
     private void setSearchIcon() {
-        Drawable drawable = getResources().getDrawable(R.drawable.img_search);
-        drawable.setBounds(10, 10, 1 * (drawable.getMinimumWidth()) / 2, 1 * (drawable.getMinimumHeight()) / 2);
-        searchInbox.setCompoundDrawables(drawable, null, null, null);
+//        Drawable drawable = getResources().getDrawable(R.drawable.img_search);
+//        drawable.setBounds(10, 10, 1 * (drawable.getMinimumWidth()) / 2, 1 * (drawable.getMinimumHeight()) / 2);
+//        searchInbox.setCompoundDrawables(drawable, null, null, null);
     }
 
     @Override
@@ -399,7 +418,7 @@ public class FragmentCommon extends Fragment implements EasyPermissions.Permissi
         if (EasyPermissions.hasPermissions(getActivity(), Manifest.permission.CAMERA)) {
             onClick(viewId);
         } else {
-            EasyPermissions.requestPermissions(this, "需要请求canera权限", REQUEST_CAMERA_PERM, Manifest.permission.CAMERA);
+            EasyPermissions.requestPermissions(this, "需要请求camera权限", REQUEST_CAMERA_PERM, Manifest.permission.CAMERA);
         }
     }
 
@@ -407,8 +426,14 @@ public class FragmentCommon extends Fragment implements EasyPermissions.Permissi
     public void onDestroyView() {
         super.onDestroyView();
         PreIOC.unBinder(this);
+        banner.stopAutoPlay();
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        banner.stopAutoPlay();
+    }
 
     class ButtonOnclickListener implements View.OnClickListener {
         private int buttonId;
@@ -516,5 +541,47 @@ public class FragmentCommon extends Fragment implements EasyPermissions.Permissi
 
 
     }
-
+//
+//    @Override
+//    public boolean dispatchTouchEvent(MotionEvent ev) {
+//        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+//            View v = getActivity().getCurrentFocus();
+//            if (isShouldHideKeyboard(v, ev)) {
+//                hideKeyboard(v.getWindowToken());
+//            }
+//        }
+//        return super.dispatchTouchEvent(ev);
+//    }
+//    private boolean isShouldHideKeyboard(View v, MotionEvent event) {
+//        if (v != null && (v instanceof EditText)) {
+//            int[] l = {0, 0};
+//            v.getLocationInWindow(l);
+//            int left = l[0],
+//                    top = l[1],
+//                    bottom = top + v.getHeight(),
+//                    right = left + v.getWidth();
+//            if (event.getX() > left && event.getX() < right
+//                    && event.getY() > top && event.getY() < bottom) {
+//                // 点击EditText的事件，忽略它。
+//                return false;
+//            } else {
+//                v.clearFocus();
+//                return true;
+//            }
+//        }
+//        // 如果焦点不是EditText则忽略，这个发生在视图刚绘制完，第一个焦点不在EditText上，和用户用轨迹球选择其他的焦点
+//        return false;
+//    }
+//
+//    /**
+//     * 获取InputMethodManager，隐藏软键盘
+//     *
+//     * @param token
+//     */
+//    private void hideKeyboard(IBinder token) {
+//        if (token != null) {
+//            InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//            im.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS);
+//        }
+//    }
 }

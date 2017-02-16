@@ -1,47 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="50dp"
+    android:orientation="vertical">
 
     <RelativeLayout
-
-        android:background="@color/color_login_btn"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="match_parent"
+        android:background="@color/color_login_btn"
+        android:gravity="center">
 
         <ImageView
-          android:padding="@dimen/activity_8dp"
             android:id="@+id/img_scan"
-            android:layout_marginLeft="8dp"
-            android:src="@mipmap/scan_item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="40dp"
+
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_10dp"
+            android:src="@mipmap/scan_item" />
 
         <ImageView
-            android:padding="@dimen/activity_8dp"
             android:id="@+id/img_message_center"
-            android:layout_marginRight="@dimen/activity_8dp"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:src="@mipmap/pop_bubble"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:gravity="start|center_vertical"
-            android:layout_weight="1"
-            android:id="@+id/search_box"
-            android:drawableLeft="@drawable/img_search"
-            android:hint="搜索"
-            android:singleLine="true"
-            android:imeOptions="actionSearch"
             android:layout_marginRight="@dimen/activity_8dp"
-            android:layout_marginLeft="@dimen/activity_8dp"
+            android:padding="@dimen/activity_10dp"
+            android:src="@mipmap/pop_bubble" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/img_message_center"
             android:layout_toRightOf="@+id/img_scan"
-            android:layout_width="0dp"
-            android:background="@drawable/main_searchbox_shape"
-            android:layout_height="match_parent" />
+            android:gravity="center_vertical">
 
+            <EditText
+            android:id="@+id/search_box"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:background="@drawable/main_searchbox_shape"
+            android:gravity="start|center_vertical"
+            android:hint="搜索"
+            android:imeOptions="actionSearch"
+            android:paddingBottom="@dimen/activity_8dp"
+            android:paddingLeft="@dimen/activity_8dp"
+            android:paddingTop="@dimen/activity_8dp"
+            android:maxLines="1"
+            android:drawablePadding="@dimen/activity_5dp"
+            android:textSize="12sp" />
+
+            <!--<management.elevator.com.elevatormanagementactivity.widget.SearchEditText-->
+                <!--android:id="@+id/search_box"-->
+                <!--style="@style/editTextStylebai"-->
+                <!--android:layout_margin="@dimen/activity_10dp"-->
+                <!--/>-->
+            <!--<example.fussen.searchview.SearchEditText-->
+            <!--android:id="@+id/search_box"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="34dp"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_weight="5"-->
+            <!--android:background="@drawable/seabar_input"-->
+            <!--android:drawableLeft="@drawable/search_bar_icon_normal"-->
+            <!--android:drawableRight="@drawable/ic_edit_input_clear"-->
+            <!--android:hint="搜索"-->
+            <!--android:imeOptions="actionSearch"-->
+            <!--android:paddingBottom="5dp"-->
+            <!--android:paddingLeft="5dp"-->
+            <!--android:paddingRight="5dp"-->
+            <!--android:singleLine="true"-->
+            <!--android:textColor="#333"-->
+            <!--android:textColorHint="#aaa"-->
+            <!--android:textSize="14sp" />-->
+
+        </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>

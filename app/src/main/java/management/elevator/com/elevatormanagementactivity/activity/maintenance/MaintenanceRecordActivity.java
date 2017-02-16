@@ -1,15 +1,19 @@
 package management.elevator.com.elevatormanagementactivity.activity.maintenance;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,10 +27,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.mingle.widget.ShapeLoadingDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.DOMImplementation;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -89,19 +95,24 @@ public class MaintenanceRecordActivity extends BaseActivity implements View.OnCl
     private int length = 0;
     private String mc_start;
     private String mc_end;
-private  int tmpl;
-    private  String message;
-    private static final int  UPLOADASTATUS=104;
+    private int tmpl;
+    private String message;
+    private static final int UPLOADASTATUS = 104;
+    private File mOutputFile;
+    private SharedPreferences sp;
+    private SharedPreferences.Editor edit;
+    private ShapeLoadingDialog shapeLoadingDialog;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maintenance_record);
+        shapeLoadingDialog = new ShapeLoadingDialog(this);
         PreIOC.binder(this);
         texTitle.setText("维保详情");
         intent = getIntent();
-        Date now=new Date();
-        SimpleDateFormat dateformat=new SimpleDateFormat("HH:mm");
-        mc_start=dateformat.format(now);
+        Date now = new Date();
+        SimpleDateFormat dateformat = new SimpleDateFormat("HH:mm");
+        mc_start = dateformat.format(now);
         saveData = new ArrayList<>();
         btnUpload.setOnClickListener(this);
         imgTakephoto2.setOnClickListener(this);
@@ -109,7 +120,21 @@ private  int tmpl;
         int spaceInPixes = getResources().getDimensionPixelSize(R.dimen.activity_8dp);
         recMainRecord.addItemDecoration(new SpaceItemDecoration(spaceInPixes));
         imgBack.setOnClickListener(this);
+        sp = getSharedPreferences("config", Context.MODE_PRIVATE);
+        String str = sp.getString("path", null);
+        if (str != null) {
+            mOutputFile = new File(str);
+        }
         initData();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+//        Log.d(TAG, "onPause: ");
+        edit = sp.edit();
+        edit.putString("path", mOutputFile.getAbsolutePath());
+        edit.apply();
     }
 
     Handler handler = new Handler() {
@@ -140,7 +165,7 @@ private  int tmpl;
                                             holder.rbStatusThree.setChecked(false);
                                             holder.rbStatusFour.setChecked(false);
                                             saveDatas(1, chooseid);
-                                            Toast.makeText(getApplicationContext(), "male", Toast.LENGTH_SHORT).show();
+//                                            Toast.makeText(getApplicationContext(), "male", Toast.LENGTH_SHORT).show();
                                             break;
                                         case R.id.rb_status_three:
                                             holder.rbStatusTwo.setChecked(false);
@@ -162,11 +187,11 @@ private  int tmpl;
                     recMainRecord.setAdapter(adapter);
                     break;
                 case UPLOADASTATUS:
-                    String result= (String) msg.obj;
-                    if (result.equals("succ")){
-                        Toast.makeText(getApplicationContext(),"提交成功！",Toast.LENGTH_LONG).show();
-                    }else {
-                        Toast.makeText(getApplicationContext(),"提交失败！",Toast.LENGTH_LONG).show();
+                    String result = (String) msg.obj;
+                    if (result.equals("succ")) {
+                        Toast.makeText(getApplicationContext(), "提交成功！", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "提交失败！", Toast.LENGTH_LONG).show();
                     }
                     break;
                 default:
@@ -218,50 +243,64 @@ private  int tmpl;
 
     private void saveDatas(int nuber, int choosid) {
         for (int i = 0; i < saveData.size(); i++) {
-          String item=saveData.get(i);
-            String key=item.substring(0,item.indexOf("="));
-            Log.d("saveData", "saveData:item==> " +key);
-            if (Integer.parseInt(key)==choosid) {
+            String item = saveData.get(i);
+            String key = item.substring(0, item.indexOf("="));
+            Log.d("saveData", "saveData:item==> " + key);
+            if (Integer.parseInt(key) == choosid) {
                 Log.d("saveData", "saveData:remove===> " + item);
                 saveData.remove(item);
             }
         }
-        String newItem=choosid+"="+nuber;
+        String newItem = choosid + "=" + nuber;
         saveData.add(newItem);
     }
 
+    private void updateMessage() {
+//        shapeLoadingDialog.setLoadingText("加载中....");
+//        shapeLoadingDialog.show();
+        if (canUpload()) {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Date now = new Date();
+                    SimpleDateFormat dateformat = new SimpleDateFormat("HH:mm");
+                    mc_end = dateformat.format(now);
+                    final String jsondata = stringTOJson();
+                    String domain = Constant.URL_TRANSCTION;
+                    String params = Constant.OPER + "=" +
+                            Constant.DEV_MC_SUBMIT + "&" + Constant.LOGIN_TOKEN + "=" + token + "&" + "data=" + jsondata;
+                    String json = GetSession.post(domain, params);
+                    Log.d("onclick", "run: " + domain);
+                    Log.d("onclick", "run: " + params);
+                    Log.d("onclick", "run: " + json);
+                    if (json.equals("+ER+")){
+                        Log.d("onclick", "run: "+1222);
+                    }
+                    if (!json.equals("+ER+")) {
+                        try {
+
+                            JSONObject js = new JSONObject(json);
+                            String result = js.getString("result");
+                            Message message = new Message();
+                            message.obj = result;
+                            message.what = UPLOADASTATUS;
+                            handler.sendMessage(message);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }).start();
+        }
+    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_upload:
-                if (canUpload()) {
-                    Date now=new Date();
-                    SimpleDateFormat dateformat=new SimpleDateFormat("HH:mm");
-                    mc_end=dateformat.format(now);
-                   final String jsondata=stringTOJson();
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            String domain = Constant.URL_TRANSCTION;
-                            String params = Constant.OPER + "=" +
-                                    Constant.DEV_MC_SUBMIT + "&" + Constant.LOGIN_TOKEN + "=" + token+"&"+"data="+jsondata ;
-                            String json=GetSession.post(domain,params);
-                            if (!json.equals("+ER+")){
-                                try {
-                                    JSONObject js=new JSONObject(json);
-                                    String result=js.getString("result");
-                                    Message message = new Message();
-                                    message.obj = result;
-                                    message.what=UPLOADASTATUS;
-                                    handler.sendMessage(message);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                    }).start();
-                }
+                Log.d("onclick", "onClick: ");
+                updateMessage();
                 break;
             case R.id.img_takephoto2:
                 takepic();
@@ -276,44 +315,59 @@ private  int tmpl;
     }
 
     private boolean canUpload() {
-         message = edittextMessge.getText().toString().trim();
-    Log.i("",""+(Constant.LENGTH)+"");
-        if (saveData.size() == Constant.LENGTH ) {
+        message = edittextMessge.getText().toString().trim();
+        Log.i("", "" + (Constant.LENGTH) + "");
+        if (saveData.size() == Constant.LENGTH) {
             return true;
         } else {
             Toast.makeText(getApplicationContext(), "你还有选项未选取完成", Toast.LENGTH_LONG).show();
         }
         if (message.length() == 0) {
-            Toast.makeText(getApplicationContext(), "思辨说点什么吧", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "随便说点什么吧", Toast.LENGTH_LONG).show();
+            return false;
         }
-        if (encodeString.length()==0){
+        if (encodeString.length() == 0) {
             Toast.makeText(this, "请先拍照上传", Toast.LENGTH_SHORT).show();
+            return false;
         }
+        return true;
 
-        return false;
     }
 
     public void takepic() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
-        Date date = new Date(System.currentTimeMillis());
-        mfilename = format.format(date);
-        Log.i("data", "" + mfilename);
-        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-        File outputImage = new File(path, mfilename + ".jpg");
-        try {
-            if (outputImage.exists()) {
-                outputImage.delete();
-            }
-            outputImage.createNewFile();
-            mImagePath = path + "/" + mfilename + ".jpg";
-            Log.d("data", "mImagePath=" + mImagePath);
-        } catch (IOException e) {
-            e.printStackTrace();
+//        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+//        Date date = new Date(System.currentTimeMillis());
+//        mfilename = format.format(date);
+//        Log.i("data", "" + mfilename);
+//        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+//        File outputImage = new File(path, mfilename + ".jpg");
+//        try {
+//            if (outputImage.exists()) {
+//                outputImage.delete();
+//            }
+//            outputImage.createNewFile();
+//            mImagePath = path + "/" + mfilename + ".jpg";
+//            Log.d("data", "mImagePath=" + mImagePath);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        mImageUri = Uri.fromFile(outputImage);
+//        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+//        intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
+//        startActivityForResult(intent, 0);
+        String sdPath = Environment.getExternalStorageDirectory()
+                .getAbsolutePath();
+        mOutputFile = new File(sdPath, System.currentTimeMillis() + ".jpg");
+        Intent newIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Uri uri;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            uri = FileProvider.getUriForFile(this, "management.elevator.com.elevatormanagementactivity", mOutputFile);
+            newIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        } else {
+            uri = Uri.fromFile(mOutputFile);
         }
-        mImageUri = Uri.fromFile(outputImage);
-        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
-        startActivityForResult(intent, 0);
+        newIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        startActivityForResult(newIntent, 0);
     }
 
     @Override
@@ -324,27 +378,27 @@ private  int tmpl;
         }
         if (requestCode == 0) {
             try {
-                mBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(mImageUri));
+                Bitmap mBitmap = BitmapFactory.decodeFile(mOutputFile.getAbsolutePath());
                 imgTakephoto2.setImageBitmap(mBitmap);
-                encodeString = ImageUtils.bitmapToString(mImagePath);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                encodeString = ImageUtils.bitmapToString(mOutputFile.getAbsolutePath());
+                Log.d("onclick",""+encodeString);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-    private  String  stringTOJson(){
-        String jsonresult="";
-        StringBuilder sb=new StringBuilder();
+
+    private String stringTOJson() {
+        String jsonresult = "";
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < saveData.size(); i++) {
-         if (i==saveData.size()-1){
-             sb.append(saveData.get(i));
-         }else {
-             sb.append(saveData.get(i)).append(",");
-         }
+            if (i == saveData.size() - 1) {
+                sb.append(saveData.get(i));
+            } else {
+                sb.append(saveData.get(i)).append(",");
+            }
         }
-        JSONObject object= new JSONObject();
+        JSONObject object = new JSONObject();
         String p = "data:image/jpg;base64," + encodeString;
         try {
             p = URLEncoder.encode(p, "UTF-8");
@@ -353,23 +407,23 @@ private  int tmpl;
         }
         try {
 //            JSONArray jsonarray=new JSONArray();
-            JSONObject jsonObj=new JSONObject();
-            jsonObj.put("SPE",0);
-            jsonObj.put("MC_STA",mc_start);
-            jsonObj.put("MC_END",mc_end);
-            jsonObj.put("OID",0);
-            jsonObj.put("TMPL",tmpl);
-            jsonObj.put("MC_IMG",p);
-            jsonObj.put("MC_DATA",sb.toString());
-            jsonObj.put("MC_MARK",message);
+            JSONObject jsonObj = new JSONObject();
+            jsonObj.put("SPE", 0);
+            jsonObj.put("MC_STA", mc_start);
+            jsonObj.put("MC_END", mc_end);
+            jsonObj.put("OID", 0);
+            jsonObj.put("TMPL", tmpl);
+            jsonObj.put("MC_IMG", p);
+            jsonObj.put("MC_DATA", sb.toString());
+            jsonObj.put("MC_MARK", message);
 //            jsonObj.put(jsonObj);
 //            object.put("",jsonarray);
 //            jsonresult=object.toString();
-jsonresult=jsonObj.toString();
+            jsonresult = jsonObj.toString();
         } catch (JSONException e) {
             e.printStackTrace();
         }
-return jsonresult;
+        return jsonresult;
 
     }
 }

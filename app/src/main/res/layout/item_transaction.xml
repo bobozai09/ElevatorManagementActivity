@@ -4,13 +4,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-      >
 
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/activity_20dp"
@@ -36,19 +31,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="值班签到"
+                    android:maxLines="1"
                     android:textColor="@color/color_text_color_teansaction"
-                    android:textSize="@dimen/activity_23dp" />
+                    android:textSize="15sp" />
 
                 <TextView
+                    android:maxLines="1"
                     android:id="@+id/text_transaction_introduction"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="个人签到足迹，提高团队执行力" />
+                    android:textSize="13sp"
+                    android:text="个人签到足迹，提高团队执行力1222222222222" />
 
             </LinearLayout>
 
 
-      </LinearLayout>
+
         </LinearLayout>
 
-    </LinearLayout>
+</LinearLayout>

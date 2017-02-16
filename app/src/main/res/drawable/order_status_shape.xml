@@ -6,11 +6,11 @@
         android:startColor="#ffffff" />
     <solid android:color="#ffffff" />
     <stroke
-        android:color="#95d5b2"
+        android:color="@color/color_text_color"
         android:width="2dp" />
     <corners
-        android:bottomLeftRadius="@dimen/activity_15dp"
-        android:bottomRightRadius="@dimen/activity_15dp"
-        android:topLeftRadius="@dimen/activity_15dp"
-        android:topRightRadius="@dimen/activity_15dp" />
+        android:bottomLeftRadius="@dimen/activity_8dp"
+        android:bottomRightRadius="@dimen/activity_8dp"
+        android:topLeftRadius="@dimen/activity_8dp"
+        android:topRightRadius="@dimen/activity_8dp" />
 </shape>

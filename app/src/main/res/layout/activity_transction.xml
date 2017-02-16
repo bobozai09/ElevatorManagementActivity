@@ -11,5 +11,5 @@
         android:id="@+id/rec_trans"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bg_color"></android.support.v7.widget.RecyclerView>
+        android:background="@color/bg_color"/>
 </LinearLayout>

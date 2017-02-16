@@ -1,6 +1,7 @@
 package management.elevator.com.elevatormanagementactivity.fragment;
 
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -56,7 +57,7 @@ public class TestFragment3 extends Fragment {
     LiftListBean liftlistbean;
     @BindById(R.id.viewstub_one)
     ViewStub viewstubOne;
-
+    LiftListBean.Data data;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -82,6 +83,9 @@ public class TestFragment3 extends Fragment {
                     int packnum = Integer.parseInt(arr[1]);
                     textCellNumber.setText("电梯" + packnum);
                     txtElevatorNumber.setText("共" + devnumb + "小区");
+//                    Drawable drawable=getResources().getDrawable(R.mipmap.icon_number_of_ele);
+//                    drawable.setBounds(0,0,34,0);
+//                    textCellNumber.setCompoundDrawables(null,null,drawable,null);
                     break;
                 case LIFTLISTMESSAGE:
                     final LiftListBean obj = (LiftListBean) msg.obj;
@@ -95,7 +99,6 @@ public class TestFragment3 extends Fragment {
                     } catch (Exception e) {
                         viewstubOne.setVisibility(View.VISIBLE);
                     }
-
                     break;
                 default:
                     break;
@@ -105,9 +108,11 @@ public class TestFragment3 extends Fragment {
 
     private void initView() {
         imgBack.setVisibility(View.GONE);
+        texTitle.setText("设 备");
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recLiftAndIccm.setLayoutManager(llm);
+
 
     }
 
@@ -150,19 +155,19 @@ public class TestFragment3 extends Fragment {
                         Constant.LIFT_LIST + "&" + Constant.LOGIN_TOKEN + "=" + token + "&p=1";
                 String json1 = GetSession.post(domain, params1);
                 if (!json1.equals("+ER+")) {
+                    ArrayList<LiftListBean.Data> mlist = new ArrayList<LiftListBean.Data>();
                     if (json1.equals("[]")) {
                         Message message = new Message();
                         message.what = NODATASHOW;
                         handler.sendMessage(message);
                     }
                     try {
-                        ArrayList<LiftListBean.Data> mlist = new ArrayList<LiftListBean.Data>();
-                        LiftListBean.Data data;
                         liftlistbean = new LiftListBean();
                         JSONArray jsonArray = new JSONArray(json1);
                         data = new LiftListBean.Data();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            data=new LiftListBean.Data();
                             data.setID(jsonObject.getInt("ID"));
                             data.setSN(jsonObject.getString("SN"));
                             data.setL_AREA(jsonObject.getString("L_AREA"));
@@ -175,8 +180,8 @@ public class TestFragment3 extends Fragment {
                             data.setMC_INFO(jsonObject.getString("MC_INFO"));
                             mlist.add(data);
                         }
-                        Message message = new Message();
                         liftlistbean.setDatas(mlist);
+                        Message message = new Message();
                         message.obj = liftlistbean;
                         message.what = LIFTLISTMESSAGE;
                         handler.sendMessage(message);

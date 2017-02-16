@@ -47,6 +47,7 @@ import management.elevator.com.elevatormanagementactivity.fragment.*;
 import management.elevator.com.elevatormanagementactivity.utils.GetMD5;
 import management.elevator.com.elevatormanagementactivity.utils.GetSession;
 import management.elevator.com.elevatormanagementactivity.utils.SharedPrefUtils;
+import management.elevator.com.elevatormanagementactivity.utils.Utils;
 import management.elevator.com.elevatormanagementactivity.widget.Constant;
 import okhttp3.Call;
 import okhttp3.Cookie;
@@ -63,6 +64,7 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
     private static Context context;
     private ShapeLoadingDialog shapeLoadingDialog;
     private SharedPreferences sp;
+    String email;
     private static final int RETRIVE = 1;
     private static final int LOADSUCCESS = 2;
     private static final int NONETWORK = 110;
@@ -71,6 +73,7 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case RETRIVE:
+                    button.setEnabled(true);
                     String error = (String) msg.obj;
                     Toast.makeText(getApplicationContext(), "" + error, Toast.LENGTH_LONG).show();
                     break;
@@ -84,6 +87,7 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
                     Constant.TOKEN = success;
                     getMemessage(success);
                     button.setEnabled(true);
+                    Constant.LOGIN_SUCCESS_USERN_NAME = email;
                     break;
                 case NONETWORK:
                     button.setEnabled(true);
@@ -109,8 +113,11 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
         tintManager.setTintColor(Color.parseColor("#9900FF"));
         etEmail = (EditText) findViewById(R.id.et_email);
         etPassword = (EditText) findViewById(R.id.et_password);
-        etEmail.setText("18382086980");
-        etPassword.setText("123456");
+        if (Constant.LOGIN_SUCCESS_USERN_NAME.equals("")) {
+            etEmail.setText("");
+        } else {
+            etEmail.setText(Constant.LOGIN_SUCCESS_USERN_NAME + "");
+        }
         button = (Button) findViewById(R.id.login_in_button);
         button.setOnClickListener(this);
         mForgetPass = (TextView) findViewById(R.id.tx_forget_password);
@@ -121,41 +128,33 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login_in_button:
-                button.setEnabled(false);
-                tryLogin();
 
+                tryLogin();
                 break;
             case R.id.tx_forget_password:
                 IntentFoundPassword(1);
+                break;
+            default:
                 break;
         }
     }
 
     void tryLogin() {
-        String email = String.valueOf(etEmail.getText()).trim();
+        email = String.valueOf(etEmail.getText()).trim();
         String password = String.valueOf(etPassword.getText()).trim();
+        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+            Toast.makeText(LoginActivity1.this, "请输入手机号或者密码", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        boolean result = Utils.isPhone(email);
+        if (result == false) {
+            Toast.makeText(LoginActivity1.this, "请输入正确的手机号", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        button.setEnabled(false);
         login(email, password);
     }
 
-//    boolean check(String email, String password) {
-//        if (TextUtils.isEmpty(email)) {
-//            etEmail.setError(getString(R.string.error_invalid_email));
-//            return false;
-//        }
-//        if (TextUtils.isEmpty(password)) {
-//            etPassword.setError(getString(R.string.error_invalid_password));
-//            return false;
-//        }
-//        return true;
-//    }
-//
-//    private void markUserLogin() {
-//        SharedPrefUtils.login(this);
-//    }
-//
-//    private void notifyUserLogin() {
-//        BroadcastManager.sendLoginBroadcast(this, 1);
-//    }
 
     private void getMemessage(final String gettoken) {
         new Thread(new Runnable() {
@@ -203,8 +202,6 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
                 String params = "oper=" +
                         Constant.LOGIN_INFO + "&" + Constant.USERNAME + "=" + uname + "&" + Constant.PASSWORD + "=" + GetMD5.string2MD5(uname + password) + "&" + Constant.DEVICESID + "=" + Constant.LOCATION_IME;
                 String json = GetSession.post(domain, params);
-//                Log.i("", domain);
-//                Log.i("", params);
                 Log.i("---login---", json);
                 if (json.equals("+ER+")) {
                     Message message = new Message();

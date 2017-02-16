@@ -20,6 +20,7 @@ import management.elevator.com.elevatormanagementactivity.activity.FeedBackActiv
 import management.elevator.com.elevatormanagementactivity.activity.UpdateMessageActivity;
 import management.elevator.com.elevatormanagementactivity.activity.maintenance.PopChooseDateWin;
 import management.elevator.com.elevatormanagementactivity.widget.AppManager;
+import management.elevator.com.elevatormanagementactivity.widget.Constant;
 import wang.raye.preioc.PreIOC;
 import wang.raye.preioc.annotation.BindById;
 
@@ -44,6 +45,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     LinearLayout lineSafeofdev;
     @BindById(R.id.btn_exit)
     Button btnExit;
+    @BindById(R.id.my_setting_phonenumber)
+    TextView mySetting_PhoneNumber;
     Intent intent;
     TextView mylocation;
     PopChooseDateWin pop;
@@ -80,7 +83,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         lineMessageOfUse.setOnClickListener(this);
         lineSafeofdev.setOnClickListener(this);
         btnExit.setOnClickListener(this);
-//        mylocation.setText(Constant.);
+        mySetting_PhoneNumber.setText("绑定手机："+ Constant.LOGIN_SUCCESS_USERN_NAME+"");
     }
 
     @Override

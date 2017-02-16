@@ -219,4 +219,6 @@ public static String GET_ALMNAME="get-almname";
     public static String SUB_ALARM="sub-alarm";
     public static String NOTICE="/view/notice.json";
     public static String UPDATE_NOTIC="update-notice";
+    public static String LOGIN_SUCCESS_USERN_NAME="";
+
 }

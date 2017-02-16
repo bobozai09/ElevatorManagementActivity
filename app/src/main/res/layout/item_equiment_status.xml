@@ -2,157 +2,158 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
     android:orientation="vertical">
 
     <LinearLayout
 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_15dp"
         android:layout_marginRight="@dimen/activity_15dp"
         android:layout_marginTop="@dimen/activity_15dp"
         android:background="@drawable/dotted_layout_gray"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <LinearLayout
-        android:id="@+id/line_left_status"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/detail_bg"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/text_sn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="sn NO .02366666666666" />
+        android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/line_left_status"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="right|center">
-
-            <ImageView
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:src="@drawable/is_normal" />
+            android:layout_height="wrap_content"
+            android:background="@color/detail_bg"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/text_dev_status"
+                android:id="@+id/text_sn"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-
                 android:gravity="center"
-                android:text="" />
-        </LinearLayout>
-    </LinearLayout>
+                android:text="sn NO .02366666666666" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_45dp"
-        android:layout_marginRight="@dimen/activity_45dp"
-        android:layout_marginTop="@dimen/activity_15dp"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/text_l_area"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="重庆市江北区星光路3号11号" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="right|center">
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/is_normal" />
+
+                <TextView
+                    android:id="@+id/text_dev_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+
+                    android:gravity="center"
+                    android:text="" />
+            </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center|right">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_45dp"
+            android:layout_marginRight="@dimen/activity_45dp"
+            android:layout_marginTop="@dimen/activity_15dp"
+            android:orientation="horizontal">
 
-            <ImageView
-                android:visibility="gone"
-                android:layout_width="20dp"
-                android:layout_height="25dp"
-                android:layout_marginRight="@dimen/activity_30dp"
-                android:src="@drawable/img_location"
+            <TextView
+                android:id="@+id/text_l_area"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="重庆市江北区星光路3号11号" />
 
-                android:text="zhengchagn" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center|right">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="25dp"
+                    android:layout_marginRight="@dimen/activity_30dp"
+                    android:src="@drawable/img_location"
+                    android:text="zhengchagn"
+
+                    android:visibility="gone" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.3dp"
-        android:layout_marginLeft="@dimen/activity_45dp"
-        android:layout_marginRight="@dimen/activity_45dp"
-        android:background="@color/grgray" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_45dp"
-        android:layout_marginRight="@dimen/activity_45dp"
-        android:layout_marginTop="@dimen/activity_15dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/text_l_park"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-
-            android:text="海王星科技大厦一栋2单元3号楼" />
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.3dp"
-        android:layout_marginLeft="@dimen/activity_45dp"
-        android:layout_marginRight="@dimen/activity_45dp"
-        android:background="@color/grgray" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_15dp"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="季度维保" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.3dp"
+            android:layout_marginLeft="@dimen/activity_45dp"
+            android:layout_marginRight="@dimen/activity_45dp"
+            android:background="@color/grgray" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center|right">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_45dp"
+            android:layout_marginRight="@dimen/activity_45dp"
+            android:layout_marginTop="@dimen/activity_15dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text_l_park"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+                android:text="海王星科技大厦一栋2单元3号楼" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.3dp"
+            android:layout_marginLeft="@dimen/activity_45dp"
+            android:layout_marginRight="@dimen/activity_45dp"
+            android:background="@color/grgray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_15dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginRight="@dimen/activity_30dp"
-                android:text="维修到期时间：" />
+                android:text="季度维保" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center|right">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/activity_30dp"
+                    android:text="维修到期时间：" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_45dp"
+            android:layout_marginRight="@dimen/activity_45dp"
+            android:layout_marginTop="@dimen/activity_15dp"
+            android:orientation="horizontal">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_45dp"
-        android:layout_marginRight="@dimen/activity_45dp"
-        android:layout_marginTop="@dimen/activity_15dp"
-        android:orientation="horizontal">
+            <TextView
+                android:id="@+id/text_mc_info"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
 
-        <TextView
-            android:id="@+id/text_mc_info"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+                android:text="海王星科技大厦一栋2单元3号楼" />
 
-            android:text="海王星科技大厦一栋2单元3号楼" />
-
-    </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

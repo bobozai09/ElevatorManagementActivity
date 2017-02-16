@@ -1,11 +1,14 @@
 package management.elevator.com.elevatormanagementactivity.activity;
 
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -13,6 +16,7 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
@@ -131,11 +135,16 @@ public class Order_SpecificMessageActivity extends TakePhotoActivity implements 
     private String mImagePath;
     private Bitmap mBitmap;
     private static String iamgeutil = null;
+    private File mOutputFile;
+    private SharedPreferences sp;
+    private SharedPreferences.Editor edit;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_specimessage);
         PreIOC.binder(this);
+
         init();
         initData();
         initTickFlow();
@@ -153,6 +162,20 @@ public class Order_SpecificMessageActivity extends TakePhotoActivity implements 
         show = (ImageView) findViewById(R.id.img_show);
         img_takephoto2.setOnClickListener(this);
         img_takephoto3.setOnClickListener(this);
+        texTitle.setText("未完成工单");
+        sp = getSharedPreferences("config", Context.MODE_PRIVATE);
+        String str = sp.getString("path", null);
+        if (str != null) {
+            mOutputFile = new File(str);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        edit = sp.edit();
+        edit.putString("path", mOutputFile.getAbsolutePath());
+        edit.apply();
     }
 
     private void initTickFlow() {
@@ -160,7 +183,7 @@ public class Order_SpecificMessageActivity extends TakePhotoActivity implements 
             @Override
             public void run() {
                 String domain = Constant.BASE_URL + Constant.TICKER;
-                final  String tid = intent.getStringExtra("TID");
+                final String tid = intent.getStringExtra("TID");
                 final String token = Constant.TOKEN;
                 String params = Constant.OPER + "=" +
                         Constant.TICK_FLOW + "&" + Constant.LOGIN_TOKEN + "=" + token + "&" + Constant.TID + "=" + tid;
@@ -288,11 +311,11 @@ public class Order_SpecificMessageActivity extends TakePhotoActivity implements 
                 case TICKHISTVIEW:
                     String result = (String) msg.obj;
                     if (result.equals("succ")) {
-                      Toast.makeText(getApplicationContext(),"工单提交成功！",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "工单提交成功！", Toast.LENGTH_LONG).show();
                         yijian.setText("");
 
-                    }else {
-                        Toast.makeText(getApplicationContext(),"",Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "", Toast.LENGTH_LONG).show();
                     }
                     break;
                 case LOADDATA:
@@ -311,7 +334,7 @@ public class Order_SpecificMessageActivity extends TakePhotoActivity implements 
                     break;
                 case LOADTICKHIST:
                     final TickFlowBean obj_hist = (TickFlowBean) msg.obj;
-                    Log.i("data",obj_hist.toString());
+                    Log.i("data", obj_hist.toString());
                     for (int i = 0; i < obj_hist.getDatas().size(); i++) {
                         View v = LayoutInflater.from(getApplicationContext()).inflate(R.layout.item_vertical, mUnderLinelayout, false);
                         ((TextView) v.findViewById(R.id.tx_action)).setText("" + obj_hist.getDatas().get(i).getINF());
@@ -332,7 +355,7 @@ public class Order_SpecificMessageActivity extends TakePhotoActivity implements 
             case R.id.img_back:
                 finish();
                 break;
-            case R.id.img_phototake:
+            case R.id.btn_tick_new:
                 takepic();
                 break;
             case R.id.btn_wanjiguidang:
@@ -383,27 +406,41 @@ public class Order_SpecificMessageActivity extends TakePhotoActivity implements 
             }
         }).start();
     }
+
     public void takepic() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
-        Date date = new Date(System.currentTimeMillis());
-        mfilename = format.format(date);
-        Log.i("data", "" + mfilename);
-        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-        File outputImage = new File(path, mfilename + ".jpg");
-        try {
-            if (outputImage.exists()) {
-                outputImage.delete();
-            }
-            outputImage.createNewFile();
-            mImagePath = path + "/" + mfilename + ".jpg";
-            Log.d("data", "mImagePath=" + mImagePath);
-        } catch (IOException e) {
-            e.printStackTrace();
+//        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+//        Date date = new Date(System.currentTimeMillis());
+//        mfilename = format.format(date);
+//        Log.i("data", "" + mfilename);
+//        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+//        File outputImage = new File(path, mfilename + ".jpg");
+//        try {
+//            if (outputImage.exists()) {
+//                outputImage.delete();
+//            }
+//            outputImage.createNewFile();
+//            mImagePath = path + "/" + mfilename + ".jpg";
+//            Log.d("data", "mImagePath=" + mImagePath);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        mImageUri = Uri.fromFile(outputImage);
+//        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+//        intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
+//        startActivityForResult(intent, 0);
+        String sdPath = Environment.getExternalStorageDirectory()
+                .getAbsolutePath();
+        mOutputFile = new File(sdPath, System.currentTimeMillis() + ".jpg");
+        Intent newIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Uri uri;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            uri = FileProvider.getUriForFile(this, "management.elevator.com.elevatormanagementactivity", mOutputFile);
+            newIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        } else {
+            uri = Uri.fromFile(mOutputFile);
         }
-        mImageUri = Uri.fromFile(outputImage);
-        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
-        startActivityForResult(intent, 0);
+        newIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        startActivityForResult(newIntent, 0);
     }
 
     @Override
@@ -414,11 +451,12 @@ public class Order_SpecificMessageActivity extends TakePhotoActivity implements 
         }
         if (requestCode == 0) {
             try {
-                mBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(mImageUri));
-                img_takephoto.setImageBitmap(mBitmap);
+//                mBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(mImageUri));
+//                img_takephoto.setImageBitmap(mBitmap);
+                Bitmap bm = BitmapFactory.decodeFile(mOutputFile.getAbsolutePath());
+                img_takephoto.setImageBitmap(bm);
                 encodeString = ImageUtils.bitmapToString(mImagePath);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

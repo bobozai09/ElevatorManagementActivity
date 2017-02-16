@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -25,6 +26,7 @@ import management.elevator.com.elevatormanagementactivity.adapter.RecycleAdapter
 import management.elevator.com.elevatormanagementactivity.adapter.TransactionAdapter;
 import management.elevator.com.elevatormanagementactivity.utils.GetSession;
 import management.elevator.com.elevatormanagementactivity.widget.Constant;
+import management.elevator.com.elevatormanagementactivity.widget.RecycleViewDivider;
 import management.elevator.com.elevatormanagementactivity.widget.SpaceItemDecoration;
 import wang.raye.preioc.PreIOC;
 import wang.raye.preioc.annotation.BindById;
@@ -77,7 +79,7 @@ public class TransctionActivity extends BaseActivity implements View.OnClickList
     private void initView() {
         imgBack.setOnClickListener(this);
         recTrans.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        int spaceInPixes = getResources().getDimensionPixelSize(R.dimen.activity_8dp);
+        int spaceInPixes = getResources().getDimensionPixelSize(R.dimen.activity_15dp);
         recTrans.addItemDecoration(new SpaceItemDecoration(spaceInPixes));
         Resources res = getResources();
         String[] title = res.getStringArray(R.array.tranction_title);

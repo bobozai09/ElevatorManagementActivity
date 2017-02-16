@@ -2,10 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:id="@+id/rel_notice"
+    android:layout_marginTop="@dimen/activity_5dp"
+    android:paddingRight="@dimen/activity_8dp"
+    android:paddingLeft="@dimen/activity_8dp"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <RelativeLayout
+
         android:background="@drawable/dotted_line_gray"
         android:layout_width="match_parent"
         android:layout_height="@dimen/activity_30dp">
@@ -37,7 +41,7 @@
             android:ellipsize="end"
             android:gravity="center|left"
             android:maxLines="1"
-            android:text="1111111" />
+            android:text="" />
 
 
     </RelativeLayout>

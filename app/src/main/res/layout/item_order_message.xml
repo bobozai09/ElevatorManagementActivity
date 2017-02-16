@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@color/color_white"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <LinearLayout
-        android:background="@drawable/dotted_line_gray"
+        android:background="@drawable/dotted_gray_line"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_15dp"
@@ -23,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:text="工单编号："
                 android:textColor="@color/black_text_color"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/order_number"
@@ -31,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textColor="@color/black_text_color"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/order_status"
@@ -42,7 +43,7 @@
                 android:background="@drawable/oder_btn_message"
                 android:gravity="center"
                 android:text=""
-                android:textSize="@dimen/activity_15dp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/order_is_receiver"
@@ -51,21 +52,22 @@
                 android:layout_marginRight="@dimen/activity_8dp"
                 android:gravity="right|center_vertical"
               android:maxLines="1"
+                android:textSize="15sp"
                 android:text="" />
 
         </LinearLayout>
 
         <LinearLayout
+            android:layout_marginTop="@dimen/activity_5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
             <TextView
                 android:id="@+id/ordertype"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lines="1"
                 android:text="@string/order_message_conten"
-                android:textSize="@dimen/poi_title_size" />
+                android:textSize="15sp" />
 
         </LinearLayout>
 
@@ -79,13 +81,14 @@
                 android:id="@+id/ordermessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lines="2"
+                android:maxLines="1"
                 android:text="@string/order_message_conten"
-                android:textSize="@dimen/poi_title_size" />
+                android:textSize="15sp"  />
 
         </LinearLayout>
 
         <LinearLayout
+            android:layout_marginTop="@dimen/activity_5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -95,11 +98,12 @@
                 android:layout_height="wrap_content"
                 android:lines="1"
                 android:text="@string/order_message_time"
-                android:textSize="@dimen/activity_20dp" />
+                android:textSize="15sp" />
 
         </LinearLayout>
 
         <LinearLayout
+            android:layout_marginTop="@dimen/activity_5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -109,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:lines="1"
                 android:text="@string/order_message_who"
-                android:textSize="@dimen/activity_20dp" />
+                android:textSize="15sp" />
 
         </LinearLayout>
 
@@ -124,7 +128,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/order_message_address"
-                android:textSize="@dimen/activity_20dp" />
+                android:textSize="15sp" />
 
         </LinearLayout>
 

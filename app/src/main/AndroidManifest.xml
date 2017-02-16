@@ -47,8 +47,8 @@
         android:theme="@style/Theme.Design.Light.NoActionBar">
 
         <activity
-            android:name=".LoginActivity1"
-            android:windowSoftInputMode="stateHidden|adjustPan"
+            android:name=".activity.WelcomeActivity"
+
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -64,6 +64,8 @@
         <activity android:name=".fragment.MainActivity"
             android:windowSoftInputMode="stateHidden|adjustPan"
             />
+        <activity android:name=".LoginActivity1"   android:windowSoftInputMode="stateHidden|adjustPan">
+        </activity>
         <activity android:name=".BaseActivity"/>
         <activity android:name=".HorizontalActivity"/>
         <activity android:name=".FoundPasswordActivity"></activity>
@@ -89,6 +91,15 @@
 
             android:value="7501391cff772f625e4ff81b5b38f468"/>
         <service android:name="com.amap.api.location.APSService"></service>
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="management.elevator.com.elevatormanagementactivity"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

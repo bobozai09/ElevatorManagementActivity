@@ -47,9 +47,10 @@
                         android:layout_height="wrap_content"
                         android:lines="1"
                         android:text="故障设备："
-                        android:textSize="@dimen/activity_20dp" />
+                        android:textSize="15sp"  />
 
                     <TextView
+                        android:textSize="15sp"
                         android:id="@+id/txt_malfunction"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -67,9 +68,10 @@
                         android:layout_height="wrap_content"
                         android:lines="1"
                         android:text="故障来源："
-                        android:textSize="@dimen/activity_20dp" />
+                        android:textSize="15sp" />
 
                     <TextView
+                        android:textSize="15sp"
                         android:id="@+id/txt_source"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -87,13 +89,14 @@
                         android:layout_height="wrap_content"
                         android:lines="1"
                         android:text="处理时限："
-                        android:textSize="@dimen/activity_20dp" />
+                        android:textSize="15sp"  />
 
                     <TextView
                         android:id="@+id/txt_lmt_tiem"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lines="1"
+                        android:textSize="15sp"
                         android:text="" />
                 </LinearLayout>
             </LinearLayout>

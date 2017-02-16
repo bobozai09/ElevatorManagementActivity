@@ -11,11 +11,11 @@
 
         <ImageView
             android:id="@+id/img_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/activity_8dp"
-            android:src="@mipmap/img_back_icon" />
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:src="@mipmap/icon_back_one" />
 
         <TextView
             android:id="@+id/tex_title"
@@ -25,6 +25,8 @@
             android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:gravity="center_vertical"
+            android:textSize="18sp"
+            android:textColor="@color/color_white"
             android:text="知识中心" />
 
         <TextView

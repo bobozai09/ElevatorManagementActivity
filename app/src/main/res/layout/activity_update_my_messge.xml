@@ -5,6 +5,8 @@
     android:orientation="vertical">
 <include layout="@layout/item_title"/>
     <LinearLayout
+        android:paddingTop="@dimen/activity_8dp"
+        android:paddingLeft="@dimen/activity_8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -14,6 +16,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <EditText
+                android:textSize="15sp"
                 android:background="@null"
                 android:id="@+id/edit_update_name"
                 android:layout_width="match_parent"
@@ -24,9 +27,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_10dp"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:orientation="horizontal">
             <EditText
+                android:textSize="@dimen/text_normal_size"
                 android:background="@null"
                 android:id="@+id/edit_update_address"
                 android:layout_width="match_parent"
@@ -40,6 +44,7 @@
             android:layout_marginTop="@dimen/activity_10dp"
             android:orientation="horizontal">
             <EditText
+                android:textSize="@dimen/text_normal_size"
                 android:background="@null"
                 android:id="@+id/edit_idcard"
                 android:layout_width="match_parent"
@@ -52,6 +57,7 @@
             android:layout_marginTop="@dimen/activity_10dp"
             android:orientation="horizontal">
             <EditText
+                android:textSize="@dimen/text_normal_size"
                 android:background="@null"
                 android:id="@+id/edit_email"
                 android:layout_width="match_parent"

@@ -52,7 +52,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:text="12333"
-                android:textColor="@color/item_text_color"
+                android:textColor="@color/color_normal_color"
                 android:textSize="@dimen/activity_17dp" />
 
 

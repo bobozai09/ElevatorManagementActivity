@@ -62,6 +62,7 @@
     <string name="useSensor">使用传感器</string>
     <string name="defaultInteval">20000</string>
     <string name="defaultHttpTimeout">30000</string>
+    <string name="company">WWW.SPTESYUN.COM</string>
     <array name="home_video_tab">
         <item>未完成工单@dream@0</item>
         <item>历史工单@dream@1</item>
@@ -82,4 +83,5 @@
         <item>订阅@dream@0</item>
         <item>关注@dream@1</item>
     </array>
+    
 </resources>
