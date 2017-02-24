@@ -46,6 +46,7 @@ public class GetSession {
             dop.flush();
             dop.close();
             int code = connection.getResponseCode();
+            Log.d("GetSession", "code: "+code);
             if(code == HttpURLConnection.HTTP_OK) {
                 reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 StringBuffer strBuffer = new StringBuffer();
@@ -54,6 +55,7 @@ public class GetSession {
                     strBuffer.append(line);
                 }
                 result = strBuffer.toString();
+                Log.d("GetSession", "post: "+result);
                 if(Constant.HttpSessionId == null) {
                     Constant.HttpSetCookies = connection.getHeaderFields().get("Set-Cookie");
                     for(String value : Constant.HttpSetCookies) {

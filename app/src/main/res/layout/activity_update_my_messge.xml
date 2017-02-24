@@ -3,25 +3,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-<include layout="@layout/item_title"/>
+
+    <include layout="@layout/item_title" />
+
     <LinearLayout
-        android:paddingTop="@dimen/activity_8dp"
-        android:paddingLeft="@dimen/activity_8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/activity_8dp"
+        android:paddingTop="@dimen/activity_8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <EditText
-                android:textSize="15sp"
-                android:background="@null"
                 android:id="@+id/edit_update_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="修改姓名" />
+                android:background="@null"
+                android:hint="修改姓名"
+                android:textSize="15sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -29,13 +32,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:orientation="horizontal">
+
             <EditText
-                android:textSize="@dimen/text_normal_size"
-                android:background="@null"
                 android:id="@+id/edit_update_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="修改地址" />
+                android:background="@null"
+                android:hint="修改地址"
+                android:textSize="@dimen/text_normal_size" />
         </LinearLayout>
 
         <LinearLayout
@@ -43,26 +47,29 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_10dp"
             android:orientation="horizontal">
+
             <EditText
-                android:textSize="@dimen/text_normal_size"
-                android:background="@null"
                 android:id="@+id/edit_idcard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="身份证号码" />
+                android:background="@null"
+                android:hint="身份证号码"
+                android:textSize="@dimen/text_normal_size" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_10dp"
             android:orientation="horizontal">
+
             <EditText
-                android:textSize="@dimen/text_normal_size"
-                android:background="@null"
                 android:id="@+id/edit_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="电子邮箱" />
+                android:background="@null"
+                android:hint="电子邮箱"
+                android:textSize="@dimen/text_normal_size" />
         </LinearLayout>
 
         <Button
@@ -77,5 +84,19 @@
             android:text="确定修改"
             android:textColor="@color/color_white"
             android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_update_version"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_20dp"
+            android:layout_marginRight="@dimen/activity_20dp"
+            android:layout_marginTop="@dimen/activity_20dp"
+            android:background="@drawable/login_btn_shape"
+            android:text="检查升级"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
     </LinearLayout>
+
 </LinearLayout>

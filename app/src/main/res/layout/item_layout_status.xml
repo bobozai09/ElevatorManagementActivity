@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/item_color"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_8dp"
+    android:paddingRight="@dimen/activity_8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/activity_30dp"
+
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/icon_main_status_one" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="正 常"
+            android:textColor="@color/color_normal_color"
+            android:textSize="@dimen/activity_8dp" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/icon_main_status_two" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/activity_8dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="调整修理"
+
+            android:textColor="@color/color_normal_color"
+            android:textSize="@dimen/activity_8dp" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/icon_main_status_three" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/activity_8dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="需要更换零部件"
+
+            android:textColor="@color/color_normal_color"
+            android:textSize="@dimen/activity_8dp" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/icon_main_status_four" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/activity_8dp"
+            android:layout_weight="1"
+
+            android:gravity="center"
+            android:text="电梯无此项"
+            android:textColor="@color/color_normal_color"
+            android:textSize="@dimen/activity_8dp" />
+
+
+    </LinearLayout>
+</LinearLayout>

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:versionName="2.0"
+    android:versionCode="2"
     package="management.elevator.com.elevatormanagementactivity">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
@@ -18,7 +20,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <!-- 需要运行时注册的权限 -->
     <!--地图相关-->
     <!--用于进行网络定位-->

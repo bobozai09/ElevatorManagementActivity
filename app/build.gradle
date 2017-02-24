@@ -63,5 +63,6 @@ dependencies {
     compile 'com.github.zzz40500:android-shapeLoadingView:1.0.3.2'
     compile 'com.jaredrummler:material-spinner:1.1.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'com.github.yoojia:anyversion:1.0@aar'
 
 }

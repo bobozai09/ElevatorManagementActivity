@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
     <RelativeLayout
 
         android:layout_width="wrap_content"
@@ -13,7 +14,6 @@
         android:orientation="horizontal">
 
         <RadioGroup
-
             android:id="@+id/rg_choose_status"
             android:layout_width="match_parent"
             android:layout_height="35dp"
@@ -21,13 +21,10 @@
             android:orientation="horizontal">
 
             <RadioButton
-
                 android:id="@+id/rb_status_one"
                 android:layout_width="57dp"
                 android:layout_height="match_parent"
-
                 android:background="@drawable/dotted_status_choose_one"
-
                 android:button="@null" />
 
             <RadioButton
@@ -38,23 +35,17 @@
                 android:button="@null" />
 
             <RadioButton
-
                 android:id="@+id/rb_status_three"
                 android:layout_width="36dp"
                 android:layout_height="wrap_content"
-
                 android:background="@drawable/dotted_status_choose_three"
-
                 android:button="@null" />
 
             <RadioButton
-
                 android:id="@+id/rb_status_four"
                 android:layout_width="36dp"
                 android:layout_height="wrap_content"
-
                 android:background="@drawable/dotted_status_choose_four"
-
                 android:button="@null" />
         </RadioGroup>
 

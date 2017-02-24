@@ -6,19 +6,18 @@
     android:orientation="vertical">
 
     <LinearLayout
-android:background="@drawable/dotted_layout_gray"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/dotted_layout_gray"
         android:orientation="horizontal">
 
 
         <com.subinkrishna.widget.CircularImageView
-            android:layout_margin="@dimen/activity_15dp"
             android:id="@+id/cir_eqiutment_head"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/icon_cell"
-            />
+            android:layout_margin="@dimen/activity_15dp"
+            android:src="@mipmap/icon_cell" />
 
 
         <LinearLayout
@@ -29,20 +28,21 @@ android:background="@drawable/dotted_layout_gray"
             android:orientation="vertical">
 
             <TextView
-                android:textSize="@dimen/activity_20dp"
-                android:textColor="@color/color_text_color_teansaction"
                 android:id="@+id/text_eqiutment_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="海王星科技大厦" />
+                android:text="海王星科技大厦"
+                android:textColor="@color/color_text_color_teansaction"
+                android:textSize="@dimen/activity_20dp" />
 
             <TextView
-                android:layout_marginTop="@dimen/margin_3dp"
-                android:textColor="@color/item_text_color"
                 android:id="@+id/text_eqiutment_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="电梯（2部）" />
+                android:layout_marginTop="@dimen/activity_5dp"
+                android:text="电梯（2部）"
+                android:textColor="@color/color_normal_color" />
+
             <TextView
                 android:id="@+id/text_cell_id"
                 android:layout_width="wrap_content"
@@ -54,13 +54,14 @@ android:background="@drawable/dotted_layout_gray"
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
+
             <TextView
-                android:textColor="@color/item_text_color"
                 android:id="@+id/text_qzone"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="12333" />
+                android:text="12333"
+                android:textColor="@color/item_text_color" />
         </LinearLayout>
 
     </LinearLayout>

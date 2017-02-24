@@ -79,6 +79,7 @@ public class CellMessageActivity extends BaseActivity implements View.OnClickLis
                                     String id = obj.getDatas().get(position).getDESC() + "";
                                     Intent intent = new Intent();
                                     intent.putExtra("ID", id);
+                                    intent.putExtra("OID_ID", obj.getDatas().get(position).getID()+"");
                                     intent.putExtra("NAME",obj.getDatas().get(position).getDESC());
                                     intent.setClass(getApplicationContext(), CellItemActivity.class);
                                     startActivity(intent);

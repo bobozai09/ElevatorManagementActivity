@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -49,6 +50,8 @@ public class CellItemActivity extends BaseActivity implements View.OnClickListen
     @BindById(R.id.img_other)
     TextView imgOther;
     PopChooseDateWin pop;
+    String id;
+    String OLDID;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,8 +60,9 @@ public class CellItemActivity extends BaseActivity implements View.OnClickListen
         PreIOC.binder(this);
         intent = getIntent();
         imgBack.setOnClickListener(this);
+        OLDID = intent.getStringExtra("OID_ID");
+//        Log.d("oldid", "onCreate: " + OLDID);
 
-//        imgOther.setOnClickListener(this);
         imgOther.setVisibility(View.VISIBLE);
         texTitle.setText(intent.getStringExtra("NAME"));
         recEleMain.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -111,7 +115,7 @@ public class CellItemActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void run() {
                 token = Constant.TOKEN;
-                String id = intent.getStringExtra("ID");
+                id = intent.getStringExtra("ID");
                 String domain = Constant.URL_TRANSCTION;
                 String params = Constant.OPER + "=" +
                         Constant.DEV_MC_LIST + "&" + Constant.LOGIN_TOKEN + "=" + token + "&" + Constant.SPE + "=" + number + "&" + Constant.ID + "=" + id;
@@ -188,9 +192,10 @@ public class CellItemActivity extends BaseActivity implements View.OnClickListen
     };
 
     private void toIntent(int tmpl) {
+
         Intent intent = new Intent();
         intent.putExtra("TMPL", tmpl);
-
+        intent.putExtra("OLD", OLDID);
         intent.setClass(getApplicationContext(), MaintenanceRecordActivity.class);
         startActivity(intent);
         pop.dismiss();

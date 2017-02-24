@@ -3,9 +3,12 @@ package management.elevator.com.elevatormanagementactivity.activity.maintenance;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -51,6 +54,7 @@ import management.elevator.com.elevatormanagementactivity.bean.MaintenanceRecord
 import management.elevator.com.elevatormanagementactivity.bean.Model;
 import management.elevator.com.elevatormanagementactivity.utils.GetSession;
 import management.elevator.com.elevatormanagementactivity.utils.ImageUtils;
+import management.elevator.com.elevatormanagementactivity.utils.UtilsForImage;
 import management.elevator.com.elevatormanagementactivity.widget.Constant;
 import management.elevator.com.elevatormanagementactivity.widget.SpaceItemDecoration;
 import wang.raye.preioc.PreIOC;
@@ -66,6 +70,13 @@ import static management.elevator.com.elevatormanagementactivity.R.id.none;
  */
 
 public class MaintenanceRecordActivity extends BaseActivity implements View.OnClickListener {
+    private String imageFilePath; //拍照和选择照片后图片路径
+    private File cropFile; //裁剪后的图片文件
+    private Uri pickPhotoImageUri; //API22以下相册选择图片uri
+    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 10002;
+    private static final int PICK_ACTIVITY_REQUEST_CODE = 10003;
+    private static final int CROP_ACTIVITY_REQUEST_CODE = 10008;
+    private static final int WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 10010;
     @BindById(R.id.img_back)
     ImageView imgBack;
     @BindById(R.id.tex_title)
@@ -102,14 +113,18 @@ public class MaintenanceRecordActivity extends BaseActivity implements View.OnCl
     private SharedPreferences sp;
     private SharedPreferences.Editor edit;
     private ShapeLoadingDialog shapeLoadingDialog;
+    String id;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maintenance_record);
         shapeLoadingDialog = new ShapeLoadingDialog(this);
         PreIOC.binder(this);
+
         texTitle.setText("维保详情");
         intent = getIntent();
+        id=intent.getStringExtra("OLD"+"");
+        Log.d("", "onCreate: "+id);
         Date now = new Date();
         SimpleDateFormat dateformat = new SimpleDateFormat("HH:mm");
         mc_start = dateformat.format(now);
@@ -126,6 +141,7 @@ public class MaintenanceRecordActivity extends BaseActivity implements View.OnCl
             mOutputFile = new File(str);
         }
         initData();
+
     }
 
     @Override
@@ -256,51 +272,68 @@ public class MaintenanceRecordActivity extends BaseActivity implements View.OnCl
     }
 
     private void updateMessage() {
-//        shapeLoadingDialog.setLoadingText("加载中....");
-//        shapeLoadingDialog.show();
-        if (canUpload()) {
+        new MyAsyncTask().execute();
+}
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Date now = new Date();
-                    SimpleDateFormat dateformat = new SimpleDateFormat("HH:mm");
-                    mc_end = dateformat.format(now);
-                    final String jsondata = stringTOJson();
-                    String domain = Constant.URL_TRANSCTION;
-                    String params = Constant.OPER + "=" +
-                            Constant.DEV_MC_SUBMIT + "&" + Constant.LOGIN_TOKEN + "=" + token + "&" + "data=" + jsondata;
-                    String json = GetSession.post(domain, params);
-                    Log.d("onclick", "run: " + domain);
-                    Log.d("onclick", "run: " + params);
-                    Log.d("onclick", "run: " + json);
-                    if (json.equals("+ER+")){
-                        Log.d("onclick", "run: "+1222);
-                    }
-                    if (!json.equals("+ER+")) {
-                        try {
+   class  MyAsyncTask extends AsyncTask<Void,Void,Boolean>{
 
-                            JSONObject js = new JSONObject(json);
-                            String result = js.getString("result");
-                            Message message = new Message();
-                            message.obj = result;
-                            message.what = UPLOADASTATUS;
-                            handler.sendMessage(message);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }).start();
-        }
-    }
+       @Override
+       protected Boolean doInBackground(Void... params) {
+           Log.d("", "doInBackground: ");
+           try {
+               Date now = new Date();
+               SimpleDateFormat dateformat = new SimpleDateFormat("HH:mm");
+               mc_end = dateformat.format(now);
+               final String jsondata = stringTOJson();
+               Log.d("", "doInBackground: jsondata==>"+jsondata);
+               Log.d("jsondata", "run: "+jsondata);
+               String domain = Constant.URL_TRANSCTION;
+               String param = Constant.OPER + "=" +
+                       Constant.DEV_MC_SUBMIT + "&" + Constant.LOGIN_TOKEN +
+                       "=" + token + "&" + "data=" + jsondata;
+               String json = GetSession.post(domain, param);
+               Log.d("onclick", "run: " + jsondata);
+               Log.d("onclick", "run: " + domain);
+               Log.d("onclick", "run: " + params);
+               Log.d("onclick", "run: " + json);
+               if (!json.equals("+ER+")){
+                   try {
+                       JSONObject js = new JSONObject(json);
+                       String result = js.getString("result");
+                       Message message = new Message();
+                       message.obj = result;
+                       message.what = UPLOADASTATUS;
+                       handler.sendMessage(message);
+                   } catch (JSONException e) {
+                       e.printStackTrace();
+                   }
 
+               }
+               return true;
+           }catch (Exception e){
+               e.printStackTrace();
+           }
+           return false;
+       }
+
+       @Override
+       protected void onPostExecute(Boolean aBoolean) {
+           super.onPostExecute(aBoolean);
+           if (aBoolean){
+               Log.d("", "onPostExecute: success");
+           }else{
+               Log.d("", "onPostExecute: failed");
+           }
+       }
+   }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_upload:
                 Log.d("onclick", "onClick: ");
-                updateMessage();
+                if (canUpload()) {
+                    updateMessage();
+                }
                 break;
             case R.id.img_takephoto2:
                 takepic();
@@ -326,7 +359,7 @@ public class MaintenanceRecordActivity extends BaseActivity implements View.OnCl
             Toast.makeText(getApplicationContext(), "随便说点什么吧", Toast.LENGTH_LONG).show();
             return false;
         }
-        if (encodeString.length() == 0) {
+        if (encodeString.length() != 0) {
             Toast.makeText(this, "请先拍照上传", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -355,19 +388,44 @@ public class MaintenanceRecordActivity extends BaseActivity implements View.OnCl
 //        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
 //        intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
 //        startActivityForResult(intent, 0);
-        String sdPath = Environment.getExternalStorageDirectory()
-                .getAbsolutePath();
-        mOutputFile = new File(sdPath, System.currentTimeMillis() + ".jpg");
-        Intent newIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Uri uri;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            uri = FileProvider.getUriForFile(this, "management.elevator.com.elevatormanagementactivity", mOutputFile);
-            newIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        } else {
-            uri = Uri.fromFile(mOutputFile);
+//        String sdPath = Environment.getExternalStorageDirectory()
+//                .getAbsolutePath();
+//        mOutputFile = new File(sdPath, System.currentTimeMillis() + ".jpg");
+//        Intent newIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        Uri uri;
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            uri = FileProvider.getUriForFile(this, "management.elevator.com.elevatormanagementactivity", mOutputFile);
+//            newIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//        } else {
+//            uri = Uri.fromFile(mOutputFile);
+//        }
+//        newIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+//        startActivityForResult(newIntent, 0);
+        String state = Environment.getExternalStorageState();
+        if (state.equals(Environment.MEDIA_MOUNTED)) {
+            File imageFile = new File(Environment.getExternalStorageDirectory(), "/temp/" + System.currentTimeMillis() + ".jpg");
+            if (!imageFile.getParentFile().exists()) imageFile.getParentFile().mkdirs();
+            imageFilePath = imageFile.getPath();
+            //兼容性判断
+            Uri imageUri;
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
+                imageUri = UtilsForImage.file2Uri(this, imageFile);
+            } else {
+                imageUri = Uri.fromFile(imageFile);
+            }
+            Intent intent = new Intent();
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);//将拍取的照片保存到指定URI
+
+            List<ResolveInfo> resInfoList = getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+            for (ResolveInfo resolveInfo : resInfoList) {
+                String packageName = resolveInfo.activityInfo.packageName;
+                grantUriPermission(packageName, imageUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
+            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
-        newIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-        startActivityForResult(newIntent, 0);
     }
 
     @Override
@@ -376,16 +434,63 @@ public class MaintenanceRecordActivity extends BaseActivity implements View.OnCl
         if (resultCode != RESULT_OK) {
             return;
         }
-        if (requestCode == 0) {
-            try {
-                Bitmap mBitmap = BitmapFactory.decodeFile(mOutputFile.getAbsolutePath());
-                imgTakephoto2.setImageBitmap(mBitmap);
-                encodeString = ImageUtils.bitmapToString(mOutputFile.getAbsolutePath());
-                Log.d("onclick",""+encodeString);
-            } catch (Exception e) {
-                e.printStackTrace();
+        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+                crop(false);
+//            try {
+//                Bitmap mBitmap = BitmapFactory.decodeFile(mOutputFile.getAbsolutePath());
+//                imgTakephoto2.setImageBitmap(mBitmap);
+//                encodeString = ImageUtils.bitmapToString(mOutputFile.getAbsolutePath());
+//                Log.d("onclick",""+encodeString);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+            if (requestCode==CROP_ACTIVITY_REQUEST_CODE){
+
+                if (data != null) {
+                    Bitmap bitmap;
+                    try {
+                        bitmap = BitmapFactory.decodeFile(cropFile.getPath());
+                        imgTakephoto2.setImageBitmap(bitmap);
+                        encodeString = ImageUtils.bitmapToString(bitmap.toString());
+                        Log.d("test", "onActivityResult: "+encodeString);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
+    }
+    private void crop(boolean isPick) {
+        cropFile = new File(Environment.getExternalStorageDirectory(), "/temp/" + System.currentTimeMillis() + ".jpg");
+        if (!cropFile.getParentFile().exists()) cropFile.getParentFile().mkdirs();
+        Uri outputUri, imageUri;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
+            outputUri = UtilsForImage.file2Uri(this, cropFile);
+            imageUri = UtilsForImage.file2Uri(this, new File(imageFilePath));
+        } else {
+            outputUri = Uri.fromFile(cropFile);
+            imageUri = isPick ? pickPhotoImageUri : Uri.fromFile(new File(imageFilePath));
+        }
+
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(imageUri, "image/*");
+        intent.putExtra("crop", "true");
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        intent.putExtra("scale", true);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+        intent.putExtra("noFaceDetection", true); // no face detection
+
+        //授予"相机"保存文件的权限 针对API24+
+        List<ResolveInfo> resInfoList = getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        for (ResolveInfo resolveInfo : resInfoList) {
+            String packageName = resolveInfo.activityInfo.packageName;
+            grantUriPermission(packageName, outputUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
+        startActivityForResult(intent, CROP_ACTIVITY_REQUEST_CODE);
     }
 
     private String stringTOJson() {
@@ -411,14 +516,11 @@ public class MaintenanceRecordActivity extends BaseActivity implements View.OnCl
             jsonObj.put("SPE", 0);
             jsonObj.put("MC_STA", mc_start);
             jsonObj.put("MC_END", mc_end);
-            jsonObj.put("OID", 0);
+            jsonObj.put("OID", id);
             jsonObj.put("TMPL", tmpl);
             jsonObj.put("MC_IMG", p);
             jsonObj.put("MC_DATA", sb.toString());
             jsonObj.put("MC_MARK", message);
-//            jsonObj.put(jsonObj);
-//            object.put("",jsonarray);
-//            jsonresult=object.toString();
             jsonresult = jsonObj.toString();
         } catch (JSONException e) {
             e.printStackTrace();

@@ -38,8 +38,7 @@ public class MaintenanceItemActivity extends BaseActivity implements View.OnClic
         imgOther.setVisibility(View.VISIBLE);
         intent = getIntent();
         initView();
-        //initData();
-
+        initData();
     }
 
     private void initView() {

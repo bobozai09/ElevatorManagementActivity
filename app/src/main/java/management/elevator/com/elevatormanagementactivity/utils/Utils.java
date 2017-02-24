@@ -1,5 +1,9 @@
 package management.elevator.com.elevatormanagementactivity.utils;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,6 +12,7 @@ import java.util.regex.Pattern;
  */
 
 public class Utils {
+    Context context;
     /**
      * 判断电话号码是否符合格式.
      *
@@ -19,4 +24,6 @@ public class Utils {
         Matcher m = p.matcher(inputText);
         return m.matches();
     }
+
+
 }

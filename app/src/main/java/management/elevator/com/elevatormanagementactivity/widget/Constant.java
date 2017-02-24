@@ -221,4 +221,7 @@ public static String GET_ALMNAME="get-almname";
     public static String UPDATE_NOTIC="update-notice";
     public static String LOGIN_SUCCESS_USERN_NAME="";
 
+
+    public static String DOWNLOADURL="/app/ver.jsp";
+
 }
